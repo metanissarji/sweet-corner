@@ -1,0 +1,395 @@
+/* ===== מצב משולב: עיצוב הרוחב כרקע + השקית במרכז ===== */
+.combo-hero {
+  background: var(--cream);
+}
+
+.combo-frame {
+  position: relative;
+  width: min(100%, calc(100vh * 1.5));
+  width: min(100%, calc(100svh * 1.5));
+  margin-inline: auto;
+  line-height: 0;
+}
+
+.combo-bg {
+  width: 100%;
+  display: block;
+}
+
+/* במת השקית: ממורכזת מעל אזור הכיתוב שבתמונה.
+   pointer-events:none כדי שאזורי הלחיצה שמתחתיה ימשיכו לעבוד */
+.combo-stage {
+  position: absolute;
+  top: 3.5%;
+  inset-inline: 0;
+  margin-inline: auto;
+  height: 66%;
+  aspect-ratio: 941 / 1672;
+  perspective: 1100px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.combo-stage .bag-float {
+  height: 100%;
+}
+
+.combo-stage .bag-scene {
+  width: 100%;
+  height: 100%;
+}
+
+.combo-stage .bag-back,
+.combo-stage .bag-front {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.combo-replay {
+  position: absolute;
+  z-index: 3;
+  bottom: 2.5%;
+  inset-inline-start: 2%;
+  margin-top: 0;
+  line-height: 1.4;
+}
+
+/* ===== מקטע הגיבור עם השקית ===== */
+.bag-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--cream);
+  padding: 2rem 0 3rem;
+}
+
+.bag-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: 2.5rem;
+  min-height: 82vh;
+}
+
+/* ===== צד הטקסט ===== */
+.bag-copy {
+  text-align: center;
+}
+
+.bag-copy > * {
+  animation: copyIn 0.7s cubic-bezier(.25,1,.4,1) both;
+}
+
+.bag-copy > :nth-child(1) { animation-delay: 1.9s; }
+.bag-copy > :nth-child(2) { animation-delay: 2.1s; }
+.bag-copy > :nth-child(3) { animation-delay: 2.3s; }
+.bag-copy > :nth-child(4) { animation-delay: 2.5s; }
+
+@keyframes copyIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bag-title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-brush);
+  font-weight: 700;
+  line-height: 0.95;
+  font-size: clamp(4rem, 8vw, 6.8rem);
+}
+
+.bag-title-pink {
+  color: var(--pink);
+  transform: rotate(-3deg);
+}
+
+.bag-title-brown {
+  color: var(--brown);
+  transform: rotate(-1deg);
+}
+
+.bag-banner {
+  display: inline-block;
+  background: var(--blue);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  padding: 0.25rem 1.6rem;
+  border-radius: 6px;
+  transform: rotate(-1.5deg);
+  margin-top: 1.2rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.bag-sub {
+  margin-top: 1.1rem;
+  font-size: 1.15rem;
+  color: var(--brown);
+}
+
+.bag-ctas {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* ===== הבמה ===== */
+.bag-stage {
+  perspective: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bag-float {
+  animation: bagFloat 5s 3s ease-in-out infinite;
+}
+
+@keyframes bagFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+.bag-scene {
+  position: relative;
+  width: min(380px, 82vw);
+  border-radius: 20px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+  box-shadow: 0 30px 70px rgba(91, 50, 24, 0.32), 0 8px 20px rgba(46, 134, 224, 0.15);
+  /* רעידת ציפייה של השקית לפני הפתיחה */
+  animation: bagWiggle 0.95s 0.15s ease-in-out;
+}
+
+@keyframes bagWiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  15% { transform: rotate(-2.2deg) scale(1.01); }
+  35% { transform: rotate(2.4deg) scale(1.015); }
+  55% { transform: rotate(-2.6deg) scale(1.02); }
+  75% { transform: rotate(2deg) scale(1.03); }
+  90% { transform: rotate(-1deg) scale(1.035); }
+}
+
+.bag-back,
+.bag-front {
+  width: 100%;
+  display: block;
+}
+
+/* השכבה האחורית: מוסתרת עד קו פתח השקית ונחשפת מעלה בקפיצה */
+.bag-back {
+  animation: bagReveal 1.5s 1.05s cubic-bezier(.2,1.25,.35,1) both;
+}
+
+@keyframes bagReveal {
+  from {
+    clip-path: inset(46% 0 0 0);
+    transform: translateY(5%) scale(0.99);
+  }
+  60% {
+    clip-path: inset(-2% 0 0 0);
+    transform: translateY(-1.2%) scale(1.005);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* השכבה הקדמית: השקית עצמה, חתוכה לאורך שפת הפתח הגלית */
+.bag-front {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(
+    0% 100%, 0% 49%, 7% 46.5%, 17% 48%, 29% 45.5%,
+    41% 48%, 52% 45.5%, 64% 48%, 76% 45.5%, 88% 47.5%,
+    100% 49%, 100% 100%
+  );
+}
+
+/* צילום השקית הסגורה: מכסה את הסצנה ונמוג ברגע ההתפרצות */
+.bag-closed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 3;
+  pointer-events: none;
+  animation: closedOut 0.55s 1.05s cubic-bezier(.4,0,.6,1) both;
+}
+
+@keyframes closedOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  40% {
+    filter: brightness(1.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.09);
+    filter: brightness(2);
+  }
+}
+
+/* הבזק אור ברגע הפתיחה */
+.bag-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 245, 200, 0.95), transparent 55%);
+  opacity: 0;
+  animation: glowFlash 1s 1.02s ease-out;
+  mix-blend-mode: screen;
+}
+
+@keyframes glowFlash {
+  0% { opacity: 0; transform: scale(0.6); }
+  35% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.4); }
+}
+
+/* מסך ברק חד-פעמי אחרי הפתיחה */
+.bag-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.4) 50%, transparent 58%);
+  background-size: 280% 100%;
+  animation: bagShine 1.3s 2.7s cubic-bezier(.4,0,.3,1) both;
+}
+
+@keyframes bagShine {
+  from { background-position: 170% 0; opacity: 1; }
+  to { background-position: -170% 0; opacity: 0; }
+}
+
+/* ניצוצות אווירה מהבהבים */
+.bag-twinkle {
+  position: absolute;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 240, 180, 0.9);
+  font-size: 1.1rem;
+  pointer-events: none;
+  animation: twinkle 2.6s ease-in-out infinite;
+  opacity: 0;
+}
+
+.bag-twinkle.t1 { top: 18%; right: 12%; animation-delay: 2.4s; }
+.bag-twinkle.t2 { top: 34%; left: 9%; animation-delay: 3.2s; font-size: 0.85rem; }
+.bag-twinkle.t3 { top: 8%; left: 30%; animation-delay: 4s; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(90deg); }
+}
+
+/* חלקיקי הפרץ (נוצרים ב-JS בתוך הסצנה) */
+.bag-spark {
+  position: absolute;
+  z-index: 5;
+  width: 10px;
+  height: 5px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.bag-spark-emoji {
+  width: auto;
+  height: auto;
+  background: none !important;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* צל רך מתחת לשקית */
+.bag-shadow {
+  width: 65%;
+  height: 26px;
+  margin-top: 14px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(91, 50, 24, 0.3), transparent 70%);
+  animation: shadowBreath 5s 3s ease-in-out infinite;
+}
+
+@keyframes shadowBreath {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  50% { transform: scaleX(0.9); opacity: 0.75; }
+}
+
+/* כפתור הפעלה מחדש */
+.bag-replay {
+  margin-top: 1rem;
+  background: var(--white);
+  border: 2px solid var(--pink);
+  color: var(--pink);
+  border-radius: 999px;
+  padding: 0.35rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  opacity: 0;
+  animation: copyIn 0.6s 3.2s ease both;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.bag-replay:hover {
+  background: var(--pink-soft);
+  transform: rotate(-3deg) scale(1.06);
+}
+
+/* ===== רספונסיבי ===== */
+@media (max-width: 900px) {
+  .bag-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    min-height: 0;
+    padding-top: 0.5rem;
+  }
+
+  .bag-stage {
+    order: -1;
+  }
+
+  .bag-scene {
+    width: min(300px, 78vw);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bag-scene,
+  .bag-back,
+  .bag-glow,
+  .bag-shine,
+  .bag-float,
+  .bag-shadow,
+  .bag-twinkle {
+    animation: none;
+  }
+
+  .bag-back {
+    clip-path: none;
+  }
+
+  .bag-copy > *,
+  .bag-replay {
+    animation: none;
+    opacity: 1;
+  }
+}

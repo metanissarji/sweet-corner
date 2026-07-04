@@ -1,0 +1,84 @@
+.add-to-cart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.6rem;
+}
+
+.qty-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 34px;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  border: 2px solid var(--pink);
+  font-weight: 700;
+  font-size: 1rem;
+  transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.qty-plus {
+  background: var(--pink);
+  color: var(--white);
+}
+
+.qty-plus:hover {
+  background: var(--pink-dark);
+  transform: scale(1.1) rotate(-3deg);
+  box-shadow: 0 4px 12px rgba(224, 36, 94, 0.4);
+}
+
+.qty-plus:active {
+  transform: scale(0.92);
+}
+
+.qty-minus {
+  background: var(--white);
+  color: var(--pink);
+  min-width: 34px;
+}
+
+.qty-minus:hover:not(:disabled) {
+  background: var(--pink-soft);
+  transform: scale(1.08);
+}
+
+.qty-minus:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.qty-num {
+  min-width: 1.6rem;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--brown);
+  animation: numPop 0.25s ease;
+}
+
+@keyframes numPop {
+  0% { transform: scale(1.7); color: var(--pink); }
+  100% { transform: scale(1); }
+}
+
+/* אלמנטים מעופפים — מוצמדים ל-body */
+.fly-emoji {
+  position: fixed;
+  z-index: 200;
+  font-size: 1.9rem;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.plus-one-pop {
+  position: fixed;
+  z-index: 200;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--pink);
+  text-shadow: 0 1px 0 var(--white);
+  pointer-events: none;
+}

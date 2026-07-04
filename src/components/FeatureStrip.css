@@ -1,0 +1,64 @@
+.feature-strip {
+  background: var(--white);
+  padding: 2.2rem 0 2.8rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  border: 3px solid;
+}
+
+.feature-pink {
+  color: var(--pink);
+  border-color: var(--pink);
+  background: var(--pink-soft);
+}
+
+.feature-blue {
+  color: var(--blue);
+  border-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.feature-rose {
+  color: var(--pink);
+  border-color: var(--pink-splash);
+  background: var(--white);
+}
+
+.feature-yellow {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: #fdf3d7;
+}
+
+.feature h3 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--brown);
+  line-height: 1.3;
+}
+
+.feature p {
+  font-size: 0.92rem;
+  color: var(--brown-light);
+}
