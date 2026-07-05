@@ -37,6 +37,7 @@ function burstConfetti(container) {
 export default function CartDrawer() {
   const { list, count, total, add, remove, clear, drawerOpen, setDrawerOpen } = useCart();
   const [ordered, setOrdered] = useState(false);
+  const [checkout, setCheckout] = useState(false);
   const [fabPop, setFabPop] = useState(false);
   const confettiRef = useRef(null);
   const prevCount = useRef(count);
@@ -57,13 +58,17 @@ export default function CartDrawer() {
 
   function handleOrder() {
     setOrdered(true);
+    setCheckout(false);
     burstConfetti(confettiRef.current);
     clear();
   }
 
   function closeDrawer() {
     setDrawerOpen(false);
-    setTimeout(() => setOrdered(false), 400);
+    setTimeout(() => {
+      setOrdered(false);
+      setCheckout(false);
+    }, 400);
   }
 
   const progress = Math.min(100, Math.round((total / FREE_DELIVERY) * 100));
@@ -101,6 +106,25 @@ export default function CartDrawer() {
             <p className="success-number">מס׳ הזמנה: #{Math.floor(1000 + Math.random() * 9000)}</p>
             <button className="btn btn-pink" onClick={closeDrawer}>סגירה</button>
           </div>
+        ) : checkout ? (
+          <form className="checkout-form" onSubmit={(e) => { e.preventDefault(); handleOrder(); }}>
+            <h3>פרטי משלוח ותשלום</h3>
+            <input type="text" placeholder="שם פרטי" required className="checkout-input" />
+            <input type="text" placeholder="שם משפחה" required className="checkout-input" />
+            <input type="tel" placeholder="מספר טלפון" required className="checkout-input" />
+            <input type="email" placeholder="אימייל (רשות)" className="checkout-input" />
+            <input type="text" placeholder="כתובת מלאה למשלוח" required className="checkout-input" />
+            <select required defaultValue="" className="checkout-input">
+              <option value="" disabled>בחירת אמצעי תשלום...</option>
+              <option value="cash">מזומן לשליח</option>
+              <option value="visa">ויזה / אשראי</option>
+              <option value="apple-pay">Apple Pay</option>
+            </select>
+            <div className="checkout-actions">
+              <button type="button" className="btn btn-outline" onClick={() => setCheckout(false)}>חזרה לסל</button>
+              <button type="submit" className="btn btn-pink">אישור ותשלום ₪{total}</button>
+            </div>
+          </form>
         ) : list.length === 0 ? (
           <div className="cart-empty">
             <span className="empty-cone" aria-hidden="true">🍦</span>
@@ -145,7 +169,7 @@ export default function CartDrawer() {
                 <span>סה״כ לתשלום:</span>
                 <strong>₪{total}</strong>
               </div>
-              <button className="btn btn-pink order-btn" onClick={handleOrder}>
+              <button className="btn btn-pink order-btn" onClick={() => setCheckout(true)}>
                 השלמת הזמנה 🎉
               </button>
             </footer>
