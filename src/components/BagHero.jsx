@@ -13,10 +13,10 @@ import './BagHero.css';
  *    צף ומוטה בתלת-ממד לפי העכבר — ולחיצה עליו מובילה לכל הטעמים
  */
 
-/* מלבן השקית הסגורה בתוך עיצוב הרקע (באחוזים, תמונה 1535×1024) */
-const BAG_RECT = { left: 37.5, top: 52.5, width: 24, height: 33.5 };
+/* מלבן השקית הסגורה בתוך עיצוב הרקע (באחוזים, תמונה 1536×1024) */
+const BAG_RECT = { left: 33.5, top: 27, width: 32, height: 48.5 };
 /* פתח השקית — מקור ההתפרצות */
-const MOUTH = { x: 49.5, y: 58.5 };
+const MOUTH = { x: 49.5, y: 37.5 };
 
 const NAV_LABELS = ['דף הבית', 'הטעמים שלנו', 'מארזים', 'מבצעים', 'אודות', 'צור קשר', 'סניפים'];
 const navSpots = hotspots.filter((h) => NAV_LABELS.includes(h.label));
