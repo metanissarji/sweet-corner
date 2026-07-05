@@ -76,14 +76,18 @@
 
 .cart-drawer {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: min(400px, 92vw);
+  top: 50%;
+
+  left: 50%;
+  max-height: 85vh;
+  border-radius: 20px;
+  width: min(450px, 92vw);
   background: var(--cream);
   z-index: 100;
-  transform: translateX(-105%);
-  transition: transform 0.35s cubic-bezier(.25,1,.35,1);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -40%) scale(0.95);
+  transition: all 0.35s cubic-bezier(.25,1,.35,1);
   box-shadow: 8px 0 40px rgba(91, 50, 24, 0.25);
   display: flex;
   flex-direction: column;
@@ -91,7 +95,9 @@
 }
 
 .cart-drawer.open {
-  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .confetti-layer {
@@ -349,4 +355,52 @@
   font-size: 0.9rem;
   color: var(--brown-light);
   margin-bottom: 0.8rem;
+}
+
+/* ===== צ'קאאוט ===== */
+.checkout-form {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  animation: itemIn 0.3s ease;
+  overflow-y: auto;
+}
+
+.checkout-form h3 {
+  font-family: var(--font-heading);
+  color: var(--pink);
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.checkout-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--cream-dark);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--brown);
+  background: var(--white);
+  transition: border-color 0.2s ease;
+}
+
+.checkout-input:focus {
+  outline: none;
+  border-color: var(--pink);
+}
+
+.checkout-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.checkout-actions .btn {
+  flex: 1;
+  padding: 0.9rem;
+  font-size: 1.05rem;
 }
