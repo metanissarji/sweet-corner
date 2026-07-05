@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { PHONE, PHONE_LINK, INSTAGRAM, INSTAGRAM_HANDLE, HOURS } from '../data/products.js';
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
@@ -71,10 +72,10 @@ export default function Contact() {
               דרכים נוספות להגיע אלינו
             </h3>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', fontSize: '1.05rem' }}>
-              <li>📞 <a href="tel:039999999" style={{ fontWeight: 600 }}>03-9999999</a></li>
-              <li>📧 <a href="mailto:hello@sweet-corner.co.il" style={{ fontWeight: 600 }}>hello@sweet-corner.co.il</a></li>
-              <li>📍 שישה סניפים ברחבי הארץ</li>
-              <li>🕙 א׳–ה׳ 10:00–22:00 · ו׳ 9:00–15:00</li>
+              <li>📞 <a href={PHONE_LINK} style={{ fontWeight: 600 }}>{PHONE}</a></li>
+              <li>📸 <a href={INSTAGRAM} target="_blank" rel="noreferrer" style={{ fontWeight: 600 }}>{INSTAGRAM_HANDLE}</a></li>
+              <li>📍 שישה סניפים בגליל</li>
+              <li>🕙 {HOURS}</li>
             </ul>
             <p style={{ marginTop: '1.5rem', color: 'var(--brown-light)' }}>
               להזמנות גדולות ואירועים מומלץ ליצור קשר לפחות 3 ימים מראש —

@@ -272,6 +272,57 @@
   transform: scaleX(-1);
 }
 
+/* ===== 🎉 חגיגת משלוח חינם ===== */
+.delivery-progress.celebrate .progress-fill {
+  background: linear-gradient(90deg, var(--pink), var(--yellow), var(--blue), var(--pink-splash), var(--pink));
+  background-size: 300% 100%;
+  animation: rainbowSlide 0.9s linear infinite;
+}
+
+@keyframes rainbowSlide {
+  to { background-position: -300% 0; }
+}
+
+.delivery-progress.celebrate .progress-scooter {
+  animation: scooterParty 1.5s cubic-bezier(.3,1.3,.4,1);
+}
+
+@keyframes scooterParty {
+  0% { transform: scaleX(-1) translateY(0) rotate(0deg); }
+  22% { transform: scaleX(-1) translateY(-16px) rotate(-16deg); }
+  45% { transform: scaleX(-1) translateY(0) rotate(8deg); }
+  65% { transform: scaleX(-1) translateY(-9px) rotate(-9deg); }
+  85% { transform: scaleX(-1) translateY(0) rotate(4deg); }
+  100% { transform: scaleX(-1) translateY(0) rotate(0deg); }
+}
+
+.free-delivery-badge {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  z-index: 6;
+  background: linear-gradient(135deg, var(--yellow), #ffe08a);
+  color: var(--brown);
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  padding: 0.85rem 1.7rem;
+  border-radius: 999px;
+  border: 3px solid var(--white);
+  box-shadow: 0 14px 34px rgba(91, 50, 24, 0.4);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: freeBadge 2.5s cubic-bezier(.3,1.5,.5,1) both;
+}
+
+@keyframes freeBadge {
+  0% { transform: translate(-50%, -50%) scale(0) rotate(-25deg); opacity: 0; }
+  15% { transform: translate(-50%, -50%) scale(1.18) rotate(4deg); opacity: 1; }
+  25% { transform: translate(-50%, -50%) scale(0.96) rotate(-2deg); }
+  33% { transform: translate(-50%, -50%) scale(1.04) rotate(1deg); }
+  40%, 82% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0.7) rotate(6deg); opacity: 0; }
+}
+
 /* ===== פריטים ===== */
 .cart-items {
   flex: 1;

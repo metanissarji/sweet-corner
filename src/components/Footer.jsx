@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { PHONE, PHONE_LINK, INSTAGRAM, INSTAGRAM_HANDLE } from '../data/products.js';
 import './Footer.css';
 
 export default function Footer() {
@@ -28,17 +29,16 @@ export default function Footer() {
           <ul>
             <li><Link to="/contact">צור קשר</Link></li>
             <li><Link to="/about">אודות</Link></li>
-            <li><a href="tel:039999999">03-9999999</a></li>
-            <li><a href="mailto:hello@sweet-corner.co.il">hello@sweet-corner.co.il</a></li>
+            <li><a href={PHONE_LINK}>📞 {PHONE}</a></li>
+            <li><a href={INSTAGRAM} target="_blank" rel="noreferrer">📸 {INSTAGRAM_HANDLE}</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
           <h4>שעות פעילות</h4>
           <ul>
-            <li>א׳–ה׳: 10:00–22:00</li>
-            <li>ו׳ וערבי חג: 9:00–15:00</li>
-            <li>מוצ״ש: שעה לאחר צאת השבת</li>
+            <li>כל ימות השבוע</li>
+            <li>10:00 בבוקר – 23:00 בלילה</li>
           </ul>
         </div>
       </div>

@@ -59,20 +59,25 @@ function popPlusOne(fromEl) {
   setTimeout(() => pop.remove(), 710);
 }
 
-/* חיווי קצר "נוסף לסל" — חשוב במובייל, שם כפתור הסל רחוק מהאצבע */
-function showToast(product) {
+/* חיווי צף קצר בתחתית המסך — משמש גם את חגיגת המשלוח החינם בסל */
+export function showCartToast(text, duration = 1500) {
   let t = document.getElementById('cart-toast');
   if (!t) {
     t = document.createElement('div');
     t.id = 'cart-toast';
     document.body.appendChild(t);
   }
-  t.textContent = `${product.emoji || '🍦'} ${product.name} נוסף לסל ✓`;
+  t.textContent = text;
   t.classList.remove('show');
   void t.offsetWidth; // אתחול האנימציה
   t.classList.add('show');
   clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 1500);
+  t._timer = setTimeout(() => t.classList.remove('show'), duration);
+}
+
+/* חיווי "נוסף לסל" — חשוב במובייל, שם כפתור הסל רחוק מהאצבע */
+function showToast(product) {
+  showCartToast(`${product.emoji || '🍦'} ${product.name} נוסף לסל ✓`);
 }
 
 /**

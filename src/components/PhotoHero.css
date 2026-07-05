@@ -67,14 +67,38 @@
   display: block;
   border-radius: 12px;
   cursor: pointer;
-  transition: background 0.15s ease, box-shadow 0.15s ease;
+  transition: background 0.3s ease, transform 0.15s ease;
+}
+
+/* קו תחתון שמצטייר מעצמו — כמו ההדגשה שבעיצוב */
+.photo-hotspot::after {
+  content: '';
+  position: absolute;
+  bottom: 9%;
+  left: 20%;
+  right: 20%;
+  height: 3.5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--pink), var(--yellow));
+  box-shadow: 0 2px 8px rgba(224, 36, 94, 0.45);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.32s cubic-bezier(.3,1.5,.5,1);
 }
 
 .photo-hotspot:hover,
 .photo-hotspot:focus-visible {
-  background: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 0 0 2px rgba(224, 36, 94, 0.55);
+  background: radial-gradient(ellipse 75% 65% at 50% 45%, rgba(255, 255, 255, 0.35), transparent);
   outline: none;
+}
+
+.photo-hotspot:hover::after,
+.photo-hotspot:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.photo-hotspot:active {
+  transform: scale(0.94);
 }
 
 /* סוכריות שנושרות מתחת לסמן (מוצמדות ל-body) */

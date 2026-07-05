@@ -26,11 +26,18 @@ export const packages = [
   { id: 4, title: 'מארז המשרד', desc: 'מקפיא מלא לצוות — כי מגיע לכם', items: '36 יחידות', price: 10, emoji: '💼', image: '/images/package-office.png' },
 ];
 
+/* פרטי קשר אמיתיים של החנות */
+export const PHONE = '04-9836313';
+export const PHONE_LINK = 'tel:049836313';
+export const INSTAGRAM = 'https://www.instagram.com/hapina.hamitoka/';
+export const INSTAGRAM_HANDLE = '@hapina.hamitoka';
+export const HOURS = 'כל יום: 10:00 בבוקר – 23:00 בלילה';
+
 export const branches = [
-  { id: 1, city: 'תל אביב', address: 'דיזנגוף 120', phone: '03-5551234', hours: 'א׳–ה׳ 10:00–23:00 · ו׳ 9:00–15:00' },
-  { id: 2, city: 'ירושלים', address: 'יפו 45, מרכז העיר', phone: '02-5555678', hours: 'א׳–ה׳ 10:00–22:00 · ו׳ 9:00–14:00' },
-  { id: 3, city: 'חיפה', address: 'שדרות מוריה 78', phone: '04-5559012', hours: 'א׳–ה׳ 10:00–22:00 · ו׳ 9:00–15:00' },
-  { id: 4, city: 'באר שבע', address: 'קניון הנגב, קומה 1', phone: '08-5553456', hours: 'א׳–ש׳ לפי שעות הקניון' },
-  { id: 5, city: 'נתניה', address: 'הרצל 33', phone: '09-5557890', hours: 'א׳–ה׳ 10:00–22:00 · ו׳ 9:00–15:00' },
-  { id: 6, city: 'ראשון לציון', address: 'רוטשילד 15', phone: '03-5552468', hours: 'א׳–ה׳ 10:00–22:30 · ו׳ 9:00–15:00' },
+  { id: 1, city: 'נצרת', phone: PHONE, hours: HOURS },
+  { id: 2, city: 'נוף הגליל', phone: PHONE, hours: HOURS },
+  { id: 3, city: 'יפיע', phone: PHONE, hours: HOURS },
+  { id: 4, city: 'כפר כנא', phone: PHONE, hours: HOURS },
+  { id: 5, city: 'עראבה', phone: PHONE, hours: HOURS },
+  { id: 6, city: 'ביר אלמכסור', phone: PHONE, hours: HOURS },
 ];

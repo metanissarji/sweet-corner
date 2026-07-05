@@ -396,6 +396,45 @@ img {
   }
 }
 
+/* ===== אינסטגרם וקישורי קשר ===== */
+.branches-social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.insta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--white);
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  background-size: 150% 150%;
+  box-shadow: 0 8px 22px rgba(204, 35, 102, 0.4);
+  transition: transform 0.2s cubic-bezier(.3,1.4,.5,1), box-shadow 0.2s ease, background-position 0.4s ease;
+}
+
+.insta-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(204, 35, 102, 0.5);
+  background-position: 100% 100%;
+}
+
+.insta-icon {
+  font-size: 1.25rem;
+}
+
+.phone-btn {
+  direction: ltr;
+}
+
 /* ===== Utility ===== */
 .navbar-mobile-only {
   display: none;

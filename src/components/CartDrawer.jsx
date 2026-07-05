@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useCart } from '../context/CartContext.jsx';
+import { showCartToast } from './AddToCart.jsx';
 import './CartDrawer.css';
 
 const FREE_DELIVERY = 60;
@@ -41,8 +42,10 @@ export default function CartDrawer() {
   const [ordered, setOrdered] = useState(false);
   const [checkout, setCheckout] = useState(false);
   const [fabPop, setFabPop] = useState(false);
+  const [freeCelebrate, setFreeCelebrate] = useState(false);
   const confettiRef = useRef(null);
   const prevCount = useRef(count);
+  const prevTotal = useRef(total);
 
   // קפיצת כפתור הסל בכל הוספה
   useEffect(() => {
@@ -57,6 +60,19 @@ export default function CartDrawer() {
   useEffect(() => {
     prevCount.current = count;
   }, [count]);
+
+  // 🎉 חגיגת משלוח חינם — ברגע שחוצים את הרף
+  useEffect(() => {
+    if (prevTotal.current < FREE_DELIVERY && total >= FREE_DELIVERY) {
+      setFreeCelebrate(true);
+      burstConfetti(confettiRef.current);
+      showCartToast('🎉 הרווחתם משלוח חינם! 🛵💨', 2200);
+      const t = setTimeout(() => setFreeCelebrate(false), 2600);
+      prevTotal.current = total;
+      return () => clearTimeout(t);
+    }
+    prevTotal.current = total;
+  }, [total]);
 
   function handleOrder() {
     setOrdered(true);
@@ -103,6 +119,11 @@ export default function CartDrawer() {
       {/* המגירה */}
       <aside className={`cart-drawer ${drawerOpen ? 'open' : ''}`} aria-label="סל הקניות">
         <div className="confetti-layer" ref={confettiRef} aria-hidden="true" />
+        {freeCelebrate && (
+          <div className="free-delivery-badge" aria-hidden="true">
+            🎉 משלוח חינם! 🛵💨
+          </div>
+        )}
 
         <header className="cart-header">
           <h2>הסל שלי 🍦</h2>
@@ -145,7 +166,7 @@ export default function CartDrawer() {
         ) : (
           <>
             {/* פס התקדמות למשלוח חינם */}
-            <div className="delivery-progress">
+            <div className={`delivery-progress ${freeCelebrate ? 'celebrate' : ''}`}>
               <p>
                 {remaining > 0
                   ? <>עוד <strong>₪{remaining}</strong> למשלוח חינם 🛵</>
