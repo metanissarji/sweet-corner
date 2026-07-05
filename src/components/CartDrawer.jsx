@@ -19,18 +19,20 @@ function burstConfetti(container) {
     }
     piece.style.left = `${Math.random() * width}px`;
     container.appendChild(piece);
-    piece
-      .animate(
-        [
-          { transform: 'translateY(-20px) rotate(0deg)', opacity: 1 },
-          {
-            transform: `translateY(${300 + Math.random() * 300}px) translateX(${(Math.random() - 0.5) * 160}px) rotate(${360 + Math.random() * 360}deg)`,
-            opacity: 0,
-          },
-        ],
-        { duration: 1400 + Math.random() * 1200, easing: 'cubic-bezier(.2,.7,.4,1)', delay: Math.random() * 350 }
-      )
-      .addEventListener('finish', () => piece.remove());
+    const duration = 1400 + Math.random() * 1200;
+    const delay = Math.random() * 350;
+    piece.animate(
+      [
+        { transform: 'translateY(-20px) rotate(0deg)', opacity: 1 },
+        {
+          transform: `translateY(${300 + Math.random() * 300}px) translateX(${(Math.random() - 0.5) * 160}px) rotate(${360 + Math.random() * 360}deg)`,
+          opacity: 0,
+        },
+      ],
+      { duration, delay, easing: 'cubic-bezier(.2,.7,.4,1)', fill: 'both' }
+    );
+    // הסרה בטיימר — אירועי finish לא אמינים בכל הדפדפנים
+    setTimeout(() => piece.remove(), duration + delay + 60);
   }
 }
 
@@ -86,6 +88,15 @@ export default function CartDrawer() {
         {count > 0 && <span className="fab-badge" key={count}>{count}</span>}
       </button>
 
+      {/* שורת סל תחתונה — מובייל בלבד (אזור האגודל) */}
+      {count > 0 && !drawerOpen && (
+        <button className="cart-bar" onClick={() => setDrawerOpen(true)} aria-label={`פתיחת הסל — ${count} פריטים בסך ₪${total}`}>
+          <span className="cart-bar-count">🛒 {count}</span>
+          <span className="cart-bar-label">לצפייה בסל ולתשלום</span>
+          <strong className="cart-bar-total">₪{total}</strong>
+        </button>
+      )}
+
       {/* רקע כהה */}
       {drawerOpen && <div className="cart-backdrop" onClick={closeDrawer} />}
 
@@ -109,11 +120,11 @@ export default function CartDrawer() {
         ) : checkout ? (
           <form className="checkout-form" onSubmit={(e) => { e.preventDefault(); handleOrder(); }}>
             <h3>פרטי משלוח ותשלום</h3>
-            <input type="text" placeholder="שם פרטי" required className="checkout-input" />
-            <input type="text" placeholder="שם משפחה" required className="checkout-input" />
-            <input type="tel" placeholder="מספר טלפון" required className="checkout-input" />
-            <input type="email" placeholder="אימייל (רשות)" className="checkout-input" />
-            <input type="text" placeholder="כתובת מלאה למשלוח" required className="checkout-input" />
+            <input type="text" placeholder="שם פרטי" required className="checkout-input" autoComplete="given-name" />
+            <input type="text" placeholder="שם משפחה" required className="checkout-input" autoComplete="family-name" />
+            <input type="tel" placeholder="מספר טלפון" required className="checkout-input" autoComplete="tel" inputMode="tel" />
+            <input type="email" placeholder="אימייל (רשות)" className="checkout-input" autoComplete="email" inputMode="email" />
+            <input type="text" placeholder="כתובת מלאה למשלוח" required className="checkout-input" autoComplete="street-address" />
             <select required defaultValue="" className="checkout-input">
               <option value="" disabled>בחירת אמצעי תשלום...</option>
               <option value="cash">מזומן לשליח</option>

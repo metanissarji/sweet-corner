@@ -59,6 +59,22 @@
   animation: numPop 0.25s ease;
 }
 
+@media (max-width: 640px) {
+  .add-to-cart {
+    gap: 0.4rem;
+  }
+
+  .qty-btn {
+    min-width: 40px;
+    height: 38px;
+    font-size: 0.95rem;
+  }
+
+  .qty-minus {
+    min-width: 34px;
+  }
+}
+
 @keyframes numPop {
   0% { transform: scale(1.7); color: var(--pink); }
   100% { transform: scale(1); }
@@ -81,4 +97,39 @@
   color: var(--pink);
   text-shadow: 0 1px 0 var(--white);
   pointer-events: none;
+}
+
+/* חיווי "נוסף לסל" */
+#cart-toast {
+  position: fixed;
+  bottom: 5.5rem;
+  left: 50%;
+  z-index: 150;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--brown);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(91, 50, 24, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.3,1.4,.5,1);
+  max-width: 88vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#cart-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 768px) {
+  #cart-toast {
+    bottom: calc(4.6rem + env(safe-area-inset-bottom, 0px));
+  }
 }

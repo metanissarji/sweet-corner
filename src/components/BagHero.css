@@ -18,7 +18,17 @@
 
 /* רעידת מסך קלה ברגע ההתפרצות */
 .combo-frame {
+  perspective: 1400px;
   animation: frameShake 0.4s 1.18s ease-out both;
+}
+
+/* העטיפה הפנימית — מוטה בתלת-ממד לפי העכבר (הכל זז יחד, בלי תפרים) */
+.combo-inner {
+  position: relative;
+  line-height: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease-out;
+  will-change: transform;
 }
 
 @keyframes frameShake {
@@ -66,7 +76,23 @@
   z-index: 2;
   pointer-events: none;
   transform-origin: 50% 92%;
-  animation: cutoutWiggle 1.15s ease-in both;
+  animation:
+    cutoutWiggle 1.15s ease-in both,
+    cutoutSettle 0.65s 1.15s cubic-bezier(.3,1.6,.5,1) forwards;
+}
+
+/* אחרי ההתפרצות: השקית "משתחררת" חזרה בקפיצה אלסטית */
+@keyframes cutoutSettle {
+  0% { transform: rotate(0deg) scale(1.09, 0.94); }
+  45% { transform: rotate(0deg) scale(0.965, 1.05); }
+  75% { transform: rotate(0deg) scale(1.02, 0.99); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/* השקית לחיצה — הדגשה עדינה בריחוף */
+.bag-hotspot {
+  z-index: 3;
+  border-radius: 18px;
 }
 
 .bag-cutout img {
@@ -131,51 +157,52 @@
   100% { opacity: 0; }
 }
 
-/* ===== כרטיס השקית הפתוחה ===== */
-.open-card-wrap {
+/* ===== הפינוקים שנוחתים סביב השקית ===== */
+.hero-treat {
   position: absolute;
+  z-index: 4;
+  font-size: clamp(1.8rem, 3.4vw, 3.4rem);
+  line-height: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+  filter: drop-shadow(0 8px 14px rgba(91, 50, 24, 0.35));
+}
+
+.hero-treat.bobbing {
+  animation: treatBob 3.2s ease-in-out infinite;
+}
+
+.hero-treat.bobbing:nth-child(odd) {
+  animation-duration: 3.8s;
+  animation-delay: 0.4s;
+}
+
+@keyframes treatBob {
+  0%, 100% { transform: translate(-50%, -50%) rotate(var(--rot, 0deg)); }
+  50% { transform: translate(-50%, calc(-50% - 10px)) rotate(calc(var(--rot, 0deg) + 4deg)); }
+}
+
+/* ===== קריאה לפעולה שצצה מתחת לשקית ===== */
+.combo-cta {
+  position: absolute;
+  left: 50%;
+  top: 78.5%;
   z-index: 5;
-  perspective: 900px;
-  transform-origin: 50% 88%;
-  animation:
-    cardPop 0.95s 1.25s cubic-bezier(.3,1.5,.45,1) both,
-    cardFloat 4.2s 2.6s ease-in-out infinite;
+  line-height: 1.4;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  padding: 0.7rem 2.2rem;
+  box-shadow: 0 10px 26px rgba(224, 36, 94, 0.45);
+  animation: ctaPop 0.7s 2.15s cubic-bezier(.3,1.7,.5,1) both;
 }
 
-@keyframes cardPop {
-  0% { opacity: 0; transform: scale(0.45) translateY(9%); }
-  55% { opacity: 1; transform: scale(1.2) translateY(-3%); }
-  75% { transform: scale(1.06) translateY(0); }
-  100% { opacity: 1; transform: scale(1.12) translateY(-0.5%); }
+@keyframes ctaPop {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.2) translateY(20px); }
+  60% { opacity: 1; transform: translateX(-50%) scale(1.12) translateY(-4px); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
 }
 
-@keyframes cardFloat {
-  0%, 100% { transform: scale(1.12) translateY(-0.5%); }
-  50% { transform: scale(1.12) translateY(-1.8%); }
-}
-
-.open-card {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 18px 45px rgba(91, 50, 24, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.55);
-  transition: transform 0.16s ease-out, box-shadow 0.2s ease;
-  transform-style: preserve-3d;
-  cursor: pointer;
-}
-
-.open-card:hover {
-  box-shadow: 0 22px 55px rgba(224, 36, 94, 0.45), 0 0 0 3px var(--pink-splash);
-}
-
-.open-card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 30%;
+.combo-cta:hover {
+  transform: translateX(-50%) scale(1.07) translateY(-2px);
 }
 
 .combo-replay {

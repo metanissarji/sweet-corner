@@ -19,23 +19,23 @@ function flyToCart(fromEl, emoji) {
   const dx = t.left + t.width / 2 - (s.left + s.width / 2);
   const dy = t.top + t.height / 2 - s.top;
 
-  fly
-    .animate(
-      [
-        { transform: 'translate(-50%, -50%) scale(1) rotate(0deg)', opacity: 1 },
-        {
-          transform: `translate(calc(-50% + ${dx * 0.5}px), calc(-50% + ${dy * 0.5 - 130}px) ) scale(1.6) rotate(170deg)`,
-          opacity: 1,
-          offset: 0.5,
-        },
-        {
-          transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.2) rotate(360deg)`,
-          opacity: 0.6,
-        },
-      ],
-      { duration: 750, easing: 'cubic-bezier(.45,-.25,.6,1)' }
-    )
-    .addEventListener('finish', () => fly.remove());
+  fly.animate(
+    [
+      { transform: 'translate(-50%, -50%) scale(1) rotate(0deg)', opacity: 1 },
+      {
+        transform: `translate(calc(-50% + ${dx * 0.5}px), calc(-50% + ${dy * 0.5 - 130}px) ) scale(1.6) rotate(170deg)`,
+        opacity: 1,
+        offset: 0.5,
+      },
+      {
+        transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.2) rotate(360deg)`,
+        opacity: 0.6,
+      },
+    ],
+    { duration: 750, easing: 'cubic-bezier(.45,-.25,.6,1)', fill: 'both' }
+  );
+  // הסרה בטיימר — אירועי finish לא אמינים בכל הדפדפנים
+  setTimeout(() => fly.remove(), 820);
 }
 
 /* פופ "+1" קטן שעולה מהכפתור */
@@ -48,16 +48,31 @@ function popPlusOne(fromEl) {
   pop.style.left = `${r.left + r.width / 2}px`;
   pop.style.top = `${r.top}px`;
   document.body.appendChild(pop);
-  pop
-    .animate(
-      [
-        { transform: 'translate(-50%, 0) scale(0.6)', opacity: 0 },
-        { transform: 'translate(-50%, -22px) scale(1.25)', opacity: 1, offset: 0.35 },
-        { transform: 'translate(-50%, -52px) scale(1)', opacity: 0 },
-      ],
-      { duration: 650, easing: 'ease-out' }
-    )
-    .addEventListener('finish', () => pop.remove());
+  pop.animate(
+    [
+      { transform: 'translate(-50%, 0) scale(0.6)', opacity: 0 },
+      { transform: 'translate(-50%, -22px) scale(1.25)', opacity: 1, offset: 0.35 },
+      { transform: 'translate(-50%, -52px) scale(1)', opacity: 0 },
+    ],
+    { duration: 650, easing: 'ease-out', fill: 'both' }
+  );
+  setTimeout(() => pop.remove(), 710);
+}
+
+/* חיווי קצר "נוסף לסל" — חשוב במובייל, שם כפתור הסל רחוק מהאצבע */
+function showToast(product) {
+  let t = document.getElementById('cart-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'cart-toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = `${product.emoji || '🍦'} ${product.name} נוסף לסל ✓`;
+  t.classList.remove('show');
+  void t.offsetWidth; // אתחול האנימציה
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 1500);
 }
 
 /**
@@ -73,6 +88,7 @@ export default function AddToCart({ product }) {
     add(product);
     popPlusOne(plusRef.current);
     flyToCart(plusRef.current, product.emoji || '🍦');
+    showToast(product);
   }
 
   return (

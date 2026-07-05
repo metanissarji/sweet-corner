@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BAG_PHOTO, BAG_CLOSED, HOME_PHOTO, useImageExists } from '../hooks/useHomePhoto.js';
+import useMediaQuery from '../hooks/useMediaQuery.js';
 import { hotspots } from './PhotoHero.jsx';
 import './BagHero.css';
 
 /**
- * עמוד בית קולנועי על גבי עיצוב הרקע המלא (שכולל את השקית הסגורה במרכז):
- * 1. עותק גזור של אזור השקית מתוך הרקע מתנדנד בציפייה גוברת
- * 2. רגע הפתיחה: הבזק, קרני אור מפתח השקית, מזרקת גלידות וסוכריות,
- *    ורעידת מסך קלה
- * 3. כרטיס השקית הפתוחה מזנק מתוך השקית הסגורה בקפיצה קפיצית,
- *    צף ומוטה בתלת-ממד לפי העכבר — ולחיצה עליו מובילה לכל הטעמים
+ * עמוד בית קולנועי — בלי אף תמונה "קופצת":
+ * השקית שבתוך עיצוב הרקע רועדת בציפייה, מתפרצת בהבזק וקרני אור,
+ * ופינוקים אמיתיים עפים ממנה, נוחתים סביבה ונשארים מרחפים.
+ * כפתור קריאה לפעולה צץ מתחת לשקית, והשקית עצמה לחיצה אל הטעמים.
+ * במובייל מוצגת גרסת פורטרט נקייה עם כותרת וכפתורים.
  */
 
 /* מלבן השקית הסגורה בתוך עיצוב הרקע (באחוזים, תמונה 1536×1024) */
@@ -24,16 +24,25 @@ const navSpots = hotspots.filter((h) => NAV_LABELS.includes(h.label));
 const BURST_COLORS = ['#e0245e', '#f7c948', '#2e86e0', '#f6a9bc', '#ffffff'];
 const BURST_EMOJI = ['🍦', '🍫', '🍓', '✨', '💗', '🍪', '🍬'];
 
+/* הפינוקים שנוחתים סביב השקית ונשארים מרחפים */
+const TREATS = [
+  { x: 27, y: 31, emoji: '🍦', rot: -14 },
+  { x: 71.5, y: 28, emoji: '🍨', rot: 11 },
+  { x: 25, y: 57, emoji: '🍭', rot: -8 },
+  { x: 74, y: 55, emoji: '🍫', rot: 15 },
+  { x: 49.5, y: 17, emoji: '🍓', rot: 6 },
+];
+
 /* מזרקת פינוקים מפתח השקית — קשתות עם "כוח כבידה" */
-function fountain(frame) {
-  if (!frame) return;
-  const r = frame.getBoundingClientRect();
+function fountain(host) {
+  if (!host) return;
+  const r = host.getBoundingClientRect();
   const originX = r.width * (MOUTH.x / 100);
   const originY = r.height * (MOUTH.y / 100);
-  const scaleFactor = r.width / 1535;
+  const scaleFactor = r.width / 1536;
 
-  for (let i = 0; i < 34; i++) {
-    const isEmoji = i < 14;
+  for (let i = 0; i < 30; i++) {
+    const isEmoji = i < 12;
     const p = document.createElement('span');
     p.className = isEmoji ? 'bag-spark bag-spark-emoji' : 'bag-spark';
     if (isEmoji) {
@@ -43,11 +52,13 @@ function fountain(frame) {
     }
     p.style.left = `${originX}px`;
     p.style.top = `${originY}px`;
-    frame.appendChild(p);
+    host.appendChild(p);
 
     const dx = (Math.random() - 0.5) * 560 * scaleFactor;
     const rise = (150 + Math.random() * 260) * scaleFactor;
     const rot = Math.random() * 540 - 270;
+    const duration = 950 + Math.random() * 550;
+    const delay = Math.random() * 180;
     p.animate(
       [
         { transform: 'translate(-50%, -50%) scale(0.3)', opacity: 0 },
@@ -61,12 +72,49 @@ function fountain(frame) {
           opacity: 0,
         },
       ],
-      { duration: 950 + Math.random() * 550, easing: 'cubic-bezier(.3,.6,.5,1)', delay: Math.random() * 180 }
-    ).addEventListener('finish', () => p.remove());
+      { duration, delay, easing: 'cubic-bezier(.3,.6,.5,1)', fill: 'both' }
+    );
+    // הסרה בטיימר — אירועי finish לא אמינים בכל הדפדפנים
+    setTimeout(() => p.remove(), duration + delay + 60);
   }
 }
 
-/* פרץ ניצוצות פשוט — למצב הגיבוי בלבד */
+/* הפינוקים הגדולים: עפים מהפתח, נוחתים בקפיצה ונשארים מרחפים */
+function spawnTreats(host) {
+  if (!host) return;
+  const r = host.getBoundingClientRect();
+  TREATS.forEach((t, i) => {
+    const el = document.createElement('span');
+    el.className = 'hero-treat';
+    el.textContent = t.emoji;
+    el.style.left = `${t.x}%`;
+    el.style.top = `${t.y}%`;
+    el.style.setProperty('--rot', `${t.rot}deg`);
+    host.appendChild(el);
+
+    const dx = ((MOUTH.x - t.x) / 100) * r.width;
+    const dy = ((MOUTH.y - t.y) / 100) * r.height;
+    const duration = 950;
+    const delay = i * 95;
+    el.animate(
+      [
+        { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.1) rotate(0deg)`, opacity: 0 },
+        { opacity: 1, offset: 0.2 },
+        {
+          transform: `translate(calc(-50% + ${dx * 0.3}px), calc(-50% + ${dy * 0.3 - r.height * 0.09}px)) scale(1.3) rotate(var(--rot))`,
+          offset: 0.6,
+        },
+        { transform: 'translate(-50%, -50%) scale(0.92) rotate(var(--rot))', offset: 0.85 },
+        { transform: 'translate(-50%, -50%) scale(1) rotate(var(--rot))', opacity: 1 },
+      ],
+      { duration, delay, easing: 'cubic-bezier(.3,1.15,.4,1)', fill: 'backwards' }
+    );
+    // מעבר לריחוף מתמשך בטיימר — אירועי finish לא אמינים בכל הדפדפנים
+    setTimeout(() => el.classList.add('bobbing'), duration + delay + 30);
+  });
+}
+
+/* פרץ ניצוצות פשוט — לגרסת המובייל/גיבוי */
 function burst(scene, yPct, strength) {
   if (!scene) return;
   const { width, height } = scene.getBoundingClientRect();
@@ -82,6 +130,7 @@ function burst(scene, yPct, strength) {
     p.style.left = `${width * (0.15 + Math.random() * 0.7)}px`;
     p.style.top = `${height * yPct}px`;
     scene.appendChild(p);
+    const duration = 900 + Math.random() * 700;
     p.animate(
       [
         { transform: 'translate(0, 0) rotate(0deg) scale(1)', opacity: 1 },
@@ -90,8 +139,9 @@ function burst(scene, yPct, strength) {
           opacity: 0,
         },
       ],
-      { duration: 900 + Math.random() * 700, easing: 'cubic-bezier(.2,.8,.4,1)' }
-    ).addEventListener('finish', () => p.remove());
+      { duration, easing: 'cubic-bezier(.2,.8,.4,1)', fill: 'both' }
+    );
+    setTimeout(() => p.remove(), duration + 60);
   }
 }
 
@@ -101,6 +151,8 @@ export default function BagHero() {
   const sceneRef = useRef(null);
   const homeBg = useImageExists(HOME_PHOTO);
   const closedExists = useImageExists(BAG_CLOSED);
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const comboMode = homeBg === true && !isMobile;
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -109,21 +161,22 @@ export default function BagHero() {
     if (!scene || !stage) return;
 
     const timers = [];
-    if (homeBg === true) {
-      // מזרקה מפתח השקית ברגע ההתפרצות + גל שני קטן
-      timers.push(setTimeout(() => fountain(stage), 1150));
-      timers.push(setTimeout(() => fountain(stage), 1750));
+    if (comboMode) {
+      timers.push(setTimeout(() => fountain(scene), 1150));
+      timers.push(setTimeout(() => spawnTreats(scene), 1250));
+      timers.push(setTimeout(() => fountain(scene), 1750));
     } else {
       timers.push(setTimeout(() => burst(scene, 0.46, 18), 1050));
       timers.push(setTimeout(() => burst(scene, 0.42, 10), 1500));
     }
 
-    // הטיה תלת-ממדית לפי העכבר
+    // הטיה תלת-ממדית עדינה של כל הסצנה לפי העכבר
     function onMove(e) {
       const r = stage.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width;
       const py = (e.clientY - r.top) / r.height;
-      scene.style.transform = `rotateX(${(0.5 - py) * 8}deg) rotateY(${(px - 0.5) * 12}deg)`;
+      const strength = comboMode ? 3.5 : 8;
+      scene.style.transform = `rotateX(${(0.5 - py) * strength}deg) rotateY(${(px - 0.5) * strength * 1.4}deg)`;
     }
     function onLeave() {
       scene.style.transform = 'rotateX(0deg) rotateY(0deg)';
@@ -134,81 +187,82 @@ export default function BagHero() {
       timers.forEach(clearTimeout);
       stage.removeEventListener('mousemove', onMove);
       stage.removeEventListener('mouseleave', onLeave);
+      scene.querySelectorAll('.hero-treat, .bag-spark').forEach((el) => el.remove());
     };
-  }, [seed, homeBg]);
+  }, [seed, comboMode]);
 
-  // ===== מצב ראשי: עיצוב הרקע עם השקית המשולבת =====
-  if (homeBg === true) {
+  // ===== מצב ראשי (דסקטופ): עיצוב הרקע עם השקית המשולבת =====
+  if (comboMode) {
     return (
       <section className="combo-hero" key={seed}>
         <div className="combo-frame" ref={stageRef}>
-          <img src={HOME_PHOTO} alt="הפינה המתוקה — טעם של קיץ בכל כפית" className="combo-bg" />
+          <div className="combo-inner" ref={sceneRef}>
+            <img src={HOME_PHOTO} alt="הפינה המתוקה — טעם של קיץ בכל כפית" className="combo-bg" />
 
-          {/* אזורי לחיצה על תפריט העיצוב */}
-          {navSpots.map((h) => (
-            <Link
-              key={h.label + h.to}
-              to={h.to}
-              aria-label={h.label}
-              title={h.label}
-              className="photo-hotspot"
-              style={{ left: `${h.left}%`, top: `${h.top}%`, width: `${h.width}%`, height: `${h.height}%` }}
-            />
-          ))}
+            {/* אזורי לחיצה על תפריט העיצוב */}
+            {navSpots.map((h) => (
+              <Link
+                key={h.label + h.to}
+                to={h.to}
+                aria-label={h.label}
+                title={h.label}
+                className="photo-hotspot"
+                style={{ left: `${h.left}%`, top: `${h.top}%`, width: `${h.width}%`, height: `${h.height}%` }}
+              />
+            ))}
 
-          {/* הלוגו האמיתי — מעל הלוגו המודפס שבעיצוב */}
-          <Link to="/" className="overlay-logo" aria-label="הפינה המתוקה — דף הבית">
-            <img src="/images/logo.png" alt="" />
-          </Link>
+            {/* הלוגו האמיתי — מעל הלוגו המודפס שבעיצוב */}
+            <Link to="/" className="overlay-logo" aria-label="הפינה המתוקה — דף הבית">
+              <img src="/images/logo.png" alt="" />
+            </Link>
 
-          {/* עותק גזור של השקית הסגורה — מתנדנד בציפייה */}
-          <div
-            className="bag-cutout"
-            aria-hidden="true"
-            style={{
-              left: `${BAG_RECT.left}%`,
-              top: `${BAG_RECT.top}%`,
-              width: `${BAG_RECT.width}%`,
-              height: `${BAG_RECT.height}%`,
-            }}
-          >
-            <img
-              src={HOME_PHOTO}
-              alt=""
+            {/* עותק גזור של השקית — רועד בציפייה, ולחיץ אל הטעמים */}
+            <div
+              className="bag-cutout"
+              aria-hidden="true"
               style={{
-                width: `${(100 / BAG_RECT.width) * 100}%`,
-                transform: `translate(-${BAG_RECT.left}%, -${BAG_RECT.top}%)`,
+                left: `${BAG_RECT.left}%`,
+                top: `${BAG_RECT.top}%`,
+                width: `${BAG_RECT.width}%`,
+                height: `${BAG_RECT.height}%`,
+              }}
+            >
+              <img
+                src={HOME_PHOTO}
+                alt=""
+                style={{
+                  width: `${(100 / BAG_RECT.width) * 100}%`,
+                  transform: `translate(-${BAG_RECT.left}%, -${BAG_RECT.top}%)`,
+                }}
+              />
+            </div>
+            <Link
+              to="/flavors"
+              className="photo-hotspot bag-hotspot"
+              aria-label="פתחו את השקית — לכל הטעמים"
+              title="לכל הטעמים"
+              style={{
+                left: `${BAG_RECT.left}%`,
+                top: `${BAG_RECT.top}%`,
+                width: `${BAG_RECT.width}%`,
+                height: `${BAG_RECT.height}%`,
               }}
             />
-          </div>
 
-          {/* קרני אור מפתח השקית */}
-          <div className="burst-rays" aria-hidden="true" style={{ left: `${MOUTH.x}%`, top: `${MOUTH.y}%` }}>
-            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-              <span key={i} style={{ transform: `rotate(${-54 + i * 18}deg)` }} />
-            ))}
-          </div>
+            {/* קרני אור מפתח השקית */}
+            <div className="burst-rays" aria-hidden="true" style={{ left: `${MOUTH.x}%`, top: `${MOUTH.y}%` }}>
+              {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+                <span key={i} style={{ transform: `rotate(${-54 + i * 18}deg)` }} />
+              ))}
+            </div>
 
-          {/* הבזק ברגע הפתיחה */}
-          <div className="burst-flash" aria-hidden="true" style={{ '--mx': `${MOUTH.x}%`, '--my': `${MOUTH.y}%` }} />
+            {/* הבזק ברגע הפתיחה */}
+            <div className="burst-flash" aria-hidden="true" style={{ '--mx': `${MOUTH.x}%`, '--my': `${MOUTH.y}%` }} />
 
-          {/* כרטיס השקית הפתוחה — מזנק מתוך השקית */}
-          <div
-            className="open-card-wrap"
-            style={{
-              left: `${BAG_RECT.left}%`,
-              top: `${BAG_RECT.top}%`,
-              width: `${BAG_RECT.width}%`,
-              height: `${BAG_RECT.height}%`,
-            }}
-          >
-            <Link to="/flavors" className="open-card" ref={sceneRef} aria-label="השקית נפתחה — לכל הטעמים">
-              <img src={BAG_PHOTO} alt="" className="open-card-img" />
-              <div className="bag-shine" aria-hidden="true" />
+            {/* קריאה לפעולה שצצה אחרי הפתיחה */}
+            <Link to="/flavors" className="btn btn-pink combo-cta">
+              לכל הטעמים 🍦
             </Link>
-            <span className="bag-twinkle t1" aria-hidden="true">✦</span>
-            <span className="bag-twinkle t2" aria-hidden="true">✦</span>
-            <span className="bag-twinkle t3" aria-hidden="true">✦</span>
           </div>
 
           <button className="bag-replay combo-replay" onClick={() => setSeed((s) => s + 1)}>
@@ -219,7 +273,7 @@ export default function BagHero() {
     );
   }
 
-  // ===== מצב גיבוי: השקית לבדה עם טקסט (כשאין תמונת רקע) =====
+  // ===== מובייל / גיבוי: פורטרט נקי עם כותרת, כפתורים והשקית הנפתחת =====
   return (
     <section className="bag-hero" key={seed}>
       <div className="splash splash-blue" />

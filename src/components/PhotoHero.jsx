@@ -38,6 +38,7 @@ function spawnSprinkle(x, y, counter) {
   s.style.left = `${x + (Math.random() - 0.5) * 24}px`;
   s.style.top = `${y + (Math.random() - 0.5) * 10}px`;
   document.body.appendChild(s);
+  const duration = 700 + Math.random() * 500;
   s.animate(
     [
       { transform: `rotate(${Math.random() * 90 - 45}deg) scale(1)`, opacity: 1 },
@@ -46,8 +47,9 @@ function spawnSprinkle(x, y, counter) {
         opacity: 0,
       },
     ],
-    { duration: 700 + Math.random() * 500, easing: 'cubic-bezier(.3,.6,.5,1)' }
-  ).addEventListener('finish', () => s.remove());
+    { duration, easing: 'cubic-bezier(.3,.6,.5,1)', fill: 'both' }
+  );
+  setTimeout(() => s.remove(), duration + 60);
 }
 
 export default function PhotoHero() {
