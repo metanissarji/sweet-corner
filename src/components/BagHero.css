@@ -1,6 +1,11 @@
 /* ===== מצב משולב: עיצוב הרוחב כרקע + השקית במרכז ===== */
 .combo-hero {
   background: var(--cream);
+  /* בחלונות גבוהים העיצוב ממורכז אנכית במסך הראשון במקום חלל ריק מתחתיו */
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
 }
 
 .combo-frame {
