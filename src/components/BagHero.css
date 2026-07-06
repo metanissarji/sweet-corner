@@ -5,9 +5,7 @@
 
 .combo-frame {
   position: relative;
-  width: min(100%, calc(100vh * 1.5));
-  width: min(100%, calc(100svh * 1.5));
-  margin-inline: auto;
+  width: 100%;
   line-height: 0;
 }
 

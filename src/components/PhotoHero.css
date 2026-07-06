@@ -1,9 +1,7 @@
 /* הבמה: קובעת גודל כך שכל התמונה (יחס 3:2) תיכנס במסך אחד,
    ומעניקה פרספקטיבה לאפקט התלת-ממד */
 .photo-hero-stage {
-  width: min(100%, calc(100vh * 1.5));
-  width: min(100%, calc(100svh * 1.5));
-  margin-inline: auto;
+  width: 100%;
   perspective: 1300px;
   padding-bottom: 0.5rem;
 }
