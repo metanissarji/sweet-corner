@@ -11,6 +11,7 @@ import Home from './pages/Home.jsx';
 import Flavors from './pages/Flavors.jsx';
 import Deals from './pages/Deals.jsx';
 import CatalogProducts from './pages/CatalogProducts.jsx';
+import FreezerCatalog from './pages/FreezerCatalog.jsx';
 import Packages from './pages/Packages.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
@@ -54,6 +55,7 @@ export default function App() {
             <Route path="/flavors" element={<Flavors />} />
             <Route path="/deals" element={<Deals />} />
             <Route path="/deals/catalog/:id" element={<CatalogProducts />} />
+            <Route path="/deals/freezer/:id" element={<FreezerCatalog />} />
             <Route path="/packages" element={<Packages />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
