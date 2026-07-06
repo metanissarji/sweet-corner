@@ -1,0 +1,208 @@
+/* ===== מבצעי המקפיאים 🧊 ===== */
+
+.freezer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.8rem;
+}
+
+/* המקפיא עצמו */
+.freezer {
+  position: relative;
+  border-radius: 18px 18px 14px 14px;
+  background: linear-gradient(180deg, #3b93e8 0%, var(--blue) 45%, #1e6dc2 100%);
+  box-shadow:
+    0 14px 32px rgba(30, 109, 194, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35);
+  padding: 0.9rem 0.9rem 1.1rem;
+  transition: transform 0.22s cubic-bezier(.3,1.4,.5,1), box-shadow 0.22s ease;
+}
+
+.freezer:hover {
+  transform: translateY(-7px);
+  box-shadow:
+    0 22px 44px rgba(30, 109, 194, 0.45),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* רגליים קטנות */
+.freezer::before,
+.freezer::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  width: 22px;
+  height: 8px;
+  border-radius: 0 0 6px 6px;
+  background: #175a9e;
+}
+
+.freezer::before { inset-inline-start: 14%; }
+.freezer::after { inset-inline-end: 14%; }
+
+/* סרט "מבצע" בפינה */
+.freezer-ribbon {
+  position: absolute;
+  top: 12px;
+  inset-inline-start: -8px;
+  z-index: 3;
+  background: var(--pink);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  padding: 0.2rem 0.9rem;
+  border-radius: 999px;
+  transform: rotate(-8deg);
+  box-shadow: 0 4px 10px rgba(224, 36, 94, 0.45);
+}
+
+.freezer-flake {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 12px;
+  z-index: 3;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  animation: flakeSpin 7s linear infinite;
+}
+
+@keyframes flakeSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* חלון הזכוכית */
+.freezer-glass {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(160deg, #dff0ff, #b8dcfa);
+  border: 3px solid rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 0 18px rgba(30, 109, 194, 0.25);
+}
+
+.freezer-glass img,
+.freezer-glass .product-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 0;
+}
+
+/* ברק אלכסוני על הזכוכית */
+.freezer-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.35) 48%, rgba(255, 255, 255, 0.12) 56%, transparent 60%);
+}
+
+/* ידית */
+.freezer-handle {
+  width: 46%;
+  height: 8px;
+  margin: 0.6rem auto 0.4rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #eaf4ff, #bcd8f2);
+  box-shadow: 0 2px 4px rgba(23, 90, 158, 0.5);
+}
+
+/* גוף המקפיא */
+.freezer-body {
+  text-align: center;
+  color: var(--white);
+}
+
+.freezer-deal {
+  font-family: var(--font-brush);
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.4rem;
+  text-shadow: 0 2px 6px rgba(23, 90, 158, 0.55);
+}
+
+.freezer-qty {
+  font-size: 2.9rem;
+}
+
+.freezer-be {
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+
+.freezer-price {
+  font-size: 2.9rem;
+  color: var(--yellow);
+}
+
+.freezer-units {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-top: 0.25rem;
+}
+
+/* קנייה על רקע כחול — כפתורים בהירים */
+.freezer-buy {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.freezer .qty-plus {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--brown);
+}
+
+.freezer .qty-plus:hover {
+  background: #ffd95e;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.freezer .qty-minus {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.75);
+  color: var(--white);
+}
+
+.freezer .qty-minus:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.freezer .qty-num {
+  color: var(--white);
+}
+
+.freezer-note {
+  margin-top: 2.2rem;
+  color: var(--brown-light);
+  font-size: 0.9rem;
+}
+
+/* מובייל: שני מקפיאים בשורה, מספרים קטנים יותר */
+@media (max-width: 640px) {
+  .freezer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .freezer {
+    padding: 0.6rem 0.6rem 0.85rem;
+  }
+
+  .freezer-qty,
+  .freezer-price {
+    font-size: 2.1rem;
+  }
+
+  .freezer-be {
+    font-size: 1.1rem;
+  }
+
+  .freezer-units {
+    font-size: 0.8rem;
+  }
+}

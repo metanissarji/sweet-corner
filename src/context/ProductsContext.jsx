@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { flavors as defaultFlavors, favorites as defaultFavorites, dealCatalogs as defaultDealCatalogs, deals as defaultDeals, packages as defaultPackages } from '../data/products.js';
+import { flavors as defaultFlavors, favorites as defaultFavorites, dealCatalogs as defaultDealCatalogs, deals as defaultDeals, packages as defaultPackages, freezerDeals as defaultFreezerDeals } from '../data/products.js';
 
 const ProductsContext = createContext(null);
 
@@ -24,6 +24,7 @@ export function ProductsProvider({ children }) {
       dealCatalogs: saved?.dealCatalogs ?? defaultDealCatalogs,
       deals: saved?.deals ?? defaultDeals,
       packages: saved?.packages ?? defaultPackages,
+      freezerDeals: saved?.freezerDeals ?? defaultFreezerDeals,
     };
   });
 
@@ -106,6 +107,7 @@ export function ProductsProvider({ children }) {
       dealCatalogs: defaultDealCatalogs,
       deals: defaultDeals,
       packages: defaultPackages,
+      freezerDeals: defaultFreezerDeals,
     });
   }
 

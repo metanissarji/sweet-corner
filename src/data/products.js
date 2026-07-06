@@ -52,6 +52,25 @@ export const deals = [
   { id: 4, catalogId: 3, badge: 'חדש!', title: 'מן-בייק במחיר השקה', desc: 'קוביות המרלנג החדשות במחיר היכרות מיוחד.', price: 10, oldPrice: 25, emoji: '🍬', image: '/images/deal-manbake-launch.png' },
 ];
 
+/* מבצעי המקפיאים — כמות × מחיר. התמונות: public/images/mivtza-XX.png */
+export const freezerDeals = [
+  { id: 1, qty: 4, price: 20, image: '/images/mivtza-01.png' },
+  { id: 2, qty: 3, price: 21, image: '/images/mivtza-02.png' },
+  { id: 3, qty: 3, price: 27, image: '/images/mivtza-03.png' },
+  { id: 4, qty: 3, price: 18, image: '/images/mivtza-04.png' },
+  { id: 5, qty: 10, price: 12, image: '/images/mivtza-05.png' },
+  { id: 6, qty: 3, price: 14, image: '/images/mivtza-06.png' },
+  { id: 7, qty: 3, price: 21, image: '/images/mivtza-07.png' },
+  { id: 8, qty: 13, price: 10, image: '/images/mivtza-08.png' },
+  { id: 9, qty: 3, price: 24, image: '/images/mivtza-09.png' },
+  { id: 10, qty: 3, price: 13, image: '/images/mivtza-10.png' },
+  { id: 11, qty: 5, price: 11, image: '/images/mivtza-11.png' },
+  { id: 12, qty: 5, price: 10, image: '/images/mivtza-12.png' },
+  { id: 13, qty: 4, price: 13, image: '/images/mivtza-13.png' },
+  { id: 14, qty: 3, price: 26, image: '/images/mivtza-14.png' },
+  { id: 15, qty: 3, price: 17, image: '/images/mivtza-15.png' },
+];
+
 export const packages = [
   { id: 1, title: 'מארז המשפחה', desc: '12 שלגונים במגוון טעמים — לכל המשפחה', items: '12 יחידות', price: 10, emoji: '👨‍👩‍👧‍👦', image: '/images/package-family.png' },
   { id: 2, title: 'מארז יום הולדת', desc: '24 אייסים צבעוניים + הפתעות מתוקות', items: '24 יחידות', price: 10, emoji: '🎂', image: '/images/package-birthday.png' },
