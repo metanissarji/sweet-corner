@@ -12,11 +12,44 @@ export const flavors = [
   { id: 9, name: 'חטיף וופל בלגי', category: 'חטיפים', tag: 'מתוק במיוחד', emoji: '🧇', image: '/images/flavor-waffle-snack.png', desc: 'וופל פריך עם שוקולד ואגוזי לוז', price: 10 },
 ];
 
+export const favorites = [
+  { id: 1, name: 'שלגון שוקולד קראנץ׳', category: 'אייסים', tag: 'מומלץ השף', emoji: '🍫', image: '/images/flavor-crunch-bar.png', desc: 'ציפוי שוקולד פריך עם שברי אגוזים', price: 10 },
+  { id: 2, name: 'קסטה וניל עוגיות', category: 'גלידות', tag: 'קלאסיקה', emoji: '🍦', image: '/images/flavor-cookies-cassata.png', desc: 'וניל עשיר עם שברי עוגיות שוקולד', price: 10 },
+  { id: 3, name: 'שלגון פטל כפול', category: 'אייסים', tag: 'טעם מיוחד', emoji: '🍓', image: '/images/flavor-double-raspberry.png', desc: 'פטל חמצמץ בציפוי שוקולד מריר', price: 10 }
+];
+
+export const dealCatalogs = [
+  {
+    id: 1,
+    title: 'מבצעי קיץ חמים',
+    emoji: '☀️',
+    badge: 'קטלוג מבצעים',
+    desc: 'כל המבצעים הכי שווים לעונה החמה',
+    image: '/images/deal-one-plus-one.png',
+  },
+  {
+    id: 2,
+    title: 'מבצעים למשפחה',
+    emoji: '👨‍👩‍👧‍👦',
+    badge: 'קטלוג מבצעים',
+    desc: 'מארזים ושלגונים שכל המשפחה תאהב',
+    image: '/images/deal-family-pack.png',
+  },
+  {
+    id: 3,
+    title: 'פינוקי סוף שבוע',
+    emoji: '🎉',
+    badge: 'קטלוג מבצעים',
+    desc: 'לסגור את השבוע עם משהו מתוק',
+    image: '/images/deal-cassata-weekend.png',
+  }
+];
+
 export const deals = [
-  { id: 1, badge: '1+1 מתנה', title: 'שלגונים 1+1', desc: 'קונים שלגון פרימיום — מקבלים שני. בכל הסניפים.', price: 10, oldPrice: 28, emoji: '🍫', image: '/images/deal-one-plus-one.png' },
-  { id: 2, badge: 'מבצע קיץ', title: 'מארז משפחתי ב-25% הנחה', desc: '12 שלגונים במגוון טעמים במחיר מיוחד לקיץ.', price: 10, oldPrice: 60, emoji: '📦', image: '/images/deal-family-pack.png' },
-  { id: 3, badge: 'סוף שבוע', title: 'קסטה שנייה ב-50%', desc: 'בכל קניית קסטה — השנייה בחצי מחיר. שישי-שבת בלבד.', price: 10, oldPrice: 20, emoji: '🍦', image: '/images/deal-cassata-weekend.png' },
-  { id: 4, badge: 'חדש!', title: 'מן-בייק במחיר השקה', desc: 'קוביות המרלנג החדשות במחיר היכרות מיוחד.', price: 10, oldPrice: 25, emoji: '🍬', image: '/images/deal-manbake-launch.png' },
+  { id: 1, catalogId: 1, badge: '1+1 מתנה', title: 'שלגונים 1+1', desc: 'קונים שלגון פרימיום — מקבלים שני. בכל הסניפים.', price: 10, oldPrice: 28, emoji: '🍫', image: '/images/deal-one-plus-one.png' },
+  { id: 2, catalogId: 1, badge: 'מבצע קיץ', title: 'מארז משפחתי ב-25% הנחה', desc: '12 שלגונים במגוון טעמים במחיר מיוחד לקיץ.', price: 10, oldPrice: 60, emoji: '📦', image: '/images/deal-family-pack.png' },
+  { id: 3, catalogId: 2, badge: 'סוף שבוע', title: 'קסטה שנייה ב-50%', desc: 'בכל קניית קסטה — השנייה בחצי מחיר. שישי-שבת בלבד.', price: 10, oldPrice: 20, emoji: '🍦', image: '/images/deal-cassata-weekend.png' },
+  { id: 4, catalogId: 3, badge: 'חדש!', title: 'מן-בייק במחיר השקה', desc: 'קוביות המרלנג החדשות במחיר היכרות מיוחד.', price: 10, oldPrice: 25, emoji: '🍬', image: '/images/deal-manbake-launch.png' },
 ];
 
 export const packages = [

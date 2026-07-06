@@ -1,0 +1,136 @@
+/* Deals.css */
+
+.catalogs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.catalog-wrapper {
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.catalog-wrapper.open {
+  border-color: rgba(224, 36, 94, 0.2);
+  box-shadow: 0 12px 30px rgba(91, 50, 24, 0.12);
+}
+
+.catalog-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: right;
+  transition: background 0.2s;
+}
+
+.catalog-header:hover {
+  background: rgba(255, 235, 240, 0.5);
+}
+
+.catalog-header-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.catalog-emoji {
+  font-size: 3rem;
+  line-height: 1;
+  background: var(--cream);
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(91, 50, 24, 0.08);
+}
+
+.catalog-header-info h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--brown);
+  margin: 0 0 0.3rem 0;
+}
+
+.catalog-header-info p {
+  color: var(--brown-light);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.catalog-toggle {
+  font-size: 1.2rem;
+  color: var(--pink);
+  background: rgba(224, 36, 94, 0.1);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background 0.2s;
+}
+
+.catalog-wrapper.open .catalog-toggle {
+  transform: rotate(180deg);
+  background: var(--pink);
+  color: var(--white);
+}
+
+.catalog-content {
+  padding: 2rem;
+  background: var(--cream);
+  border-top: 1px solid rgba(91, 50, 24, 0.06);
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+.empty-catalog {
+  text-align: center;
+  color: var(--brown-light);
+  padding: 2rem 0;
+  font-size: 1.1rem;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .catalog-header {
+    padding: 1.2rem;
+  }
+  .catalog-header-info {
+    gap: 1rem;
+  }
+  .catalog-emoji {
+    font-size: 2.2rem;
+    width: 55px;
+    height: 55px;
+  }
+  .catalog-header-info h2 {
+    font-size: 1.2rem;
+  }
+  .catalog-content {
+    padding: 1.5rem 1rem;
+  }
+}

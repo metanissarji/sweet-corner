@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import ProductImage from '../components/ProductImage.jsx';
 import AddToCart from '../components/AddToCart.jsx';
-import { flavors } from '../data/products.js';
+import { useProducts } from '../context/ProductsContext.jsx';
 
 const categories = ['הכל', 'גלידות', 'אייסים', 'חטיפים'];
 
 export default function Flavors() {
+  const { flavors } = useProducts();
   const [active, setActive] = useState('הכל');
   const shown = active === 'הכל' ? flavors : flavors.filter((f) => f.category === active);
 

@@ -11,15 +11,31 @@
 .combo-frame {
   position: relative;
   width: 100%;
-  /* בלי זה, פריט flex מסרב להתכווץ מתחת לרוחב הטבעי של התמונה (1536px)
-     והעיצוב נחתך במסכים צרים יותר */
-  min-width: 0;
+  max-width: 1536px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* העטיפה הפנימית — מוטה בתלת-ממד לפי העכבר (הכל זז יחד, בלי תפרים) */
+.combo-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+  display: inline-block; /* Allows inner container to shrink to fit max-height image */
+  max-width: 100%;
   line-height: 0;
 }
 
 .combo-bg {
-  width: 100%;
   display: block;
+  max-width: 100%;
+  max-height: 88vh; /* Ensures the image is never taller than the screen */
+  width: auto;
+  height: auto;
 }
 
 /* רעידת מסך קלה ברגע ההתפרצות */
@@ -28,14 +44,7 @@
   animation: frameShake 0.4s 1.18s ease-out both;
 }
 
-/* העטיפה הפנימית — מוטה בתלת-ממד לפי העכבר (הכל זז יחד, בלי תפרים) */
-.combo-inner {
-  position: relative;
-  line-height: 0;
-  transform-style: preserve-3d;
-  transition: transform 0.18s ease-out;
-  will-change: transform;
-}
+/* Removed because it's merged above */
 
 @keyframes frameShake {
   0%, 100% { transform: translate(0, 0); }

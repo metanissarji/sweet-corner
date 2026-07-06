@@ -1,42 +1,38 @@
+import { Link } from 'react-router-dom';
 import ProductImage from '../components/ProductImage.jsx';
-import AddToCart from '../components/AddToCart.jsx';
-import { deals } from '../data/products.js';
+import { useProducts } from '../context/ProductsContext.jsx';
 
 export default function Deals() {
+  const { dealCatalogs } = useProducts();
+
   return (
     <>
       <header className="page-header">
         <h1>מבצעים חמים 🔥</h1>
-        <p>הכי מתוק זה לחסוך — המבצעים שלנו מתחדשים כל שבוע</p>
+        <p>בחרו קטלוג כדי לראות את המבצעים שלנו</p>
       </header>
 
       <section className="page-section">
         <div className="container">
           <div className="card-grid">
-            {deals.map((d) => (
-              <article className="card" key={d.id}>
+            {dealCatalogs.map((catalog) => (
+              <article className="card" key={catalog.id}>
                 <div style={{ aspectRatio: '4 / 3' }}>
-                  <ProductImage src={d.image} alt={d.title} emoji={d.emoji} />
+                  <ProductImage src={catalog.image} alt={catalog.title} emoji={catalog.emoji} />
                 </div>
                 <div className="card-body">
-                  <span className="card-badge badge-pink">{d.badge}</span>
-                  <h3>{d.title}</h3>
-                  <p>{d.desc}</p>
-                  <div className="card-buy-row">
-                    <p className="price">
-                      ₪{d.price}
-                      <span className="old-price">₪{d.oldPrice}</span>
-                    </p>
-                    <AddToCart product={{ key: `deal-${d.id}`, name: d.title, price: d.price, emoji: d.emoji }} />
+                  <span className="card-badge badge-pink">{catalog.badge || 'קטלוג מבצעים'}</span>
+                  <h3>{catalog.title}</h3>
+                  <p>{catalog.desc}</p>
+                  <div className="card-buy-row" style={{ marginTop: '1.5rem' }}>
+                    <Link to={`/deals/catalog/${catalog.id}`} className="btn btn-pink" style={{ width: '100%', textAlign: 'center' }}>
+                      לצפייה במוצרים ←
+                    </Link>
                   </div>
                 </div>
               </article>
             ))}
           </div>
-
-          <p className="text-center" style={{ marginTop: '2.5rem', color: 'var(--brown-light)' }}>
-            * המבצעים בתוקף עד גמר המלאי. אין כפל מבצעים.
-          </p>
         </div>
       </section>
     </>

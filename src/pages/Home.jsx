@@ -7,7 +7,7 @@ import PhotoHero from '../components/PhotoHero.jsx';
 import BagHero from '../components/BagHero.jsx';
 import AddToCart from '../components/AddToCart.jsx';
 import useHomePhoto, { useImageExists, BAG_PHOTO } from '../hooks/useHomePhoto.js';
-import { flavors } from '../data/products.js';
+import { useProducts } from '../context/ProductsContext.jsx';
 import './Home.css';
 
 export default function Home() {
@@ -106,6 +106,7 @@ export default function Home() {
 }
 
 function FlavorsPreview() {
+  const { favorites } = useProducts();
   return (
     <section className="page-section">
       <div className="container">
@@ -115,7 +116,7 @@ function FlavorsPreview() {
         <p className="text-center home-section-sub">טעימה קטנה ממה שמחכה לכם אצלנו</p>
 
         <div className="card-grid home-flavors">
-          {flavors.slice(0, 3).map((f) => (
+          {favorites.map((f) => (
             <article className="card" key={f.id}>
               <div className="card-image">
                 <ProductImage src={f.image} alt={f.name} emoji={f.emoji} />
@@ -126,7 +127,7 @@ function FlavorsPreview() {
                 <p>{f.desc}</p>
                 <div className="card-buy-row">
                   <p className="price">₪{f.price}</p>
-                  <AddToCart product={{ key: `flavor-${f.id}`, name: f.name, price: f.price, emoji: f.emoji }} />
+                  <AddToCart product={{ key: `favorite-${f.id}`, name: f.name, price: f.price, emoji: f.emoji }} />
                 </div>
               </div>
             </article>

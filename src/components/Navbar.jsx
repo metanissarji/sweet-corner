@@ -1,5 +1,6 @@
 import { NavLink, Link } from 'react-router-dom';
 import { useState } from 'react';
+import SearchBar from './SearchBar.jsx';
 import './Navbar.css';
 
 const links = [
@@ -22,6 +23,7 @@ export default function Navbar() {
         </Link>
 
         <nav className={`nav-links ${open ? 'open' : ''}`}>
+          <SearchBar />
           {links.map((link) => (
             <NavLink
               key={link.to}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useCart } from '../context/CartContext.jsx';
+import { useOrders } from '../context/OrdersContext.jsx';
 import { showCartToast } from './AddToCart.jsx';
 import './CartDrawer.css';
 
@@ -39,7 +40,9 @@ function burstConfetti(container) {
 
 export default function CartDrawer() {
   const { list, count, total, add, remove, clear, drawerOpen, setDrawerOpen } = useCart();
+  const { placeOrder } = useOrders();
   const [ordered, setOrdered] = useState(false);
+  const [orderNumber, setOrderNumber] = useState('');
   const [checkout, setCheckout] = useState(false);
   const [fabPop, setFabPop] = useState(false);
   const [freeCelebrate, setFreeCelebrate] = useState(false);
@@ -74,7 +77,32 @@ export default function CartDrawer() {
     prevTotal.current = total;
   }, [total]);
 
-  function handleOrder() {
+  function handleOrder(e) {
+    e.preventDefault();
+    const form = e.target;
+    const customer = {
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      address: form.address.value,
+    };
+    const payment = form.payment.value;
+
+    const order = placeOrder({
+      items: list.map((it) => ({
+        name: it.name,
+        price: it.price,
+        qty: it.qty,
+        emoji: it.emoji,
+        key: it.key,
+      })),
+      customer,
+      payment,
+      total,
+    });
+
+    setOrderNumber(order.number);
     setOrdered(true);
     setCheckout(false);
     burstConfetti(confettiRef.current);
@@ -135,18 +163,21 @@ export default function CartDrawer() {
             <span className="success-icecream" aria-hidden="true">🍦</span>
             <h3>ההזמנה התקבלה!</h3>
             <p>מתחילים להקפיא את החבילה שלכם ❄️</p>
-            <p className="success-number">מס׳ הזמנה: #{Math.floor(1000 + Math.random() * 9000)}</p>
+            <p className="success-number">מס׳ הזמנה: #{orderNumber}</p>
+            <p style={{ fontSize: '0.85rem', color: 'var(--brown-light)', marginBottom: '0.5rem' }}>
+              ההזמנה נשלחה לחנות — תקבלו אישור בקרוב 📱
+            </p>
             <button className="btn btn-pink" onClick={closeDrawer}>סגירה</button>
           </div>
         ) : checkout ? (
-          <form className="checkout-form" onSubmit={(e) => { e.preventDefault(); handleOrder(); }}>
+          <form className="checkout-form" onSubmit={handleOrder}>
             <h3>פרטי משלוח ותשלום</h3>
-            <input type="text" placeholder="שם פרטי" required className="checkout-input" autoComplete="given-name" />
-            <input type="text" placeholder="שם משפחה" required className="checkout-input" autoComplete="family-name" />
-            <input type="tel" placeholder="מספר טלפון" required className="checkout-input" autoComplete="tel" inputMode="tel" />
-            <input type="email" placeholder="אימייל (רשות)" className="checkout-input" autoComplete="email" inputMode="email" />
-            <input type="text" placeholder="כתובת מלאה למשלוח" required className="checkout-input" autoComplete="street-address" />
-            <select required defaultValue="" className="checkout-input">
+            <input name="firstName" type="text" placeholder="שם פרטי" required className="checkout-input" autoComplete="given-name" />
+            <input name="lastName" type="text" placeholder="שם משפחה" required className="checkout-input" autoComplete="family-name" />
+            <input name="phone" type="tel" placeholder="מספר טלפון" required className="checkout-input" autoComplete="tel" inputMode="tel" />
+            <input name="email" type="email" placeholder="אימייל (רשות)" className="checkout-input" autoComplete="email" inputMode="email" />
+            <input name="address" type="text" placeholder="כתובת מלאה למשלוח" required className="checkout-input" autoComplete="street-address" />
+            <select name="payment" required defaultValue="" className="checkout-input">
               <option value="" disabled>בחירת אמצעי תשלום...</option>
               <option value="cash">מזומן לשליח</option>
               <option value="visa">ויזה / אשראי</option>

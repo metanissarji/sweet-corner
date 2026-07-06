@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import ProductImage from '../components/ProductImage.jsx';
 import AddToCart from '../components/AddToCart.jsx';
-import { packages } from '../data/products.js';
+import { useProducts } from '../context/ProductsContext.jsx';
 
 export default function Packages() {
+  const { packages } = useProducts();
   return (
     <>
       <header className="page-header">
