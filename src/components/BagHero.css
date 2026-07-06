@@ -11,6 +11,9 @@
 .combo-frame {
   position: relative;
   width: 100%;
+  /* בלי זה, פריט flex מסרב להתכווץ מתחת לרוחב הטבעי של התמונה (1536px)
+     והעיצוב נחתך במסכים צרים יותר */
+  min-width: 0;
   line-height: 0;
 }
 
