@@ -1,18 +1,31 @@
 /* ===== הפינה המתוקה — global styles ===== */
 
 :root {
-  --cream: #fbf3e4;
-  --cream-dark: #f3e6cf;
-  --paper: #fdf8ee;
-  --pink: #e0245e;
-  --pink-dark: #c11a4e;
-  --pink-splash: #f6a9bc;
-  --pink-soft: #fbdde6;
-  --brown: #5b3218;
-  --brown-light: #8a5a33;
+  /* ===== פלטת "קיץ על הבריכה" — כחול & לבן ===== */
+  --bg: #eaf6fe;         /* שמיים קרירים — רקע העמוד */
+  --bg-deep: #d6ecfb;    /* כחול קרח עמוק יותר לרצועות */
+  --surface: #ffffff;    /* כרטיסים לבנים נקיים (וניל) */
+  --primary: #1699e0;    /* כחול בריכה — פעולות ראשיות */
+  --primary-dark: #0f79c2;
+  --primary-soft: #dceffb;
+  --primary-splash: #a9d7f4;
+  --ink: #0d3b66;        /* כחול ים עמוק — טקסט */
+  --ink-soft: #4a7aa5;
+  --sun: #ffce3a;        /* צהוב שמש — הדגשות */
+
+  /* כינויים לשמות הישנים כדי שכל העיצוב הקיים ימשיך לעבוד */
+  --cream: var(--bg);
+  --cream-dark: var(--bg-deep);
+  --paper: var(--surface);
+  --pink: var(--primary);
+  --pink-dark: var(--primary-dark);
+  --pink-splash: var(--primary-splash);
+  --pink-soft: var(--primary-soft);
+  --brown: var(--ink);
+  --brown-light: var(--ink-soft);
   --blue: #2e86e0;
   --blue-soft: #d8eafc;
-  --yellow: #f7c948;
+  --yellow: var(--sun);
   --white: #ffffff;
 
   --font-body: 'Rubik', sans-serif;
@@ -20,8 +33,8 @@
   --font-brush: 'Karantina', 'Secular One', sans-serif;
 
   --radius: 18px;
-  --shadow: 0 10px 30px rgba(91, 50, 24, 0.12);
-  --shadow-soft: 0 4px 14px rgba(91, 50, 24, 0.1);
+  --shadow: 0 10px 30px rgba(13, 59, 102, 0.14);
+  --shadow-soft: 0 4px 14px rgba(13, 59, 102, 0.1);
 }
 
 * {

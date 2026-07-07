@@ -1,9 +1,9 @@
 .navbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  /* התפריט יושב בראש הדף ונגלל יחד עם התוכן — לא "רודף" אחרי המסך */
+  position: relative;
+  z-index: 20;
   background: var(--cream);
-  border-bottom: 1px solid rgba(91, 50, 24, 0.08);
+  border-bottom: 1px solid rgba(13, 59, 102, 0.08);
 }
 
 .navbar-inner {
@@ -94,13 +94,13 @@
   color: var(--brown);
 }
 
-/* ===== מובייל/מסך צר: כל מילות התפריט גלויות (בלי כפתור המבורגר) ===== */
+/* ===== מובייל/מסך צר: כל מילות התפריט גלויות (בלי המבורגר), קומפקטי ===== */
 @media (max-width: 900px) {
   .navbar-inner {
     flex-direction: column;
     justify-content: center;
-    gap: 0.6rem;
-    padding: 0.6rem 0.5rem;
+    gap: 0.35rem;
+    padding: 0.4rem 0.5rem;
   }
 
   .logo {
@@ -111,8 +111,8 @@
   }
 
   .logo-img {
-    width: 58px;
-    height: 58px;
+    width: 46px;
+    height: 46px;
   }
 
   /* כפתור ההמבורגר לא בשימוש — כל המילים מוצגות ישירות */
@@ -127,13 +127,13 @@
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem 0.85rem;
+    gap: 0.35rem 0.55rem;
     width: 100%;
     padding: 0;
     background: transparent;
     border: none;
     box-shadow: none;
-    animation: navReveal 0.45s ease both;
+    animation: navReveal 0.4s ease both;
   }
 
   @keyframes navReveal {
@@ -141,38 +141,52 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* שדה החיפוש תופס שורה משלו מעל המילים */
+  /* שדה החיפוש קומפקטי, בשורה משלו מעל המילים */
   .search-bar-wrapper {
     order: -1;
     flex-basis: 100%;
+    max-width: 270px;
+    margin-inline: auto;
     display: flex;
     justify-content: center;
   }
 
-  /* מטרות מגע נוחות + הדגשה ורודה בלחיצה ובעמוד הפעיל (האנימציה) */
+  .search-input-container {
+    height: 38px;
+    min-height: 38px;
+  }
+
+  .search-input {
+    font-size: 0.95rem;
+  }
+
+  /* מטרות מגע נוחות + הדגשה כחולה ברורה בעמוד הפעיל ובלחיצה */
   .nav-link {
-    font-size: 1.02rem;
-    padding: 0.4rem 1rem;
+    font-size: 0.92rem;
+    padding: 0.32rem 0.85rem;
     border-radius: 999px;
     transition: color 0.15s ease, background 0.2s ease, transform 0.12s ease;
   }
 
   .nav-link.active {
-    background: var(--pink-soft);
+    background: var(--primary);
+    color: var(--white);
   }
 
   .nav-link:active {
-    background: var(--pink-soft);
+    background: var(--primary-soft);
     transform: scale(0.94);
   }
 
-  /* הקו התחתון מוסתר במובייל — ההדגשה היא הרקע הוורוד */
+  /* הקו התחתון מוסתר במובייל — ההדגשה היא הכדור הכחול */
   .nav-link::after {
     display: none;
   }
 
-  .branches-btn {
-    padding: 0.4rem 1.2rem;
-    font-size: 0.95rem;
+  /* תכונה גבוהה יותר כדי לגבור על .btn ולהקטין את כפתור הסניפים */
+  .nav-links .branches-btn {
+    padding: 0.3rem 0.9rem;
+    font-size: 0.85rem;
+    gap: 0.3rem;
   }
 }

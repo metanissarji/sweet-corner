@@ -46,14 +46,14 @@
   top: 12px;
   inset-inline-start: -8px;
   z-index: 3;
-  background: var(--pink);
-  color: var(--white);
+  background: var(--sun);
+  color: var(--ink);
   font-family: var(--font-heading);
   font-size: 0.85rem;
   padding: 0.2rem 0.9rem;
   border-radius: 999px;
   transform: rotate(-8deg);
-  box-shadow: 0 4px 10px rgba(224, 36, 94, 0.45);
+  box-shadow: 0 4px 10px rgba(13, 59, 102, 0.35);
 }
 
 .freezer-flake {
