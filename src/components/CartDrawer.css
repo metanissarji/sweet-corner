@@ -66,52 +66,50 @@
 }
 
 @media (max-width: 768px) {
-  /* במובייל שורת הסל מחליפה את הכפתור הצף */
-  .cart-fab {
+  /* במובייל: כפתור סל בולט בפינה הימנית-תחתונה (אזור האגודל) */
+  .cart-bar {
     display: none;
   }
 
-  .cart-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 92;
+  .cart-fab {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.8rem;
-    border: none;
-    background: var(--pink);
-    color: var(--white);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 0.9rem 1.2rem;
-    padding-bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
-    box-shadow: 0 -6px 24px rgba(91, 50, 24, 0.3);
-    animation: barUp 0.35s cubic-bezier(.3,1.3,.5,1);
+    justify-content: center;
+    bottom: calc(1.1rem + env(safe-area-inset-bottom, 0px));
+    right: 1.1rem;
+    left: auto;
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+    box-shadow: 0 10px 30px rgba(224, 36, 94, 0.55);
   }
 
-  @keyframes barUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+  /* טבעת פעימה מושכת תשומת לב כשיש פריטים בסל */
+  .cart-fab.has-items::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 3px solid var(--pink);
+    opacity: 0;
+    pointer-events: none;
+    animation: fabRing 2s ease-out infinite;
   }
 
-  .cart-bar:active {
-    background: var(--pink-dark);
+  @keyframes fabRing {
+    0% { transform: scale(0.92); opacity: 0.55; }
+    70% { transform: scale(1.45); opacity: 0; }
+    100% { opacity: 0; }
   }
 
-  .cart-bar-count {
-    background: rgba(255, 255, 255, 0.22);
-    border-radius: 999px;
-    padding: 0.2rem 0.8rem;
-    font-size: 0.95rem;
-  }
-
-  .cart-bar-total {
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
+  .cart-fab .fab-badge {
+    top: -7px;
+    inset-inline-end: auto;
+    inset-inline-start: -7px;
+    min-width: 30px;
+    height: 30px;
+    font-size: 1.1rem;
+    border-width: 3px;
   }
 }
 

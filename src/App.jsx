@@ -29,10 +29,6 @@ function ScrollToTop() {
 
 export default function App() {
   const { pathname } = useLocation();
-  const homePhotoExists = useHomePhoto();
-  // כשעיצוב הרוחב המלא משמש כרקע עמוד הבית (עם תפריט בתוך התמונה) —
-  // התפריט הרגיל מוצג רק במסכים צרים
-  const photoHome = homePhotoExists === true && pathname === '/';
   const isBackoffice = pathname === '/admin' || pathname === '/orders-panel';
 
   return (
@@ -40,15 +36,9 @@ export default function App() {
       <OrdersProvider>
       <CartProvider>
         <ScrollToTop />
-        {!isBackoffice && (
-          <>
-            {/* בעמוד הבית עם תמונת העיצוב — התפריט כבר בתוך התמונה, לכן
-                התפריט הרגיל מוצג רק במסכים צרים שבהם קשה ללחוץ על התמונה */}
-            <div className={photoHome ? 'navbar-mobile-only' : undefined}>
-              <Navbar />
-            </div>
-          </>
-        )}
+        {/* התפריט האמיתי מוצג בכל המסכים — הוא הניווט הפעיל של האתר.
+            בעמוד הבית שרוֹת התפריט המצוירת שבעיצוב נחתכת (ראו BagHero) */}
+        {!isBackoffice && <Navbar />}
         <main>
           <Routes>
             <Route path="/" element={<Home />} />

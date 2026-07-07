@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { BAG_PHOTO, BAG_CLOSED, HOME_PHOTO, useImageExists } from '../hooks/useHomePhoto.js';
 import useMediaQuery from '../hooks/useMediaQuery.js';
-import { hotspots } from './PhotoHero.jsx';
 import './BagHero.css';
 
 /**
@@ -17,9 +16,6 @@ import './BagHero.css';
 const BAG_RECT = { left: 33.5, top: 27, width: 32, height: 48.5 };
 /* פתח השקית — מקור ההתפרצות */
 const MOUTH = { x: 49.5, y: 37.5 };
-
-const NAV_LABELS = ['דף הבית', 'הטעמים שלנו', 'מארזים', 'מבצעים', 'אודות', 'צור קשר', 'סניפים'];
-const navSpots = hotspots.filter((h) => NAV_LABELS.includes(h.label));
 
 const BURST_COLORS = ['#e0245e', '#f7c948', '#2e86e0', '#f6a9bc', '#ffffff'];
 const BURST_EMOJI = ['🍦', '🍫', '🍓', '✨', '💗', '🍪', '🍬'];
@@ -155,7 +151,6 @@ function burst(scene, yPct, strength) {
 }
 
 export default function BagHero() {
-  const [seed, setSeed] = useState(0); // מפתח להפעלה מחדש של כל הרצף
   const stageRef = useRef(null);
   const sceneRef = useRef(null);
   const homeBg = useImageExists(HOME_PHOTO);
@@ -199,32 +194,15 @@ export default function BagHero() {
       stage.removeEventListener('mouseleave', onLeave);
       scene.querySelectorAll('.hero-treat, .bag-spark').forEach((el) => el.remove());
     };
-  }, [seed, comboMode, isMobile]);
+  }, [comboMode, isMobile]);
 
-  // ===== מצב ראשי (דסקטופ): עיצוב הרקע עם השקית המשולבת =====
+  // ===== מצב ראשי: עיצוב הרקע עם השקית המשולבת =====
   if (comboMode) {
     return (
-      <section className="combo-hero" key={seed}>
+      <section className="combo-hero">
         <div className="combo-frame" ref={stageRef}>
           <div className="combo-inner" ref={sceneRef}>
             <img src={HOME_PHOTO} alt="הפינה המתוקה — טעם של קיץ בכל כפית" className="combo-bg" />
-
-            {/* אזורי לחיצה על תפריט העיצוב */}
-            {navSpots.map((h) => (
-              <Link
-                key={h.label + h.to}
-                to={h.to}
-                aria-label={h.label}
-                title={h.label}
-                className="photo-hotspot"
-                style={{ left: `${h.left}%`, top: `${h.top}%`, width: `${h.width}%`, height: `${h.height}%` }}
-              />
-            ))}
-
-            {/* הלוגו האמיתי — מעל הלוגו המודפס שבעיצוב */}
-            <Link to="/" className="overlay-logo" aria-label="הפינה המתוקה — דף הבית">
-              <img src="/images/logo.png" alt="" />
-            </Link>
 
             {/* עותק גזור של השקית — רועד בציפייה, ולחיץ אל הטעמים */}
             <div
@@ -274,18 +252,14 @@ export default function BagHero() {
               לכל הטעמים 🍦
             </Link>
           </div>
-
-          <button className="bag-replay combo-replay" onClick={() => setSeed((s) => s + 1)}>
-            🔁 עוד פעם!
-          </button>
         </div>
       </section>
     );
   }
 
-  // ===== מובייל / גיבוי: פורטרט נקי עם כותרת, כפתורים והשקית הנפתחת =====
+  // ===== גיבוי: פורטרט נקי עם כותרת, כפתורים והשקית הנפתחת =====
   return (
-    <section className="bag-hero" key={seed}>
+    <section className="bag-hero">
       <div className="splash splash-blue" />
       <div className="splash splash-pink" />
 
@@ -323,9 +297,6 @@ export default function BagHero() {
             </div>
           </div>
           <div className="bag-shadow" aria-hidden="true" />
-          <button className="bag-replay" onClick={() => setSeed((s) => s + 1)}>
-            🔁 עוד פעם!
-          </button>
         </div>
       </div>
     </section>

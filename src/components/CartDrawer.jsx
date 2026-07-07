@@ -124,7 +124,7 @@ export default function CartDrawer() {
     <>
       {/* כפתור סל צף */}
       <button
-        className={`cart-fab ${fabPop ? 'fab-pop' : ''}`}
+        className={`cart-fab ${fabPop ? 'fab-pop' : ''} ${count > 0 ? 'has-items' : ''}`}
         onClick={() => setDrawerOpen(!drawerOpen)}
         aria-label={`סל הקניות — ${count} פריטים`}
       >
