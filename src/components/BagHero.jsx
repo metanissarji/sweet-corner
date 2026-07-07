@@ -33,6 +33,15 @@ const TREATS = [
   { x: 49.5, y: 17, emoji: '🍓', rot: 6 },
 ];
 
+/* במובייל התמונה חתוכה למרכזה — הפינוקים צמודים יותר לשקית כדי להישאר בפריים */
+const TREATS_MOBILE = [
+  { x: 36, y: 30, emoji: '🍦', rot: -14 },
+  { x: 64, y: 27, emoji: '🍨', rot: 11 },
+  { x: 34.5, y: 56, emoji: '🍭', rot: -8 },
+  { x: 65.5, y: 54, emoji: '🍫', rot: 15 },
+  { x: 50, y: 16, emoji: '🍓', rot: 6 },
+];
+
 /* מזרקת פינוקים מפתח השקית — קשתות עם "כוח כבידה" */
 function fountain(host) {
   if (!host) return;
@@ -80,10 +89,10 @@ function fountain(host) {
 }
 
 /* הפינוקים הגדולים: עפים מהפתח, נוחתים בקפיצה ונשארים מרחפים */
-function spawnTreats(host) {
+function spawnTreats(host, treats) {
   if (!host) return;
   const r = host.getBoundingClientRect();
-  TREATS.forEach((t, i) => {
+  treats.forEach((t, i) => {
     const el = document.createElement('span');
     el.className = 'hero-treat';
     el.textContent = t.emoji;
@@ -152,7 +161,8 @@ export default function BagHero() {
   const homeBg = useImageExists(HOME_PHOTO);
   const closedExists = useImageExists(BAG_CLOSED);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const comboMode = homeBg === true && !isMobile;
+  // עיצוב הרקע משמש בכל המסכים; במובייל הוא נחתך למרכזו (השקית) דרך CSS
+  const comboMode = homeBg === true;
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -163,7 +173,7 @@ export default function BagHero() {
     const timers = [];
     if (comboMode) {
       timers.push(setTimeout(() => fountain(scene), 1150));
-      timers.push(setTimeout(() => spawnTreats(scene), 1250));
+      timers.push(setTimeout(() => spawnTreats(scene, isMobile ? TREATS_MOBILE : TREATS), 1250));
       timers.push(setTimeout(() => fountain(scene), 1750));
     } else {
       timers.push(setTimeout(() => burst(scene, 0.46, 18), 1050));
@@ -189,7 +199,7 @@ export default function BagHero() {
       stage.removeEventListener('mouseleave', onLeave);
       scene.querySelectorAll('.hero-treat, .bag-spark').forEach((el) => el.remove());
     };
-  }, [seed, comboMode]);
+  }, [seed, comboMode, isMobile]);
 
   // ===== מצב ראשי (דסקטופ): עיצוב הרקע עם השקית המשולבת =====
   if (comboMode) {
