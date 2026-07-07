@@ -94,11 +94,15 @@
   color: var(--brown);
 }
 
+/* ===== מובייל/מסך צר: כל מילות התפריט גלויות (בלי כפתור המבורגר) ===== */
 @media (max-width: 900px) {
   .navbar-inner {
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.5rem;
   }
-  
+
   .logo {
     position: relative;
     inset-inline-start: auto;
@@ -106,52 +110,50 @@
     transform: none;
   }
 
-  .menu-toggle {
-    display: block;
+  .logo-img {
+    width: 58px;
+    height: 58px;
   }
 
-  .nav-links {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    background: var(--cream);
-    flex-direction: column;
-    align-items: center;
-    gap: 1.1rem;
-    padding: 1.5rem 0 2rem;
-    border-bottom: 1px solid rgba(91, 50, 24, 0.08);
-    box-shadow: var(--shadow-soft);
+  /* כפתור ההמבורגר לא בשימוש — כל המילים מוצגות ישירות */
+  .menu-toggle {
     display: none;
   }
 
-  .nav-links.open {
-    display: flex;
+  /* התפריט תמיד גלוי, נשבר לשורות כך שכל המילים נראות ולחיצות */
+  .nav-links {
+    position: static;
+    display: flex !important;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem 0.85rem;
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    animation: navReveal 0.45s ease both;
   }
 
-  /* פריטי התפריט נכנסים בזה אחר זה כשנפתח — אנימציה מושכת ומורגשת */
-  .nav-links.open > * {
-    animation: navItemIn 0.4s cubic-bezier(.3,1.35,.5,1) both;
-  }
-  .nav-links.open > *:nth-child(1) { animation-delay: 0.03s; }
-  .nav-links.open > *:nth-child(2) { animation-delay: 0.07s; }
-  .nav-links.open > *:nth-child(3) { animation-delay: 0.11s; }
-  .nav-links.open > *:nth-child(4) { animation-delay: 0.15s; }
-  .nav-links.open > *:nth-child(5) { animation-delay: 0.19s; }
-  .nav-links.open > *:nth-child(6) { animation-delay: 0.23s; }
-  .nav-links.open > *:nth-child(7) { animation-delay: 0.27s; }
-  .nav-links.open > *:nth-child(8) { animation-delay: 0.31s; }
-
-  @keyframes navItemIn {
-    from { opacity: 0; transform: translateY(-12px); }
+  @keyframes navReveal {
+    from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* מטרות מגע גדולות + הדגשה ורודה בלחיצה ובעמוד הפעיל */
+  /* שדה החיפוש תופס שורה משלו מעל המילים */
+  .search-bar-wrapper {
+    order: -1;
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* מטרות מגע נוחות + הדגשה ורודה בלחיצה ובעמוד הפעיל (האנימציה) */
   .nav-link {
-    padding: 0.5rem 1.6rem;
+    font-size: 1.02rem;
+    padding: 0.4rem 1rem;
     border-radius: 999px;
-    font-size: 1.15rem;
     transition: color 0.15s ease, background 0.2s ease, transform 0.12s ease;
   }
 
@@ -161,11 +163,16 @@
 
   .nav-link:active {
     background: var(--pink-soft);
-    transform: scale(0.95);
+    transform: scale(0.94);
   }
 
   /* הקו התחתון מוסתר במובייל — ההדגשה היא הרקע הוורוד */
   .nav-link::after {
     display: none;
+  }
+
+  .branches-btn {
+    padding: 0.4rem 1.2rem;
+    font-size: 0.95rem;
   }
 }
