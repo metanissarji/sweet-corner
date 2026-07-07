@@ -1,3 +1,76 @@
+/* ===== פוסטר עמוד הבית — התמונה המלאה, נקי ורספונסיבי ===== */
+.poster-hero {
+  background: var(--bg);
+}
+
+.poster-stage {
+  display: flex;
+  justify-content: center;
+  /* ממלא את צידי הפוסטר בדסקטופ בגוון הכחול של קצות התמונה */
+  background: linear-gradient(180deg, #002d8d 0%, #0047af 55%, #3278f6 100%);
+}
+
+.poster-frame {
+  position: relative;
+  width: 100%;
+  max-width: 863px;
+  margin: 0 auto;
+  overflow: hidden;
+  aspect-ratio: 863 / 1604;   /* אחרי חיתוך ~12% (שורת התפריט המצוירת) */
+  line-height: 0;
+  animation: posterIn 0.8s cubic-bezier(.25, 1, .35, 1) both;
+}
+
+.poster-img {
+  display: block;
+  width: 100%;
+  margin-top: -25.3%;   /* חותך את שורת התפריט שבראש התמונה */
+}
+
+@keyframes posterIn {
+  from { opacity: 0; transform: scale(1.03) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* מסך אור חד-פעמי בטעינה */
+.poster-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.22) 50%, transparent 58%);
+  background-size: 280% 100%;
+  animation: posterSweep 1.6s 0.45s cubic-bezier(.4, 0, .3, 1) both;
+}
+
+@keyframes posterSweep {
+  from { background-position: 160% 0; opacity: 1; }
+  to   { background-position: -160% 0; opacity: 0; }
+}
+
+.poster-cta-band {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.9rem;
+  padding: 1.3rem 1rem 1.6rem;
+  background: var(--bg);
+}
+
+/* דסקטופ: מגבילים לגובה המסך, הרקע הכחול ממלא את הצדדים בצורה חלקה */
+@media (min-width: 769px) {
+  .poster-frame {
+    width: auto;
+    max-width: none;
+    height: min(1604px, calc(100vh - 88px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poster-frame { animation: none; }
+  .poster-frame::after { animation: none; opacity: 0; }
+}
+
 /* ===== מצב משולב: עיצוב הרוחב כרקע + השקית במרכז =====
    שורת התפריט המצוירת שבראש העיצוב נחתכת (התפריט האמיתי של האתר מעליה),
    כך שהניווט תמיד פעיל ואין תפריט "מת" בתוך התמונה. */

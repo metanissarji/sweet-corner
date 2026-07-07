@@ -160,28 +160,23 @@ export default function BagHero() {
   const comboMode = homeBg === true;
 
   useEffect(() => {
+    // מצב הפוסטר (comboMode) הוא תמונה נקייה ורספונסיבית — האנימציה שלו ב-CSS.
+    // אפקטי ההתפרצות רצים רק במצב הגיבוי (בלי תמונת עיצוב).
+    if (comboMode) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const scene = sceneRef.current;
     const stage = stageRef.current;
     if (!scene || !stage) return;
 
     const timers = [];
-    if (comboMode) {
-      timers.push(setTimeout(() => fountain(scene), 1150));
-      timers.push(setTimeout(() => spawnTreats(scene, isMobile ? TREATS_MOBILE : TREATS), 1250));
-      timers.push(setTimeout(() => fountain(scene), 1750));
-    } else {
-      timers.push(setTimeout(() => burst(scene, 0.46, 18), 1050));
-      timers.push(setTimeout(() => burst(scene, 0.42, 10), 1500));
-    }
+    timers.push(setTimeout(() => burst(scene, 0.46, 18), 1050));
+    timers.push(setTimeout(() => burst(scene, 0.42, 10), 1500));
 
-    // הטיה תלת-ממדית עדינה של כל הסצנה לפי העכבר
     function onMove(e) {
       const r = stage.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width;
       const py = (e.clientY - r.top) / r.height;
-      const strength = comboMode ? 3.5 : 8;
-      scene.style.transform = `rotateX(${(0.5 - py) * strength}deg) rotateY(${(px - 0.5) * strength * 1.4}deg)`;
+      scene.style.transform = `rotateX(${(0.5 - py) * 8}deg) rotateY(${(px - 0.5) * 11.2}deg)`;
     }
     function onLeave() {
       scene.style.transform = 'rotateX(0deg) rotateY(0deg)';
@@ -194,64 +189,26 @@ export default function BagHero() {
       stage.removeEventListener('mouseleave', onLeave);
       scene.querySelectorAll('.hero-treat, .bag-spark').forEach((el) => el.remove());
     };
-  }, [comboMode, isMobile]);
+  }, [comboMode]);
 
-  // ===== מצב ראשי: עיצוב הרקע עם השקית המשולבת =====
+  // ===== מצב ראשי: פוסטר העיצוב המלא — נקי, רספונסיבי, קל לתלפון =====
   if (comboMode) {
     return (
-      <section className="combo-hero">
-        <div className="combo-frame" ref={stageRef}>
-          <div className="combo-inner" ref={sceneRef}>
-            <img src={HOME_PHOTO} alt="הפינה המתוקה — טעם של קיץ בכל כפית" className="combo-bg" />
-
-            {/* עותק גזור של השקית — רועד בציפייה, ולחיץ אל הטעמים */}
-            <div
-              className="bag-cutout"
-              aria-hidden="true"
-              style={{
-                left: `${BAG_RECT.left}%`,
-                top: `${BAG_RECT.top}%`,
-                width: `${BAG_RECT.width}%`,
-                height: `${BAG_RECT.height}%`,
-              }}
-            >
-              <img
-                src={HOME_PHOTO}
-                alt=""
-                style={{
-                  width: `${(100 / BAG_RECT.width) * 100}%`,
-                  transform: `translate(-${BAG_RECT.left}%, -${BAG_RECT.top}%)`,
-                }}
-              />
-            </div>
-            <Link
-              to="/flavors"
-              className="photo-hotspot bag-hotspot"
-              aria-label="פתחו את השקית — לכל הטעמים"
-              title="לכל הטעמים"
-              style={{
-                left: `${BAG_RECT.left}%`,
-                top: `${BAG_RECT.top}%`,
-                width: `${BAG_RECT.width}%`,
-                height: `${BAG_RECT.height}%`,
-              }}
+      <section className="poster-hero">
+        <div className="poster-stage">
+          {/* שורת התפריט המצוירת שבראש הפוסטר נחתכת — התפריט האמיתי מעליה */}
+          <div className="poster-frame">
+            <img
+              src={HOME_PHOTO}
+              alt="הפינה המתוקה — טעם של קיץ בכל כפית"
+              className="poster-img"
             />
-
-            {/* קרני אור מפתח השקית */}
-            <div className="burst-rays" aria-hidden="true" style={{ left: `${MOUTH.x}%`, top: `${MOUTH.y}%` }}>
-              {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-                <span key={i} style={{ transform: `rotate(${-54 + i * 18}deg)` }} />
-              ))}
-            </div>
-
-            {/* הבזק ברגע הפתיחה */}
-            <div className="burst-flash" aria-hidden="true" style={{ '--mx': `${MOUTH.x}%`, '--my': `${MOUTH.y}%` }} />
-
-            {/* קריאה לפעולה שצצה אחרי הפתיחה */}
-            <Link to="/flavors" className="btn btn-pink combo-cta">
-              לכל הטעמים 🍦
-            </Link>
           </div>
+        </div>
+
+        <div className="poster-cta-band">
+          <Link to="/flavors" className="btn btn-pink">לכל הטעמים 🍦</Link>
+          <Link to="/contact" className="btn btn-outline">הזמינו עכשיו</Link>
         </div>
       </section>
     );
