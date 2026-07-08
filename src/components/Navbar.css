@@ -6,19 +6,14 @@
   border-bottom: 1px solid rgba(13, 59, 102, 0.08);
 }
 
+/* הלוגו למעלה במרכז, ומתחתיו שורת הקישורים */
 .navbar-inner {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
-  padding: 0.7rem 0;
-}
-
-.logo {
-  position: absolute;
-  inset-inline-start: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+  gap: 0.6rem;
+  padding: 1rem 0 0.8rem;
 }
 
 .logo-img {
@@ -37,8 +32,10 @@
 
 .nav-links {
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
-  gap: 1.7rem;
+  justify-content: center;
+  gap: 0.5rem 1.4rem;
 }
 
 .nav-link {
@@ -86,28 +83,11 @@
   font-size: 1rem;
 }
 
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.7rem;
-  color: var(--brown);
-}
-
-/* ===== מובייל/מסך צר: כל מילות התפריט גלויות (בלי המבורגר), קומפקטי ===== */
+/* ===== מובייל/מסך צר: קומפקטי, כל מילות התפריט גלויות ===== */
 @media (max-width: 900px) {
   .navbar-inner {
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.5rem;
-  }
-
-  .logo {
-    position: relative;
-    inset-inline-start: auto;
-    top: auto;
-    transform: none;
+    gap: 0.4rem;
+    padding: 0.6rem 0.5rem;
   }
 
   .logo-img {
@@ -115,49 +95,9 @@
     height: 46px;
   }
 
-  /* כפתור ההמבורגר לא בשימוש — כל המילים מוצגות ישירות */
-  .menu-toggle {
-    display: none;
-  }
-
-  /* התפריט תמיד גלוי, נשבר לשורות כך שכל המילים נראות ולחיצות */
   .nav-links {
-    position: static;
-    display: flex !important;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
     gap: 0.35rem 0.55rem;
     width: 100%;
-    padding: 0;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    animation: navReveal 0.4s ease both;
-  }
-
-  @keyframes navReveal {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* שדה החיפוש קומפקטי, בשורה משלו מעל המילים */
-  .search-bar-wrapper {
-    order: -1;
-    flex-basis: 100%;
-    max-width: 270px;
-    margin-inline: auto;
-    display: flex;
-    justify-content: center;
-  }
-
-  .search-input-container {
-    height: 38px;
-    min-height: 38px;
-  }
-
-  .search-input {
-    font-size: 0.95rem;
   }
 
   /* מטרות מגע נוחות + הדגשה כחולה ברורה בעמוד הפעיל ובלחיצה */

@@ -196,7 +196,8 @@ export default function BagHero() {
     return (
       <section className="poster-hero">
         <div className="poster-stage">
-          {/* שורת התפריט המצוירת שבראש הפוסטר נחתכת — התפריט האמיתי מעליה */}
+          {/* הלוגו האמיתי כתג מעל התמונה — שורת התפריט המצוירת שבתמונה עצמה נחתכת (התפריט האמיתי מעליה) */}
+          <img src="/images/logo.png" alt="הפינה המתוקה" className="poster-logo" />
           <div className="poster-frame">
             <img
               src={HOME_PHOTO}

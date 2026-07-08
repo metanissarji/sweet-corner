@@ -4,7 +4,8 @@ import { useOrders } from '../context/OrdersContext.jsx';
 import { showCartToast } from './AddToCart.jsx';
 import './CartDrawer.css';
 
-const FREE_DELIVERY = 60;
+const FREE_DELIVERY = 250;
+const MIN_ORDER = 10;
 const CONFETTI = ['🍦', '🍫', '🍓', '🍪', '💗', '✨'];
 
 /* פיצוץ קונפטי בתוך המגירה בסיום הזמנה */
@@ -119,6 +120,7 @@ export default function CartDrawer() {
 
   const progress = Math.min(100, Math.round((total / FREE_DELIVERY) * 100));
   const remaining = Math.max(0, FREE_DELIVERY - total);
+  const meetsMinimum = total >= MIN_ORDER;
 
   return (
     <>
@@ -232,7 +234,16 @@ export default function CartDrawer() {
                 <span>סה״כ לתשלום:</span>
                 <strong>₪{total}</strong>
               </div>
-              <button className="btn btn-pink order-btn" onClick={() => setCheckout(true)}>
+              {!meetsMinimum && (
+                <p className="min-order-notice">
+                  מינימום להזמנה ₪{MIN_ORDER} — המשלוח מגיע בקופסת גלידה עם קרח כדי שהיא לא תימס ❄️
+                </p>
+              )}
+              <button
+                className="btn btn-pink order-btn"
+                onClick={() => setCheckout(true)}
+                disabled={!meetsMinimum}
+              >
                 השלמת הזמנה 🎉
               </button>
             </footer>

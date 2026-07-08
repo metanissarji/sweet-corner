@@ -5,9 +5,22 @@
 
 .poster-stage {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   /* ממלא את צידי הפוסטר בדסקטופ בגוון הכחול של קצות התמונה */
   background: linear-gradient(180deg, #002d8d 0%, #0047af 55%, #3278f6 100%);
+}
+
+/* תג הלוגו העגול — יושב על אותו רקע כחול כמו בתמונה, מעל תמונת המוצרים */
+.poster-logo {
+  width: clamp(84px, 15vw, 148px);
+  height: auto;
+  margin: 1.5rem 0 -1.2rem;
+  filter: drop-shadow(0 10px 22px rgba(0, 20, 80, 0.55));
+  animation: posterIn 0.8s cubic-bezier(.25, 1, .35, 1) both;
+  position: relative;
+  z-index: 1;
 }
 
 .poster-frame {
