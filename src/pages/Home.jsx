@@ -137,8 +137,8 @@ function FlavorsPreview() {
             </h2>
           </div>
           <div className="bestsellers-arrows">
-            <button className="bs-arrow" onClick={() => slide(-1)} aria-label="הצג עוד">‹</button>
-            <button className="bs-arrow" onClick={() => slide(1)} aria-label="חזרה">›</button>
+            <button className="bs-arrow" onClick={() => slide(1)} aria-label="הצג עוד">‹</button>
+            <button className="bs-arrow" onClick={() => slide(-1)} aria-label="חזרה">›</button>
           </div>
         </div>
 
@@ -194,8 +194,8 @@ function HomeFreezers() {
             </p>
           </div>
           <div className="bestsellers-arrows">
-            <button className="bs-arrow" onClick={() => slide(-1)} aria-label="הצג עוד">‹</button>
-            <button className="bs-arrow" onClick={() => slide(1)} aria-label="חזרה">›</button>
+            <button className="bs-arrow" onClick={() => slide(1)} aria-label="הצג עוד">‹</button>
+            <button className="bs-arrow" onClick={() => slide(-1)} aria-label="חזרה">›</button>
           </div>
         </div>
 
