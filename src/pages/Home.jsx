@@ -112,34 +112,21 @@ export default function Home() {
 
 function FlavorsPreview() {
   const { flavors, favorites } = useProducts();
-  const rowRef = useRef(null);
-  // מציגים את המועדפים קודם, ואז שאר הטעמים — שורה אחת שנגללת הצידה
+  
+  // מציגים את המועדפים קודם, ואז שאר הטעמים
   const items = [...(favorites || []), ...(flavors || [])].filter(
     (f, i, arr) => arr.findIndex((x) => x.name === f.name) === i
   );
 
-  function slide(dir) {
-    const row = rowRef.current;
-    if (!row) return;
-    // בגלילה RTL הכיוון החיובי הוא שמאלה; מזיזים כרטיס וחצי בכל לחיצה
-    row.scrollBy({ left: dir * row.clientWidth * 0.8, behavior: 'smooth' });
-  }
-
   return (
-    <section className="bestsellers">
+    <section className="home-flavors-section">
       <div className="container">
-        <div className="bestsellers-head">
-          <h2 className="section-title">
-            הכי <span className="highlight">נמכרים</span> 🔥
-          </h2>
-          <div className="bestsellers-arrows">
-            <button className="bs-arrow" onClick={() => slide(-1)} aria-label="הצג עוד">‹</button>
-            <button className="bs-arrow" onClick={() => slide(1)} aria-label="חזרה">›</button>
-          </div>
-        </div>
+        <h2 className="section-title text-center">
+          הכי <span className="highlight">נמכרים</span> 🔥
+        </h2>
 
-        <div className="bestsellers-row" ref={rowRef}>
-          {items.map((f) => (
+        <div className="home-flavors-grid">
+          {items.slice(0, 4).map((f) => (
             <article className="bs-card" key={f.id + f.name}>
               <div className="bs-card-img">
                 <ProductImage src={f.image} alt={f.name} emoji={f.emoji} />
@@ -164,22 +151,42 @@ function FlavorsPreview() {
   );
 }
 
-/* כל המבצעים (מקפיאים) — רשת דו-טורית בעמוד הבית, מקפיאים קטנים יותר */
+/* כל המבצעים (מקפיאים) — נגלל לצד כמו שהיה לטעמים */
 function HomeFreezers() {
   const { freezerDeals } = useProducts();
+  const rowRef = useRef(null);
+
   if (!freezerDeals || freezerDeals.length === 0) return null;
 
-  return (
-    <section className="home-freezers-section">
-      <div className="container">
-        <h2 className="section-title">
-          כל <span className="highlight">המבצעים</span> 🧊
-        </h2>
-        <p className="text-center home-section-sub">לוחצים על מקפיא ורואים אילו גלידות יש בפנים</p>
+  function slide(dir) {
+    const row = rowRef.current;
+    if (!row) return;
+    row.scrollBy({ left: dir * row.clientWidth * 0.8, behavior: 'smooth' });
+  }
 
-        <div className="home-freezers-grid">
+  return (
+    <section className="bestsellers">
+      <div className="container">
+        <div className="bestsellers-head">
+          <div style={{ textAlign: 'right' }}>
+            <h2 className="section-title" style={{ margin: 0 }}>
+              כל <span className="highlight">המבצעים</span> 🧊
+            </h2>
+            <p className="home-section-sub" style={{ marginTop: '0.2rem', marginBottom: 0 }}>
+              לוחצים על מקפיא ורואים אילו גלידות יש בפנים
+            </p>
+          </div>
+          <div className="bestsellers-arrows">
+            <button className="bs-arrow" onClick={() => slide(-1)} aria-label="הצג עוד">‹</button>
+            <button className="bs-arrow" onClick={() => slide(1)} aria-label="חזרה">›</button>
+          </div>
+        </div>
+
+        <div className="bestsellers-row" ref={rowRef}>
           {freezerDeals.map((deal) => (
-            <FreezerCard key={deal.id} deal={deal} />
+            <div className="deal-card-wrapper" key={deal.id}>
+              <FreezerCard deal={deal} />
+            </div>
           ))}
         </div>
 
