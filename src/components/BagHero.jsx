@@ -227,10 +227,6 @@ export default function BagHero() {
             ))}
           </div>
         </div>
-
-        <div className="poster-cta-band">
-          <Link to="/contact" className="btn btn-pink">הזמינו עכשיו 🍦</Link>
-        </div>
       </section>
     );
   }

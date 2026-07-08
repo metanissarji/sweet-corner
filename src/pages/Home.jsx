@@ -6,6 +6,7 @@ import WaveDivider from '../components/WaveDivider.jsx';
 import FeatureStrip from '../components/FeatureStrip.jsx';
 import PhotoHero from '../components/PhotoHero.jsx';
 import BagHero from '../components/BagHero.jsx';
+import FreezerCard from '../components/FreezerCard.jsx';
 import AddToCart from '../components/AddToCart.jsx';
 import useHomePhoto, { useImageExists, BAG_PHOTO } from '../hooks/useHomePhoto.js';
 import { useProducts } from '../context/ProductsContext.jsx';
@@ -23,6 +24,7 @@ export default function Home() {
       <>
         <BagHero />
         <FlavorsPreview />
+        <HomeFreezers />
       </>
     );
   }
@@ -33,6 +35,7 @@ export default function Home() {
       <>
         <PhotoHero />
         <FlavorsPreview />
+        <HomeFreezers />
       </>
     );
   }
@@ -102,6 +105,7 @@ export default function Home() {
       <FeatureStrip />
 
       <FlavorsPreview />
+      <HomeFreezers />
     </>
   );
 }
@@ -154,6 +158,33 @@ function FlavorsPreview() {
 
         <div className="text-center home-more">
           <Link to="/flavors" className="btn btn-pink">לכל הטעמים ←</Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* כל המבצעים (מקפיאים) — רשת דו-טורית בעמוד הבית, מקפיאים קטנים יותר */
+function HomeFreezers() {
+  const { freezerDeals } = useProducts();
+  if (!freezerDeals || freezerDeals.length === 0) return null;
+
+  return (
+    <section className="home-freezers-section">
+      <div className="container">
+        <h2 className="section-title">
+          כל <span className="highlight">המבצעים</span> 🧊
+        </h2>
+        <p className="text-center home-section-sub">לוחצים על מקפיא ורואים אילו גלידות יש בפנים</p>
+
+        <div className="home-freezers-grid">
+          {freezerDeals.map((deal) => (
+            <FreezerCard key={deal.id} deal={deal} />
+          ))}
+        </div>
+
+        <div className="text-center home-more">
+          <Link to="/deals" className="btn btn-pink">לכל המבצעים ←</Link>
         </div>
       </div>
     </section>

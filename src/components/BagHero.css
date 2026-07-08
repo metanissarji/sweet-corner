@@ -4,21 +4,37 @@
 }
 
 .poster-stage {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* ממלא את צידי הפוסטר בדסקטופ בגוון הכחול של קצות התמונה */
+  overflow: hidden;
+  /* גיבוי בגוון הכחול של קצות התמונה */
   background: linear-gradient(180deg, #002d8d 0%, #0047af 55%, #3278f6 100%);
+}
+
+/* מילוי מטושטש של הפוסטר — ממלא את המסך בדסקטופ בצורה עשירה
+   (במובייל הפוסטר ממילא ברוחב מלא, ולכן מוסתר) */
+.poster-stage::before {
+  content: '';
+  position: absolute;
+  inset: -6%;
+  background: url('/images/home-hero.jpg') center / cover no-repeat;
+  filter: blur(38px) brightness(0.55) saturate(1.15);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .poster-frame {
   position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 863px;
   margin: 0 auto;
   aspect-ratio: 863 / 1823;   /* התמונה המלאה — בלי חיתוך (התמונה היא ה-reference) */
   line-height: 0;
+  box-shadow: 0 18px 50px rgba(0, 20, 80, 0.5);
   animation: posterIn 0.8s cubic-bezier(.25, 1, .35, 1) both;
 }
 
@@ -80,12 +96,22 @@
   background: var(--bg);
 }
 
-/* דסקטופ: מגבילים לגובה המסך, הרקע הכחול ממלא את הצדדים בצורה חלקה */
+/* דסקטופ: הפוסטר ממורכז וממלא את גובה המסך; המילוי המטושטש ממלא את הצדדים */
 @media (min-width: 769px) {
+  .poster-stage {
+    min-height: 100vh;
+  }
   .poster-frame {
     width: auto;
     max-width: none;
-    height: min(1823px, calc(100vh - 16px));
+    height: min(1823px, calc(100vh - 28px));
+  }
+}
+
+/* מובייל: הפוסטר ברוחב מלא — אין צורך במילוי המטושטש */
+@media (max-width: 768px) {
+  .poster-stage::before {
+    display: none;
   }
 }
 

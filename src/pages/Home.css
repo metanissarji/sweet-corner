@@ -270,6 +270,52 @@
   }
 }
 
+/* ===== כל המבצעים (מקפיאים) — רשת דו-טורית, קטנים יותר ===== */
+.home-freezers-section {
+  padding: 0.5rem 0 3.5rem;
+}
+
+.home-freezers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);   /* שני מקפיאים זה לצד זה */
+  gap: 0.9rem;
+  max-width: 640px;                        /* שומר על מקפיאים קטנים גם בדסקטופ */
+  margin: 1.6rem auto 0;
+}
+
+/* מקפיאים קטנים יותר בעמוד הבית */
+.home-freezers-grid .freezer {
+  padding: 0.55rem 0.55rem 0.8rem;
+}
+.home-freezers-grid .freezer-qty,
+.home-freezers-grid .freezer-price {
+  font-size: 1.9rem;
+}
+.home-freezers-grid .freezer-be {
+  font-size: 1rem;
+}
+.home-freezers-grid .freezer-units {
+  font-size: 0.75rem;
+}
+.home-freezers-grid .freezer-open-hint {
+  font-size: 0.78rem;
+  padding: 0.28rem 0.85rem;
+}
+.home-freezers-grid .freezer-ribbon {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.7rem;
+}
+
+@media (max-width: 480px) {
+  .home-freezers-grid {
+    gap: 0.7rem;
+  }
+  .home-freezers-grid .freezer-qty,
+  .home-freezers-grid .freezer-price {
+    font-size: 1.6rem;
+  }
+}
+
 /* ===== responsive ===== */
 @media (max-width: 1000px) {
   .hero-grid {
