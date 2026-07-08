@@ -114,21 +114,36 @@ export default function Home() {
 
 function FlavorsPreview() {
   const { flavors, favorites } = useProducts();
+  const rowRef = useRef(null);
   
   // מציגים את המועדפים קודם, ואז שאר הטעמים
   const items = [...(favorites || []), ...(flavors || [])].filter(
     (f, i, arr) => arr.findIndex((x) => x.name === f.name) === i
   );
 
-  return (
-    <section className="home-flavors-section">
-      <div className="container">
-        <h2 className="section-title text-center">
-          הכי <span className="highlight">נמכרים</span> 🔥
-        </h2>
+  function slide(dir) {
+    const row = rowRef.current;
+    if (!row) return;
+    row.scrollBy({ left: dir * row.clientWidth * 0.8, behavior: 'smooth' });
+  }
 
-        <div className="home-flavors-grid">
-          {items.slice(0, 4).map((f) => (
+  return (
+    <section className="bestsellers">
+      <div className="container">
+        <div className="bestsellers-head">
+          <div style={{ textAlign: 'right' }}>
+            <h2 className="section-title" style={{ margin: 0 }}>
+              הכי <span className="highlight">נמכרים</span> 🔥
+            </h2>
+          </div>
+          <div className="bestsellers-arrows">
+            <button className="bs-arrow" onClick={() => slide(-1)} aria-label="הצג עוד">‹</button>
+            <button className="bs-arrow" onClick={() => slide(1)} aria-label="חזרה">›</button>
+          </div>
+        </div>
+
+        <div className="bestsellers-row" ref={rowRef}>
+          {items.map((f) => (
             <article className="bs-card" key={f.id + f.name}>
               <div className="bs-card-img">
                 <ProductImage src={f.image} alt={f.name} emoji={f.emoji} />
