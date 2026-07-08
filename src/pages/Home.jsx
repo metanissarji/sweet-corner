@@ -25,6 +25,7 @@ export default function Home() {
         <BagHero />
         <FlavorsPreview />
         <HomeFreezers />
+        <FeatureStrip />
       </>
     );
   }
@@ -36,6 +37,7 @@ export default function Home() {
         <PhotoHero />
         <FlavorsPreview />
         <HomeFreezers />
+        <FeatureStrip />
       </>
     );
   }
@@ -101,11 +103,11 @@ export default function Home() {
         <WaveDivider color="#ffffff" />
       </section>
 
-      {/* ===== Feature strip ===== */}
-      <FeatureStrip />
-
       <FlavorsPreview />
       <HomeFreezers />
+
+      {/* ===== Feature strip ===== */}
+      <FeatureStrip />
     </>
   );
 }
