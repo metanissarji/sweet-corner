@@ -23,8 +23,8 @@ export default function Home() {
     return (
       <>
         <BagHero />
-        <FlavorsPreview />
         <HomeFreezers />
+        <FlavorsPreview />
         <FeatureStrip />
       </>
     );
@@ -35,8 +35,8 @@ export default function Home() {
     return (
       <>
         <PhotoHero />
-        <FlavorsPreview />
         <HomeFreezers />
+        <FlavorsPreview />
         <FeatureStrip />
       </>
     );
@@ -103,8 +103,8 @@ export default function Home() {
         <WaveDivider color="#ffffff" />
       </section>
 
-      <FlavorsPreview />
       <HomeFreezers />
+      <FlavorsPreview />
 
       {/* ===== Feature strip ===== */}
       <FeatureStrip />
