@@ -115,6 +115,25 @@
   }
 }
 
+/* דסקטופ עם תמונה רוחבית ייעודית (16:9) — ממלאה את כל רוחב המסך */
+@media (min-width: 769px) {
+  .poster-hero-pc .poster-stage {
+    min-height: 0;
+    background: var(--bg);
+  }
+  .poster-hero-pc .poster-stage::before {
+    display: none;
+  }
+  .poster-hero-pc .poster-frame {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    aspect-ratio: 1672 / 941;
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .poster-frame { animation: none; }
   .poster-frame::after { animation: none; opacity: 0; }

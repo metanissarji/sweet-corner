@@ -17,7 +17,10 @@ const BAG_RECT = { left: 33.5, top: 27, width: 32, height: 48.5 };
 /* פתח השקית — מקור ההתפרצות */
 const MOUTH = { x: 49.5, y: 37.5 };
 
-/* אזורי לחיצה מעל התפריט המצויר שבתמונת הפוסטר (אחוזים מתוך 863×1823) */
+/* תמונת עמוד הבית לדסקטופ (רוחבית 16:9) — ממלאה את כל המסך */
+const HOME_PHOTO_PC = '/images/home-hero-pc.jpg';
+
+/* אזורי לחיצה מעל התפריט המצויר שבתמונת הפוסטר (מובייל, אחוזים מתוך 863×1823) */
 const POSTER_NAV = [
   { to: '/', label: 'דף הבית', left: 88, top: 9, width: 11, height: 3.4 },
   { to: '/flavors', label: 'הטעמים שלנו', left: 66, top: 9, width: 18.5, height: 3.4 },
@@ -27,6 +30,18 @@ const POSTER_NAV = [
   { to: '/contact', label: 'צור קשר', left: 14, top: 9, width: 14, height: 3.4 },
   { to: '/branches', label: 'סניפים', left: 12.5, top: 2.3, width: 17, height: 4.8 },
   { to: '/', label: 'לוגו — דף הבית', left: 41.5, top: 0.8, width: 17, height: 8 },
+];
+
+/* אזורי לחיצה לתמונת הדסקטופ (אחוזים מתוך 1672×941) */
+const POSTER_NAV_PC = [
+  { to: '/', label: 'דף הבית', left: 71.5, top: 3.4, width: 6.5, height: 4.6 },
+  { to: '/flavors', label: 'הטעמים שלנו', left: 63.3, top: 3.4, width: 9, height: 4.6 },
+  { to: '/packages', label: 'מארזים', left: 55, top: 3.4, width: 6, height: 4.6 },
+  { to: '/deals', label: 'מבצעים', left: 39, top: 3.4, width: 6.5, height: 4.6 },
+  { to: '/about', label: 'אודות', left: 31, top: 3.4, width: 5.5, height: 4.6 },
+  { to: '/contact', label: 'צור קשר', left: 21.5, top: 3.4, width: 7, height: 4.6 },
+  { to: '/branches', label: 'סניפים', left: 3.5, top: 2.3, width: 9.5, height: 6 },
+  { to: '/', label: 'לוגו — דף הבית', left: 45.5, top: 0.5, width: 9, height: 11 },
 ];
 
 const BURST_COLORS = ['#e0245e', '#f7c948', '#2e86e0', '#f6a9bc', '#ffffff'];
@@ -166,10 +181,15 @@ export default function BagHero() {
   const stageRef = useRef(null);
   const sceneRef = useRef(null);
   const homeBg = useImageExists(HOME_PHOTO);
+  const pcBg = useImageExists(HOME_PHOTO_PC);
   const closedExists = useImageExists(BAG_CLOSED);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  // עיצוב הרקע משמש בכל המסכים; במובייל הוא נחתך למרכזו (השקית) דרך CSS
   const comboMode = homeBg === true;
+  // בדסקטופ מציגים תמונה רוחבית ייעודית (אם קיימת) שממלאת את כל המסך;
+  // במובייל נשארת התמונה הפורטרט.
+  const pcMode = !isMobile && pcBg === true;
+  const heroImg = pcMode ? HOME_PHOTO_PC : HOME_PHOTO;
+  const heroNav = pcMode ? POSTER_NAV_PC : POSTER_NAV;
 
   useEffect(() => {
     // מצב הפוסטר (comboMode) הוא תמונה נקייה ורספונסיבית — האנימציה שלו ב-CSS.
@@ -206,16 +226,16 @@ export default function BagHero() {
   // ===== מצב ראשי: פוסטר העיצוב המלא (התמונה כ-reference), עם אזורי לחיצה =====
   if (comboMode) {
     return (
-      <section className="poster-hero">
+      <section className={`poster-hero ${pcMode ? 'poster-hero-pc' : ''}`}>
         <div className="poster-stage">
           <div className="poster-frame">
             <img
-              src={HOME_PHOTO}
+              src={heroImg}
               alt="הפינה המתוקה — טעם של קיץ בכל כפית"
               className="poster-img"
             />
             {/* אזורי לחיצה שקופים מעל התפריט המצויר שבתמונה */}
-            {POSTER_NAV.map((h) => (
+            {heroNav.map((h) => (
               <Link
                 key={h.label}
                 to={h.to}
