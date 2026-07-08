@@ -17,6 +17,18 @@ const BAG_RECT = { left: 33.5, top: 27, width: 32, height: 48.5 };
 /* פתח השקית — מקור ההתפרצות */
 const MOUTH = { x: 49.5, y: 37.5 };
 
+/* אזורי לחיצה מעל התפריט המצויר שבתמונת הפוסטר (אחוזים מתוך 863×1823) */
+const POSTER_NAV = [
+  { to: '/', label: 'דף הבית', left: 88, top: 9, width: 11, height: 3.4 },
+  { to: '/flavors', label: 'הטעמים שלנו', left: 66, top: 9, width: 18.5, height: 3.4 },
+  { to: '/deals', label: 'מבצעים', left: 53.5, top: 9, width: 11, height: 3.4 },
+  { to: '/packages', label: 'מארזים', left: 43.5, top: 9, width: 10, height: 3.4 },
+  { to: '/about', label: 'אודות', left: 33.5, top: 9, width: 8.5, height: 3.4 },
+  { to: '/contact', label: 'צור קשר', left: 14, top: 9, width: 14, height: 3.4 },
+  { to: '/branches', label: 'סניפים', left: 12.5, top: 2.3, width: 17, height: 4.8 },
+  { to: '/', label: 'לוגו — דף הבית', left: 41.5, top: 0.8, width: 17, height: 8 },
+];
+
 const BURST_COLORS = ['#e0245e', '#f7c948', '#2e86e0', '#f6a9bc', '#ffffff'];
 const BURST_EMOJI = ['🍦', '🍫', '🍓', '✨', '💗', '🍪', '🍬'];
 
@@ -191,25 +203,33 @@ export default function BagHero() {
     };
   }, [comboMode]);
 
-  // ===== מצב ראשי: פוסטר העיצוב המלא — נקי, רספונסיבי, קל לתלפון =====
+  // ===== מצב ראשי: פוסטר העיצוב המלא (התמונה כ-reference), עם אזורי לחיצה =====
   if (comboMode) {
     return (
       <section className="poster-hero">
         <div className="poster-stage">
-          {/* הלוגו האמיתי כתג מעל התמונה — שורת התפריט המצוירת שבתמונה עצמה נחתכת (התפריט האמיתי מעליה) */}
-          <img src="/images/logo.png" alt="הפינה המתוקה" className="poster-logo" />
           <div className="poster-frame">
             <img
               src={HOME_PHOTO}
               alt="הפינה המתוקה — טעם של קיץ בכל כפית"
               className="poster-img"
             />
+            {/* אזורי לחיצה שקופים מעל התפריט המצויר שבתמונה */}
+            {POSTER_NAV.map((h) => (
+              <Link
+                key={h.label}
+                to={h.to}
+                aria-label={h.label}
+                title={h.label}
+                className="poster-nav-spot"
+                style={{ left: `${h.left}%`, top: `${h.top}%`, width: `${h.width}%`, height: `${h.height}%` }}
+              />
+            ))}
           </div>
         </div>
 
         <div className="poster-cta-band">
-          <Link to="/flavors" className="btn btn-pink">לכל הטעמים 🍦</Link>
-          <Link to="/contact" className="btn btn-outline">הזמינו עכשיו</Link>
+          <Link to="/contact" className="btn btn-pink">הזמינו עכשיו 🍦</Link>
         </div>
       </section>
     );

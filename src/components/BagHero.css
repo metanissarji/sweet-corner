@@ -12,24 +12,12 @@
   background: linear-gradient(180deg, #002d8d 0%, #0047af 55%, #3278f6 100%);
 }
 
-/* תג הלוגו העגול — יושב על אותו רקע כחול כמו בתמונה, מעל תמונת המוצרים */
-.poster-logo {
-  width: clamp(84px, 15vw, 148px);
-  height: auto;
-  margin: 1.5rem 0 -1.2rem;
-  filter: drop-shadow(0 10px 22px rgba(0, 20, 80, 0.55));
-  animation: posterIn 0.8s cubic-bezier(.25, 1, .35, 1) both;
-  position: relative;
-  z-index: 1;
-}
-
 .poster-frame {
   position: relative;
   width: 100%;
   max-width: 863px;
   margin: 0 auto;
-  overflow: hidden;
-  aspect-ratio: 863 / 1604;   /* אחרי חיתוך ~12% (שורת התפריט המצוירת) */
+  aspect-ratio: 863 / 1823;   /* התמונה המלאה — בלי חיתוך (התמונה היא ה-reference) */
   line-height: 0;
   animation: posterIn 0.8s cubic-bezier(.25, 1, .35, 1) both;
 }
@@ -37,7 +25,29 @@
 .poster-img {
   display: block;
   width: 100%;
-  margin-top: -25.3%;   /* חותך את שורת התפריט שבראש התמונה */
+  height: 100%;
+  object-fit: cover;
+}
+
+/* אזורי לחיצה שקופים מעל התפריט המצויר שבתמונה */
+.poster-nav-spot {
+  position: absolute;
+  display: block;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 3;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.poster-nav-spot:hover,
+.poster-nav-spot:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55);
+  outline: none;
+}
+
+.poster-nav-spot:active {
+  background: rgba(255, 255, 255, 0.28);
 }
 
 @keyframes posterIn {
@@ -75,7 +85,7 @@
   .poster-frame {
     width: auto;
     max-width: none;
-    height: min(1604px, calc(100vh - 88px));
+    height: min(1823px, calc(100vh - 16px));
   }
 }
 

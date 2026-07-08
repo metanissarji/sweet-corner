@@ -29,16 +29,18 @@ function ScrollToTop() {
 
 export default function App() {
   const { pathname } = useLocation();
+  const homePhotoExists = useHomePhoto();
   const isBackoffice = pathname === '/admin' || pathname === '/orders-panel';
+  // בעמוד הבית מוצג הפוסטר המלא עם התפריט המצויר שבתוכו (עם אזורי לחיצה),
+  // לכן מסתירים את התפריט הרגיל שם כדי שלא יופיע תפריט כפול.
+  const posterHome = pathname === '/' && homePhotoExists === true;
 
   return (
     <ProductsProvider>
       <OrdersProvider>
       <CartProvider>
         <ScrollToTop />
-        {/* התפריט האמיתי מוצג בכל המסכים — הוא הניווט הפעיל של האתר.
-            בעמוד הבית שרוֹת התפריט המצוירת שבעיצוב נחתכת (ראו BagHero) */}
-        {!isBackoffice && <Navbar />}
+        {!isBackoffice && !posterHome && <Navbar />}
         <main>
           <Routes>
             <Route path="/" element={<Home />} />

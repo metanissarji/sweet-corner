@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ProductImage from '../components/ProductImage.jsx';
 import LabelTag from '../components/LabelTag.jsx';
@@ -106,28 +107,45 @@ export default function Home() {
 }
 
 function FlavorsPreview() {
-  const { favorites } = useProducts();
-  return (
-    <section className="page-section">
-      <div className="container">
-        <h2 className="section-title">
-          הטעמים <span className="highlight">שכולם אוהבים</span>
-        </h2>
-        <p className="text-center home-section-sub">טעימה קטנה ממה שמחכה לכם אצלנו</p>
+  const { flavors, favorites } = useProducts();
+  const rowRef = useRef(null);
+  // מציגים את המועדפים קודם, ואז שאר הטעמים — שורה אחת שנגללת הצידה
+  const items = [...(favorites || []), ...(flavors || [])].filter(
+    (f, i, arr) => arr.findIndex((x) => x.name === f.name) === i
+  );
 
-        <div className="card-grid home-flavors">
-          {favorites.map((f) => (
-            <article className="card" key={f.id}>
-              <div className="card-image">
+  function slide(dir) {
+    const row = rowRef.current;
+    if (!row) return;
+    // בגלילה RTL הכיוון החיובי הוא שמאלה; מזיזים כרטיס וחצי בכל לחיצה
+    row.scrollBy({ left: dir * row.clientWidth * 0.8, behavior: 'smooth' });
+  }
+
+  return (
+    <section className="bestsellers">
+      <div className="container">
+        <div className="bestsellers-head">
+          <h2 className="section-title">
+            הכי <span className="highlight">נמכרים</span> 🔥
+          </h2>
+          <div className="bestsellers-arrows">
+            <button className="bs-arrow" onClick={() => slide(-1)} aria-label="הצג עוד">‹</button>
+            <button className="bs-arrow" onClick={() => slide(1)} aria-label="חזרה">›</button>
+          </div>
+        </div>
+
+        <div className="bestsellers-row" ref={rowRef}>
+          {items.map((f) => (
+            <article className="bs-card" key={f.id + f.name}>
+              <div className="bs-card-img">
                 <ProductImage src={f.image} alt={f.name} emoji={f.emoji} />
               </div>
-              <div className="card-body">
+              <div className="bs-card-body">
                 <span className="card-badge">{f.tag}</span>
                 <h3>{f.name}</h3>
-                <p>{f.desc}</p>
                 <div className="card-buy-row">
                   <p className="price">₪{f.price}</p>
-                  <AddToCart product={{ key: `favorite-${f.id}`, name: f.name, price: f.price, emoji: f.emoji }} />
+                  <AddToCart product={{ key: `bs-${f.id}`, name: f.name, price: f.price, emoji: f.emoji }} />
                 </div>
               </div>
             </article>
