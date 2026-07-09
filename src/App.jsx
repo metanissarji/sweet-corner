@@ -49,7 +49,7 @@ export default function App() {
       <OrdersProvider>
       <CartProvider>
         <ScrollToTop />
-        {!isBackoffice && !posterHome && <Navbar />}
+        {!isBackoffice && <Navbar />}
         <main>
           <Routes>
             <Route path="/" element={<Home />} />

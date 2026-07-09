@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductImage from '../components/ProductImage.jsx';
 import LabelTag from '../components/LabelTag.jsx';
@@ -6,6 +6,7 @@ import WaveDivider from '../components/WaveDivider.jsx';
 import FeatureStrip from '../components/FeatureStrip.jsx';
 import PhotoHero from '../components/PhotoHero.jsx';
 import BagHero from '../components/BagHero.jsx';
+import IntroOverlay from '../components/IntroOverlay.jsx';
 import FreezerCard from '../components/FreezerCard.jsx';
 import AddToCart from '../components/AddToCart.jsx';
 import useHomePhoto, { useImageExists, BAG_PHOTO } from '../hooks/useHomePhoto.js';
@@ -15,26 +16,23 @@ import './Home.css';
 export default function Home() {
   const bag = useImageExists(BAG_PHOTO);
   const photo = useHomePhoto();
+  const [introDone, setIntroDone] = useState(() => sessionStorage.getItem('introSeen') === '1');
 
   if (bag === 'loading' || photo === 'loading') return null;
 
-  // עדיפות ראשונה: שקית הקסם התלת-ממדית (bag-hero.jpg)
-  if (bag === true) {
+  // עמוד הבית: מסך פתיחה (~5ש') ואז חושף את המבצעים + הכי נמכרים.
+  // התפריט העליון נשאר קבוע (App מציג Navbar), כך שהניווט תמיד זמין.
+  if (bag === true || photo === true) {
     return (
       <>
-        <BagHero />
-        <HomeFreezers />
-        <FlavorsPreview />
-        <FeatureStrip />
-      </>
-    );
-  }
-
-  // עדיפות שנייה: תמונת העיצוב המלאה (home-hero.jpg) עם אזורי לחיצה
-  if (photo === true) {
-    return (
-      <>
-        <PhotoHero />
+        {!introDone && (
+          <IntroOverlay
+            onDone={() => {
+              sessionStorage.setItem('introSeen', '1');
+              setIntroDone(true);
+            }}
+          />
+        )}
         <HomeFreezers />
         <FlavorsPreview />
         <FeatureStrip />

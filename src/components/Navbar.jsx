@@ -23,7 +23,7 @@ export default function Navbar() {
         </NavLink>
 
         <Link to="/" className="logo">
-          <img src="/images/logo.png" alt="הפינה המתוקה" className="logo-img" />
+          <img src="/images/character.png" alt="הפינה המתוקה" className="logo-img logo-character" />
         </Link>
 
         <NavLink to="/contact" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
