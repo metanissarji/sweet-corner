@@ -524,10 +524,10 @@ body.page-bg-sections .navbar {
   border-bottom: none !important;
 }
 
-body.page-bg-sections .nav-links a {
+body.page-bg-sections .navbar-inner .nav-link {
   color: var(--white) !important;
 }
 
-body.page-bg-sections .nav-links a.active::after {
+body.page-bg-sections .navbar-inner .nav-link.active::after {
   background: var(--yellow) !important;
 }

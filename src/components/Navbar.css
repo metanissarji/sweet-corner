@@ -6,14 +6,14 @@
   border-bottom: 1px solid rgba(13, 59, 102, 0.08);
 }
 
-/* הלוגו למעלה במרכז, ומתחתיו שורת הקישורים */
+/* הלוגו במרכז, והקישורים סביבו בשורה אחת (או גולשים למטה במסכים צרים) */
 .navbar-inner {
   display: flex;
-  flex-direction: column;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  padding: 1rem 0 0.8rem;
+  gap: 1rem 1.6rem;
+  padding: 0.8rem 0;
 }
 
 .logo-img {
@@ -23,14 +23,7 @@
   border-radius: 50%;
   background: var(--white);
   box-shadow: var(--shadow-soft);
-}
-
-.nav-links {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem 1.4rem;
+  margin: 0 0.5rem; /* מרווח קל מהקישורים סביב הלוגו */
 }
 
 .nav-link {
@@ -78,27 +71,23 @@
   font-size: 1rem;
 }
 
-/* ===== מובייל/מסך צר: קומפקטי, כל מילות התפריט גלויות ===== */
+/* ===== מובייל/מסך צר: קומפקטי, הלוגו והקישורים גולשים יחד ===== */
 @media (max-width: 900px) {
   .navbar-inner {
-    gap: 0.4rem;
+    gap: 0.5rem 0.6rem;
     padding: 0.6rem 0.5rem;
   }
 
   .logo-img {
-    width: 46px;
-    height: 46px;
-  }
-
-  .nav-links {
-    gap: 0.35rem 0.55rem;
-    width: 100%;
+    width: 48px;
+    height: 48px;
+    margin: 0;
   }
 
   /* מטרות מגע נוחות + הדגשה כחולה ברורה בעמוד הפעיל ובלחיצה */
   .nav-link {
     font-size: 0.92rem;
-    padding: 0.32rem 0.85rem;
+    padding: 0.35rem 0.8rem;
     border-radius: 999px;
     transition: color 0.15s ease, background 0.2s ease, transform 0.12s ease;
   }
@@ -119,9 +108,8 @@
   }
 
   /* תכונה גבוהה יותר כדי לגבור על .btn ולהקטין את כפתור הסניפים */
-  .nav-links .branches-btn {
-    padding: 0.3rem 0.9rem;
-    font-size: 0.85rem;
-    gap: 0.3rem;
+  .navbar-inner .branches-btn {
+    padding: 0.35rem 0.9rem;
+    font-size: 0.9rem;
   }
 }
