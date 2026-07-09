@@ -234,16 +234,18 @@ export default function BagHero() {
               alt="הפינה המתוקה — טעם של קיץ בכל כפית"
               className="poster-img"
             />
-            {/* אזורי לחיצה שקופים מעל התפריט המצויר שבתמונה */}
+            {/* אזורי לחיצה מעל התפריט המצויר שבתמונה */}
             {heroNav.map((h) => (
               <Link
                 key={h.label}
                 to={h.to}
                 aria-label={h.label}
                 title={h.label}
-                className="poster-nav-spot"
+                className={`poster-nav-spot ${!h.label.includes('לוגו') ? 'has-text' : ''}`}
                 style={{ left: `${h.left}%`, top: `${h.top}%`, width: `${h.width}%`, height: `${h.height}%` }}
-              />
+              >
+                {!h.label.includes('לוגו') && h.label}
+              </Link>
             ))}
           </div>
         </div>
