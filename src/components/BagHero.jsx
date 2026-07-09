@@ -22,13 +22,16 @@ const HOME_PHOTO_PC = '/images/home-hero-pc.png';
 
 /* אזורי לחיצה מעל התפריט המצויר שבתמונת הפוסטר (מובייל, אחוזים מתוך 863×1823) */
 const POSTER_NAV = [
-  { to: '/', label: 'דף הבית', left: 88, top: 9, width: 11, height: 3.4 },
-  { to: '/flavors', label: 'הטעמים שלנו', left: 66, top: 9, width: 18.5, height: 3.4 },
-  { to: '/deals', label: 'מבצעים', left: 53.5, top: 9, width: 11, height: 3.4 },
-  { to: '/packages', label: 'מארזים', left: 43.5, top: 9, width: 10, height: 3.4 },
-  { to: '/about', label: 'אודות', left: 33.5, top: 9, width: 8.5, height: 3.4 },
-  { to: '/contact', label: 'צור קשר', left: 14, top: 9, width: 14, height: 3.4 },
-  { to: '/branches', label: 'סניפים', left: 12.5, top: 2.3, width: 17, height: 4.8 },
+  // Row 1
+  { to: '/', label: 'דף הבית', left: 77, top: 10.5, width: 20, height: 3.5 },
+  { to: '/flavors', label: 'הטעמים שלנו', left: 54, top: 10.5, width: 20, height: 3.5 },
+  { to: '/packages', label: 'מארזים', left: 31, top: 10.5, width: 20, height: 3.5 },
+  { to: '/deals', label: 'מבצעים', left: 8, top: 10.5, width: 20, height: 3.5 },
+  // Row 2
+  { to: '/about', label: 'אודות', left: 65, top: 14.5, width: 20, height: 3.5 },
+  { to: '/contact', label: 'צור קשר', left: 42, top: 14.5, width: 20, height: 3.5 },
+  { to: '/branches', label: 'סניפים', left: 19, top: 14.5, width: 20, height: 3.5 },
+  // Logo
   { to: '/', label: 'לוגו — דף הבית', left: 41.5, top: 0.8, width: 17, height: 8 },
 ];
 

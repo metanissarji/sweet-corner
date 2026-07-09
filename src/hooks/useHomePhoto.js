@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const HOME_PHOTO = '/images/home-hero.jpg';
+export const HOME_PHOTO = '/images/home-hero-mobile.png';
 export const BAG_PHOTO = '/images/bag-hero.jpg';
 export const BAG_CLOSED = '/images/bag-closed.jpg';
 
