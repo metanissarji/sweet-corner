@@ -241,7 +241,7 @@ export default function BagHero() {
                 to={h.to}
                 aria-label={h.label}
                 title={h.label}
-                className={`poster-nav-spot ${!h.label.includes('לוגו') ? 'has-text' : ''}`}
+                className={`poster-nav-spot ${!h.label.includes('לוגו') ? 'has-text' : 'is-logo'}`}
                 style={{ left: `${h.left}%`, top: `${h.top}%`, width: `${h.width}%`, height: `${h.height}%` }}
               >
                 {!h.label.includes('לוגו') && h.label}

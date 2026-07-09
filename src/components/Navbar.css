@@ -23,11 +23,6 @@
   border-radius: 50%;
   background: var(--white);
   box-shadow: var(--shadow-soft);
-  transition: transform 0.2s ease;
-}
-
-.logo:hover .logo-img {
-  transform: rotate(-8deg) scale(1.08);
 }
 
 .nav-links {

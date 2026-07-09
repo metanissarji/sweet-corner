@@ -108,6 +108,17 @@
   transform: scale(0.96);
 }
 
+/* הסרת אנימציות ורקעים מהלוגו */
+.poster-nav-spot.is-logo:hover,
+.poster-nav-spot.is-logo:focus-visible,
+.poster-nav-spot.is-logo:active {
+  background: none;
+  transform: none;
+}
+.poster-nav-spot.is-logo::after {
+  display: none;
+}
+
 @keyframes posterIn {
   from { opacity: 0; transform: scale(1.03) translateY(10px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
