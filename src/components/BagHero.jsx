@@ -18,7 +18,7 @@ const BAG_RECT = { left: 33.5, top: 27, width: 32, height: 48.5 };
 const MOUTH = { x: 49.5, y: 37.5 };
 
 /* תמונת עמוד הבית לדסקטופ (רוחבית 16:9) — ממלאה את כל המסך */
-const HOME_PHOTO_PC = '/images/home-hero-pc.jpg';
+const HOME_PHOTO_PC = '/images/home-hero-pc.png';
 
 /* אזורי לחיצה מעל התפריט המצויר שבתמונת הפוסטר (מובייל, אחוזים מתוך 863×1823) */
 const POSTER_NAV = [
