@@ -479,50 +479,51 @@ img {
 
 /* ===== עיצוב רקע ייעודי למסכי מחשב (PC/Laptops) ===== */
 @media (min-width: 1024px) {
-  body {
+  .page-bg-pc {
     background-image: url('/images/section-bg-pc.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center top;
     background-repeat: no-repeat;
+    min-height: 100vh;
   }
 
   /* התאמת צבעי הטקסט שיהיו קריאים על הרקע הכחול הכהה */
-  .section-title, 
-  .page-header h1, 
-  .page-header p,
-  .home-section-sub {
+  body.page-bg-pc .section-title, 
+  body.page-bg-pc .page-header h1, 
+  body.page-bg-pc .page-header p,
+  body.page-bg-pc .home-section-sub {
     color: var(--white) !important;
   }
 
-  .section-title .highlight {
+  body.page-bg-pc .section-title .highlight {
     color: var(--yellow) !important; /* צהוב בולט יותר על כחול */
   }
 
-  .feature-strip {
+  body.page-bg-pc .feature-strip {
     background: transparent !important;
   }
 
-  .feature h3 {
+  body.page-bg-pc .feature h3 {
     color: var(--white) !important;
   }
   
-  .feature p {
+  body.page-bg-pc .feature p {
     color: var(--white) !important;
     opacity: 0.85;
   }
 
   /* התאמת סרגל הניווט (Navbar) שיהיה שקוף וישתלב עם הרקע */
-  .navbar {
+  body.page-bg-pc .navbar {
     background: transparent !important;
     border-bottom: none !important;
   }
   
-  .nav-links a {
+  body.page-bg-pc .nav-links a {
     color: var(--white) !important;
   }
   
-  .nav-links a.active::after {
+  body.page-bg-pc .nav-links a.active::after {
     background: var(--yellow) !important;
   }
 }

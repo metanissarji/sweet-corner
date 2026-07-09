@@ -35,6 +35,15 @@ export default function App() {
   // לכן מסתירים את התפריט הרגיל שם כדי שלא יופיע תפריט כפול.
   const posterHome = pathname === '/' && homePhotoExists === true;
 
+  useEffect(() => {
+    const pcBgPages = ['/flavors', '/deals', '/about', '/contact', '/branches'];
+    if (pcBgPages.includes(pathname)) {
+      document.body.classList.add('page-bg-pc');
+    } else {
+      document.body.classList.remove('page-bg-pc');
+    }
+  }, [pathname]);
+
   return (
     <ProductsProvider>
       <OrdersProvider>
