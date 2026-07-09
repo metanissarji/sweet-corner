@@ -92,10 +92,12 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
   const isDealCat = category === 'deals';
   const isCatalogCat = category === 'dealCatalogs';
   const isFavoriteCat = category === 'favorites';
+  const isFreezerCat = category === 'freezerDeals';
+  const isFreezerProductCat = category === 'freezerProducts';
 
   const [form, setForm] = useState(() => {
     if (product) return { ...product };
-    if (isFlavorCat || isFavoriteCat) {
+    if (isFlavorCat || isFavoriteCat || isFreezerProductCat) {
       return { name: '', category: 'גלידות', tag: '', emoji: '🍦', image: '', desc: '', price: 0 };
     }
     if (isDealCat) {
@@ -103,6 +105,9 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
     }
     if (isCatalogCat) {
       return { badge: '', title: '', desc: '', emoji: '🗂️', image: '' };
+    }
+    if (isFreezerCat) {
+      return { qty: 0, price: 0, image: '', products: [] };
     }
     return { title: '', desc: '', items: '', price: 0, emoji: '📦', image: '' };
   });
@@ -130,7 +135,7 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
     onSave(form);
   }
 
-  const nameField = (isFlavorCat || isFavoriteCat) ? 'name' : 'title';
+  const nameField = (isFlavorCat || isFavoriteCat || isFreezerProductCat) ? 'name' : 'title';
 
   return (
     <div className="admin-modal-overlay" onClick={onClose}>
@@ -160,25 +165,43 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
             </div>
 
             {/* Name */}
-            <div className="admin-form-group">
-              <label>{isFlavorCat ? 'שם' : 'כותרת'}</label>
-              <input
-                type="text"
-                value={form[nameField] || ''}
-                onChange={(e) => set(nameField, e.target.value)}
-                required
-              />
-            </div>
+            {!isFreezerCat && (
+              <div className="admin-form-group">
+                <label>{isFlavorCat || isFreezerProductCat ? 'שם' : 'כותרת'}</label>
+                <input
+                  type="text"
+                  value={form[nameField] || ''}
+                  onChange={(e) => set(nameField, e.target.value)}
+                  required
+                />
+              </div>
+            )}
+
+            {/* Qty (for freezers) */}
+            {isFreezerCat && (
+              <div className="admin-form-group">
+                <label>כמות במבצע</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={form.qty || 0}
+                  onChange={(e) => set('qty', parseInt(e.target.value) || 0)}
+                  required
+                />
+              </div>
+            )}
 
             {/* Description */}
-            <div className="admin-form-group">
-              <label>תיאור</label>
-              <input
-                type="text"
-                value={form.desc || ''}
-                onChange={(e) => set('desc', e.target.value)}
-              />
-            </div>
+            {!isFreezerCat && (
+              <div className="admin-form-group">
+                <label>תיאור</label>
+                <input
+                  type="text"
+                  value={form.desc || ''}
+                  onChange={(e) => set('desc', e.target.value)}
+                />
+              </div>
+            )}
 
             <div className="admin-form-row">
               {/* Price - Hidden for Catalogs */}
@@ -338,11 +361,15 @@ function DeleteModal({ product, category, onConfirm, onClose }) {
    PRODUCT CARD
    ==================================================================== */
 function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete, onEnterCatalog, onMoveUp, onMoveDown, onMoveTop, onMoveBottom }) {
-  const nameField = (category === 'flavors' || category === 'favorites') ? 'name' : 'title';
+  const nameField = (category === 'flavors' || category === 'favorites' || category === 'freezerProducts') ? 'name' : 'title';
   const isCatalog = category === 'dealCatalogs';
+  const isFreezer = category === 'freezerDeals';
+  
+  const displayName = product[nameField] || (isFreezer ? `מקפיא מס' ${product.id} (${product.qty} ב-${product.price}₪)` : '');
 
   function handleMainClick() {
     if (isCatalog && onEnterCatalog) onEnterCatalog(product);
+    else if (isFreezer && onEnterCatalog) onEnterCatalog(product);
     else onEdit(product);
   }
 
@@ -374,7 +401,7 @@ function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete
         {category === 'packages' && product.items && (
           <span className="admin-card-category">{product.items}</span>
         )}
-        <h4 className="admin-card-name">{product[nameField]}</h4>
+        <h4 className="admin-card-name">{displayName}</h4>
         {product.desc && <p className="admin-card-desc">{product.desc}</p>}
         <p className="admin-card-price">
           {product.price !== undefined ? `₪${product.price}` : ''}
@@ -386,6 +413,11 @@ function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete
           {isCatalog && (
             <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEnterCatalog(product)} style={{background: 'var(--blue)', color: 'white', borderColor: 'var(--blue)'}}>
               📂 מוצרים
+            </button>
+          )}
+          {isFreezer && (
+            <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEnterCatalog(product)} style={{background: 'var(--blue)', color: 'white', borderColor: 'var(--blue)'}}>
+              🧊 גלידות בפנים
             </button>
           )}
           <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEdit(product)}>
@@ -412,8 +444,9 @@ function Toast({ message }) {
    ==================================================================== */
 const TABS = [
   { key: 'flavors', label: '🍦 טעמים', title: 'טעמים' },
-  { key: 'favorites', label: '⭐ מומלצים', title: 'הטעמים שכולם אוהבים' },
-  { key: 'dealCatalogs', label: '🗂️ מבצעים', title: 'מבצעים' },
+  { key: 'favorites', label: '🔥 הכי נמכרים', title: 'הטעמים שכולם אוהבים' },
+  { key: 'freezerDeals', label: '🧊 כל המבצעים', title: 'מבצעי מקפיאים' },
+  { key: 'dealCatalogs', label: '🗂️ קטלוגים', title: 'קטלוגים' },
   { key: 'packages', label: '📦 מארזים', title: 'מארזים' },
 ];
 
@@ -425,10 +458,10 @@ export default function Admin() {
   const [deleteModal, setDeleteModal] = useState(null);
   const [toast, setToast] = useState('');
 
-  const { flavors, favorites, dealCatalogs, deals, packages, updateProduct, addProduct, deleteProduct, moveProduct, resetToDefaults } =
+  const { flavors, favorites, freezerDeals, dealCatalogs, deals, packages, updateProduct, addProduct, deleteProduct, moveProduct, addFreezerProduct, updateFreezerProduct, deleteFreezerProduct, moveFreezerProduct, resetToDefaults } =
     useProducts();
 
-  const dataSets = { flavors, favorites, dealCatalogs, deals, packages };
+  const dataSets = { flavors, favorites, freezerDeals, dealCatalogs, deals, packages };
   
   let displayCategory = activeTab;
   let currentData = dataSets[activeTab] || [];
@@ -437,6 +470,9 @@ export default function Admin() {
   if (activeTab === 'dealCatalogs' && selectedCatalogId) {
     displayCategory = 'deals';
     currentData = deals.filter(d => d.catalogId === selectedCatalogId);
+  } else if (activeTab === 'freezerDeals' && selectedCatalogId) {
+    displayCategory = 'freezerProducts';
+    currentData = freezerDeals.find(f => f.id === selectedCatalogId)?.products || [];
   }
 
   const currentTab = TABS.find((t) => t.key === activeTab);
@@ -467,10 +503,18 @@ export default function Admin() {
     }
 
     if (editModal.mode === 'edit') {
-      updateProduct(displayCategory, editModal.product.id, form);
+      if (displayCategory === 'freezerProducts') {
+        updateFreezerProduct(selectedCatalogId, editModal.product.id, form);
+      } else {
+        updateProduct(displayCategory, editModal.product.id, form);
+      }
       showToast('✅ המוצר עודכן בהצלחה');
     } else {
-      addProduct(displayCategory, form);
+      if (displayCategory === 'freezerProducts') {
+        addFreezerProduct(selectedCatalogId, form);
+      } else {
+        addProduct(displayCategory, form);
+      }
       showToast('✅ מוצר חדש נוסף');
     }
     setEditModal(null);
@@ -482,25 +526,33 @@ export default function Admin() {
   }
 
   function handleDelete() {
-    deleteProduct(displayCategory, deleteModal.id);
+    if (displayCategory === 'freezerProducts') {
+      deleteFreezerProduct(selectedCatalogId, deleteModal.id);
+    } else {
+      deleteProduct(displayCategory, deleteModal.id);
+    }
     showToast('🗑️ המוצר נמחק');
     setDeleteModal(null);
   }
 
   function handleMoveUp(product) {
-    moveProduct(displayCategory, product.id, 'up', selectedCatalogId);
+    if (displayCategory === 'freezerProducts') moveFreezerProduct(selectedCatalogId, product.id, 'up');
+    else moveProduct(displayCategory, product.id, 'up', selectedCatalogId);
   }
 
   function handleMoveDown(product) {
-    moveProduct(displayCategory, product.id, 'down', selectedCatalogId);
+    if (displayCategory === 'freezerProducts') moveFreezerProduct(selectedCatalogId, product.id, 'down');
+    else moveProduct(displayCategory, product.id, 'down', selectedCatalogId);
   }
 
   function handleMoveTop(product) {
-    moveProduct(displayCategory, product.id, 'top', selectedCatalogId);
+    if (displayCategory === 'freezerProducts') moveFreezerProduct(selectedCatalogId, product.id, 'top');
+    else moveProduct(displayCategory, product.id, 'top', selectedCatalogId);
   }
 
   function handleMoveBottom(product) {
-    moveProduct(displayCategory, product.id, 'bottom', selectedCatalogId);
+    if (displayCategory === 'freezerProducts') moveFreezerProduct(selectedCatalogId, product.id, 'bottom');
+    else moveProduct(displayCategory, product.id, 'bottom', selectedCatalogId);
   }
 
   /* ---- Not logged in ---- */
@@ -566,20 +618,23 @@ export default function Admin() {
       </div>
 
       <div className="admin-actions-bar">
-        {activeTab === 'dealCatalogs' && selectedCatalogId ? (
+        {(activeTab === 'dealCatalogs' || activeTab === 'freezerDeals') && selectedCatalogId ? (
           <div style={{display: 'flex', gap: '1rem', alignItems: 'center'}}>
             <button className="admin-btn-ghost" onClick={() => setSelectedCatalogId(null)}>
-              ← חזרה לכל הקטלוגים
+              ← חזרה לכל {activeTab === 'dealCatalogs' ? 'הקטלוגים' : 'המבצעים'}
             </button>
             <h2 className="admin-section-title">
-              {dealCatalogs.find(c => c.id === selectedCatalogId)?.title} — מוצרים
+              {activeTab === 'dealCatalogs' 
+                ? `${dealCatalogs.find(c => c.id === selectedCatalogId)?.title} — מוצרים`
+                : `מקפיא מס' ${selectedCatalogId} — גלידות בפנים`
+              }
             </h2>
           </div>
         ) : (
           <h2 className="admin-section-title">{currentTab?.title}</h2>
         )}
         <button className="btn btn-pink admin-btn-add" onClick={openAdd}>
-          ➕ הוספת {activeTab === 'dealCatalogs' && !selectedCatalogId ? 'קטלוג' : 'מוצר'}
+          ➕ הוספת {((activeTab === 'dealCatalogs' || activeTab === 'freezerDeals') && !selectedCatalogId) ? (activeTab === 'dealCatalogs' ? 'קטלוג' : 'מקפיא מבצע') : 'מוצר'}
         </button>
       </div>
 

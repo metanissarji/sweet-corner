@@ -111,6 +111,69 @@ export function ProductsProvider({ children }) {
     });
   }
 
+  function addFreezerProduct(freezerId, product) {
+    setData((prev) => ({
+      ...prev,
+      freezerDeals: prev.freezerDeals.map((fd) => {
+        if (fd.id === freezerId) {
+          const maxId = fd.products.reduce((max, p) => Math.max(max, p.id || 0), 0);
+          return { ...fd, products: [...(fd.products || []), { ...product, id: maxId + 1 }] };
+        }
+        return fd;
+      }),
+    }));
+  }
+
+  function updateFreezerProduct(freezerId, productId, updates) {
+    setData((prev) => ({
+      ...prev,
+      freezerDeals: prev.freezerDeals.map((fd) => {
+        if (fd.id === freezerId) {
+          return {
+            ...fd,
+            products: (fd.products || []).map((p) => (p.id === productId ? { ...p, ...updates } : p)),
+          };
+        }
+        return fd;
+      }),
+    }));
+  }
+
+  function deleteFreezerProduct(freezerId, productId) {
+    setData((prev) => ({
+      ...prev,
+      freezerDeals: prev.freezerDeals.map((fd) => {
+        if (fd.id === freezerId) {
+          return { ...fd, products: (fd.products || []).filter((p) => p.id !== productId) };
+        }
+        return fd;
+      }),
+    }));
+  }
+
+  function moveFreezerProduct(freezerId, productId, direction) {
+    setData((prev) => {
+      const fdIndex = prev.freezerDeals.findIndex(fd => fd.id === freezerId);
+      if (fdIndex === -1) return prev;
+      
+      const fd = prev.freezerDeals[fdIndex];
+      const arr = [...(fd.products || [])];
+      const index = arr.findIndex(p => p.id === productId);
+      if (index === -1) return prev;
+      
+      const item = arr.splice(index, 1)[0];
+      if (direction === 'up') arr.splice(Math.max(0, index - 1), 0, item);
+      else if (direction === 'down') arr.splice(Math.min(arr.length, index + 1), 0, item);
+      else if (direction === 'top') arr.unshift(item);
+      else if (direction === 'bottom') arr.push(item);
+      
+      const nextFreezers = [...prev.freezerDeals];
+      nextFreezers[fdIndex] = { ...fd, products: arr };
+      
+      return { ...prev, freezerDeals: nextFreezers };
+    });
+  }
+
   return (
     <ProductsContext.Provider
       value={{
@@ -119,6 +182,10 @@ export function ProductsProvider({ children }) {
         addProduct,
         deleteProduct,
         moveProduct,
+        addFreezerProduct,
+        updateFreezerProduct,
+        deleteFreezerProduct,
+        moveFreezerProduct,
         resetToDefaults,
       }}
     >
