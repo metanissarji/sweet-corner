@@ -5,7 +5,6 @@ const links = [
   { to: '/', label: 'דף הבית' },
   { to: '/flavors', label: 'הטעמים שלנו' },
   { to: '/deals', label: 'מבצעים' },
-  { to: '/about', label: 'אודות' },
   { to: '/contact', label: 'צור קשר' },
 ];
 

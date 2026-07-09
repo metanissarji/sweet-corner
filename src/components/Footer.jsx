@@ -28,7 +28,6 @@ export default function Footer() {
           <h4>שירות לקוחות</h4>
           <ul>
             <li><Link to="/contact">צור קשר</Link></li>
-            <li><Link to="/about">אודות</Link></li>
             <li><a href={PHONE_LINK}>📞 {PHONE}</a></li>
             <li><a href={INSTAGRAM} target="_blank" rel="noreferrer">📸 {INSTAGRAM_HANDLE}</a></li>
           </ul>
