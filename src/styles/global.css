@@ -477,53 +477,57 @@ img {
   color: var(--pink);
 }
 
-/* ===== עיצוב רקע ייעודי למסכי מחשב (PC/Laptops) ===== */
+/* ===== עיצוב רקע ייעודי לעמודי תוכן (כל המסכים) ===== */
+.page-bg-sections {
+  background-image: url('/images/section-bg-mobile.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center top;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
 @media (min-width: 1024px) {
-  .page-bg-pc {
+  .page-bg-sections {
     background-image: url('/images/section-bg-pc.png');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center top;
-    background-repeat: no-repeat;
-    min-height: 100vh;
   }
+}
 
-  /* התאמת צבעי הטקסט שיהיו קריאים על הרקע הכחול הכהה */
-  body.page-bg-pc .section-title, 
-  body.page-bg-pc .page-header h1, 
-  body.page-bg-pc .page-header p,
-  body.page-bg-pc .home-section-sub {
-    color: var(--white) !important;
-  }
+/* התאמת צבעי הטקסט שיהיו קריאים על הרקע הכחול הכהה */
+body.page-bg-sections .section-title, 
+body.page-bg-sections .page-header h1, 
+body.page-bg-sections .page-header p,
+body.page-bg-sections .home-section-sub {
+  color: var(--white) !important;
+}
 
-  body.page-bg-pc .section-title .highlight {
-    color: var(--yellow) !important; /* צהוב בולט יותר על כחול */
-  }
+body.page-bg-sections .section-title .highlight {
+  color: var(--yellow) !important; /* צהוב בולט יותר על כחול */
+}
 
-  body.page-bg-pc .feature-strip {
-    background: transparent !important;
-  }
+body.page-bg-sections .feature-strip {
+  background: transparent !important;
+}
 
-  body.page-bg-pc .feature h3 {
-    color: var(--white) !important;
-  }
-  
-  body.page-bg-pc .feature p {
-    color: var(--white) !important;
-    opacity: 0.85;
-  }
+body.page-bg-sections .feature h3 {
+  color: var(--white) !important;
+}
 
-  /* התאמת סרגל הניווט (Navbar) שיהיה שקוף וישתלב עם הרקע */
-  body.page-bg-pc .navbar {
-    background: transparent !important;
-    border-bottom: none !important;
-  }
-  
-  body.page-bg-pc .nav-links a {
-    color: var(--white) !important;
-  }
-  
-  body.page-bg-pc .nav-links a.active::after {
-    background: var(--yellow) !important;
-  }
+body.page-bg-sections .feature p {
+  color: var(--white) !important;
+  opacity: 0.85;
+}
+
+/* התאמת סרגל הניווט (Navbar) שיהיה שקוף וישתלב עם הרקע */
+body.page-bg-sections .navbar {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+body.page-bg-sections .nav-links a {
+  color: var(--white) !important;
+}
+
+body.page-bg-sections .nav-links a.active::after {
+  background: var(--yellow) !important;
 }

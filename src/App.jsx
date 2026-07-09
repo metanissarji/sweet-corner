@@ -38,9 +38,9 @@ export default function App() {
   useEffect(() => {
     const pcBgPages = ['/flavors', '/deals', '/about', '/contact', '/branches'];
     if (pcBgPages.includes(pathname)) {
-      document.body.classList.add('page-bg-pc');
+      document.body.classList.add('page-bg-sections');
     } else {
-      document.body.classList.remove('page-bg-pc');
+      document.body.classList.remove('page-bg-sections');
     }
   }, [pathname]);
 
