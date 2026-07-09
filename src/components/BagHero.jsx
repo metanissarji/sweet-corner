@@ -34,7 +34,7 @@ const POSTER_NAV = [
 
 /* אזורי לחיצה לתמונת הדסקטופ (אחוזים מתוך 1672×941) */
 const POSTER_NAV_PC = [
-  { to: '/', label: 'דף הבית', left: 71.5, top: 3.4, width: 6.5, height: 4.6 },
+  { to: '/', label: 'דף הבית', left: 74.8, top: 3.4, width: 6.5, height: 4.6 },
   { to: '/flavors', label: 'הטעמים שלנו', left: 63.3, top: 3.4, width: 9, height: 4.6 },
   { to: '/packages', label: 'מארזים', left: 55, top: 3.4, width: 6, height: 4.6 },
   { to: '/deals', label: 'מבצעים', left: 39, top: 3.4, width: 6.5, height: 4.6 },
