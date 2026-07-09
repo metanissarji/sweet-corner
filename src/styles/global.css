@@ -479,7 +479,7 @@ img {
 
 /* ===== עיצוב רקע ייעודי לעמודי תוכן (כל המסכים) ===== */
 .page-bg-sections {
-  background-image: url('/images/section-bg-mobile.jpg');
+  background-image: url('/images/section-bg-mobile.png');
   background-size: cover;
   background-attachment: fixed;
   background-position: center top;
