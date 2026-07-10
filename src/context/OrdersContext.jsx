@@ -20,6 +20,17 @@ export function OrdersProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
   }, [orders]);
 
+  // Sync state if another tab changes localStorage (e.g. a new order is placed)
+  useEffect(() => {
+    function handleStorageChange(e) {
+      if (e.key === STORAGE_KEY) {
+        setOrders(loadOrders());
+      }
+    }
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   /** Place a new order from the storefront checkout */
   function placeOrder({ items, customer, payment, total }) {
     const order = {
