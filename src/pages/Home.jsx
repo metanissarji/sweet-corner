@@ -180,7 +180,7 @@ function HomeFreezers() {
   }
 
   return (
-    <section className="bestsellers">
+    <section className="bestsellers deals-bg-section">
       <div className="container">
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>

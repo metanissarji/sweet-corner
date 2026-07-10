@@ -316,6 +316,31 @@
   }
 }
 
+/* ===== רקע כחול למבצעים ===== */
+.deals-bg-section {
+  background-image: url('/images/section-bg-mobile.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  color: var(--white);
+  padding: 3rem 0 4rem; /* קצת יותר מרווח לרקע */
+}
+
+@media (min-width: 1024px) {
+  .deals-bg-section {
+    background-image: url('/images/section-bg-pc.png');
+  }
+}
+
+.deals-bg-section .section-title,
+.deals-bg-section .home-section-sub {
+  color: var(--white) !important;
+}
+
+.deals-bg-section .section-title .highlight {
+  color: var(--yellow) !important;
+}
+
 /* ===== responsive ===== */
 .home-flavors-section {
   padding: 0.5rem 0 3.5rem;
