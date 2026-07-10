@@ -38,7 +38,8 @@ export function useAdminOrders() {
   useEffect(() => {
     if (!supabase) { setLoading(false); return; }
     refetch();
-    // עדכון חי: כל הזמנה חדשה / שינוי סטטוס / מחיקה מכל מכשיר משתקפים מיד
+
+    // 1) עדכון חי מיידי (Realtime) — כשעובד, הזמנות מופיעות בו-רגע
     const channel = supabase
       .channel('admin-orders')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, (p) => {
@@ -51,7 +52,20 @@ export function useAdminOrders() {
         setOrders((prev) => prev.filter((o) => o.id !== p.old.id));
       })
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
+
+    // 2) רשת ביטחון: רענון אוטומטי כל 5 שניות — מבטיח שהזמנות חדשות יופיעו
+    //    גם אם ה-Realtime לא נמסר, בלי צורך לרענן ידנית.
+    const poll = setInterval(refetch, 5000);
+
+    // 3) רענון מיידי כשחוזרים ללשונית (למשל אחרי שהטלפון היה נעול)
+    const onVisible = () => { if (document.visibilityState === 'visible') refetch(); };
+    document.addEventListener('visibilitychange', onVisible);
+
+    return () => {
+      supabase.removeChannel(channel);
+      clearInterval(poll);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, [refetch]);
 
   const setStatus = useCallback(async (id, status) => {

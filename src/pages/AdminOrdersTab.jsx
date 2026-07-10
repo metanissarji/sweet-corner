@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAdminOrders } from '../lib/useAdminOrders.js';
 import './AdminOrders.css';
 
@@ -214,6 +214,16 @@ export default function AdminOrdersTab({ showToast }) {
   const pending = orders.filter((o) => o.status === 'pending');
   const accepted = orders.filter((o) => o.status === 'accepted');
   const declined = orders.filter((o) => o.status === 'declined');
+
+  // התראה כשמגיעה הזמנה חדשה (כמו הודעה) — בלי להתריע בטעינה הראשונה
+  const prevCount = useRef(null);
+  useEffect(() => {
+    if (prevCount.current === null) { prevCount.current = orders.length; return; }
+    if (orders.length > prevCount.current) {
+      showToast('🔔 התקבלה הזמנה חדשה!');
+    }
+    prevCount.current = orders.length;
+  }, [orders.length, showToast]);
 
   const filtered = filter === 'all' ? orders
     : filter === 'pending' ? pending
