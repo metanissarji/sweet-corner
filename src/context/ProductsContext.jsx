@@ -32,6 +32,18 @@ export function ProductsProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
+  // Sync state if another tab changes localStorage (e.g. Admin changes a product)
+  useEffect(() => {
+    function handleStorageChange(e) {
+      if (e.key === STORAGE_KEY) {
+        const saved = loadFromStorage();
+        if (saved) setData(saved);
+      }
+    }
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   /* ---- helpers ---- */
   function updateProduct(category, id, updates) {
     setData((prev) => ({
