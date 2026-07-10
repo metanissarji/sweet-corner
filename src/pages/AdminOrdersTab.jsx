@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useOrders } from '../context/OrdersContext.jsx';
+import { useAdminOrders } from '../lib/useAdminOrders.js';
 import './AdminOrders.css';
 
 const PAYMENT_LABELS = { cash: '💵 מזומן', visa: '💳 ויזה / אשראי', 'apple-pay': '🍎 Apple Pay' };
@@ -207,9 +207,13 @@ function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
 
 /* ===== Orders Tab Main ===== */
 export default function AdminOrdersTab({ showToast }) {
-  const { orders, pending, accepted, declined, acceptOrder, declineOrder, deleteOrder, clearAllOrders } = useOrders();
+  const { orders, loading, setStatus, remove, clearAll } = useAdminOrders();
   const [filter, setFilter] = useState('all');
   const [receiptOrder, setReceiptOrder] = useState(null);
+
+  const pending = orders.filter((o) => o.status === 'pending');
+  const accepted = orders.filter((o) => o.status === 'accepted');
+  const declined = orders.filter((o) => o.status === 'declined');
 
   const filtered = filter === 'all' ? orders
     : filter === 'pending' ? pending
@@ -217,17 +221,17 @@ export default function AdminOrdersTab({ showToast }) {
     : declined;
 
   function handleAccept(id) {
-    acceptOrder(id);
+    setStatus(id, 'accepted');
     showToast('✅ ההזמנה אושרה');
   }
 
   function handleDecline(id) {
-    declineOrder(id);
+    setStatus(id, 'declined');
     showToast('❌ ההזמנה נדחתה');
   }
 
   function handleDelete(id) {
-    deleteOrder(id);
+    remove(id);
     showToast('🗑️ ההזמנה נמחקה');
   }
 
@@ -236,7 +240,7 @@ export default function AdminOrdersTab({ showToast }) {
       <div className="admin-section-header">
         <h2>הזמנות <span className="item-count">({orders.length} סה״כ)</span></h2>
         {orders.length > 0 && (
-          <button className="admin-btn-add" style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }} onClick={clearAllOrders}>
+          <button className="admin-btn-add" style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }} onClick={clearAll}>
             🗑️ מחיקת הכל
           </button>
         )}
@@ -256,7 +260,12 @@ export default function AdminOrdersTab({ showToast }) {
         ))}
       </div>
 
-      {filtered.length === 0 ? (
+      {loading && orders.length === 0 ? (
+        <div className="orders-empty">
+          <span className="empty-icon">⏳</span>
+          <p>טוען הזמנות…</p>
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="orders-empty">
           <span className="empty-icon">📋</span>
           <p>{filter === 'all' ? 'אין הזמנות עדיין' : 'אין הזמנות בקטגוריה זו'}</p>

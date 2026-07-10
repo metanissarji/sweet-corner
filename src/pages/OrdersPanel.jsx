@@ -1,84 +1,69 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase.js';
 import AdminOrdersTab from './AdminOrdersTab.jsx';
 import './Admin.css';
 
-const ORDERS_PIN = '1234';
+const inputStyle = {
+  width: '100%',
+  padding: '0.8rem 1rem',
+  margin: '0.4rem 0',
+  border: '2px solid #e5d5c8',
+  borderRadius: 12,
+  fontFamily: 'inherit',
+  fontSize: '1rem',
+  boxSizing: 'border-box',
+};
 
 /* ====================================================================
-   LOGIN SCREEN
+   LOGIN SCREEN — התחברות מנהל דרך Supabase (אימייל + סיסמה)
    ==================================================================== */
-function LoginScreen({ onLogin }) {
-  const [pin, setPin] = useState(['', '', '', '']);
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const refs = [useRef(), useRef(), useRef(), useRef()];
+function LoginScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
 
-  function handleChange(idx, value) {
-    if (!/^\d*$/.test(value)) return;
-    const next = [...pin];
-    next[idx] = value.slice(-1);
-    setPin(next);
-    setError(false);
-    if (value && idx < 3) refs[idx + 1].current?.focus();
-  }
-
-  function handleKeyDown(idx, e) {
-    if (e.key === 'Backspace' && !pin[idx] && idx > 0) {
-      refs[idx - 1].current?.focus();
-    }
-  }
-
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const code = pin.join('');
-    if (code.length < 4) {
-      setError(true);
-      setErrorMsg('הזינו 4 ספרות');
-      return;
-    }
-    if (code === ORDERS_PIN) {
-      onLogin();
-    } else {
-      setError(true);
-      setErrorMsg('קוד שגוי — נסו שוב');
-      setPin(['', '', '', '']);
-      refs[0].current?.focus();
-    }
+    if (!supabase) { setError('החיבור לשרת אינו זמין כרגע'); return; }
+    setBusy(true);
+    setError('');
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    setBusy(false);
+    if (error) setError('אימייל או סיסמה שגויים');
   }
-
-  useEffect(() => {
-    refs[0].current?.focus();
-  }, []);
 
   return (
     <div className="admin-login-wrapper">
       <form className="admin-login-card" onSubmit={handleSubmit}>
         <span className="login-emoji">📋</span>
         <h1>לוח הזמנות</h1>
-        <p>הזינו את קוד הגישה בן 4 ספרות</p>
+        <p>התחברות מנהל</p>
 
-        <div className="pin-input-row">
-          {pin.map((digit, i) => (
-            <input
-              key={i}
-              ref={refs[i]}
-              type="text"
-              inputMode="numeric"
-              maxLength={1}
-              value={digit}
-              className={error ? 'pin-error' : ''}
-              onChange={(e) => handleChange(i, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(i, e)}
-              autoComplete="off"
-            />
-          ))}
-        </div>
+        <input
+          type="email"
+          placeholder="אימייל"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+          style={inputStyle}
+        />
+        <input
+          type="password"
+          placeholder="סיסמה"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+          style={inputStyle}
+        />
 
-        <button type="submit" className="admin-login-btn">
-          כניסה
+        <button type="submit" className="admin-login-btn" disabled={busy}>
+          {busy ? 'מתחבר…' : 'כניסה'}
         </button>
 
-        {errorMsg && error && <p className="login-error-msg">{errorMsg}</p>}
+        {error && <p className="login-error-msg">{error}</p>}
       </form>
     </div>
   );
@@ -95,7 +80,7 @@ function Toast({ message }) {
    ORDERS PANEL
    ==================================================================== */
 export default function OrdersPanel() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [session, setSession] = useState(undefined); // undefined = טוען, null = לא מחובר
   const [toast, setToast] = useState('');
 
   function showToast(msg) {
@@ -103,32 +88,41 @@ export default function OrdersPanel() {
     setTimeout(() => setToast(''), 2500);
   }
 
-  /* ---- Not logged in ---- */
-  if (!loggedIn) {
-    return <LoginScreen onLogin={() => setLoggedIn(true)} />;
+  useEffect(() => {
+    if (!supabase) { setSession(null); return; }
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  if (session === undefined) {
+    return (
+      <div className="admin-login-wrapper">
+        <p style={{ color: '#fff', fontSize: '1.1rem' }}>טוען…</p>
+      </div>
+    );
   }
+
+  if (!session) return <LoginScreen />;
 
   return (
     <div className="admin-dashboard">
-      {/* Top bar */}
       <header className="admin-topbar">
         <div className="admin-topbar-title">
           <span>📋</span>
           לוח הזמנות — הפינה המתוקה
         </div>
         <div className="admin-topbar-actions">
-          <button className="admin-btn-ghost admin-btn-logout" onClick={() => setLoggedIn(false)}>
+          <button className="admin-btn-ghost admin-btn-logout" onClick={() => supabase.auth.signOut()}>
             🚪 יציאה
           </button>
         </div>
       </header>
 
-      {/* Content */}
       <div className="admin-content" style={{ paddingTop: '2rem' }}>
         <AdminOrdersTab showToast={showToast} />
       </div>
 
-      {/* Toast */}
       {toast && <Toast message={toast} />}
     </div>
   );
