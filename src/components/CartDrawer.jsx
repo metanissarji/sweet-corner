@@ -6,6 +6,7 @@ import './CartDrawer.css';
 
 const FREE_DELIVERY = 250;
 const MIN_ORDER = 10;
+const BOX_FEE = 10; // בוקס ממותג + שקית קרח — נוסף לכל הזמנה כדי שהגלידה תגיע קפואה
 const CONFETTI = ['🍦', '🍫', '🍓', '🍪', '💗', '✨'];
 
 /* פיצוץ קונפטי בתוך המגירה בסיום הזמנה */
@@ -100,7 +101,8 @@ export default function CartDrawer() {
       })),
       customer,
       payment,
-      total,
+      boxFee: BOX_FEE,
+      total: total + BOX_FEE,
     });
 
     setOrderNumber(order.number);
@@ -121,6 +123,7 @@ export default function CartDrawer() {
   const progress = Math.min(100, Math.round((total / FREE_DELIVERY) * 100));
   const remaining = Math.max(0, FREE_DELIVERY - total);
   const meetsMinimum = total >= MIN_ORDER;
+  const grandTotal = total + BOX_FEE; // סה״כ לתשלום כולל הבוקס + שקית הקרח
 
   return (
     <>
@@ -136,10 +139,10 @@ export default function CartDrawer() {
 
       {/* שורת סל תחתונה — מובייל בלבד (אזור האגודל) */}
       {count > 0 && !drawerOpen && (
-        <button className="cart-bar" onClick={() => setDrawerOpen(true)} aria-label={`פתיחת הסל — ${count} פריטים בסך ₪${total}`}>
+        <button className="cart-bar" onClick={() => setDrawerOpen(true)} aria-label={`פתיחת הסל — ${count} פריטים בסך ₪${grandTotal}`}>
           <span className="cart-bar-count">🛒 {count}</span>
           <span className="cart-bar-label">לצפייה בסל ולתשלום</span>
-          <strong className="cart-bar-total">₪{total}</strong>
+          <strong className="cart-bar-total">₪{grandTotal}</strong>
         </button>
       )}
 
@@ -187,7 +190,7 @@ export default function CartDrawer() {
             </select>
             <div className="checkout-actions">
               <button type="button" className="btn btn-outline" onClick={() => setCheckout(false)}>חזרה לסל</button>
-              <button type="submit" className="btn btn-pink">אישור ותשלום ₪{total}</button>
+              <button type="submit" className="btn btn-pink">אישור ותשלום ₪{grandTotal}</button>
             </div>
           </form>
         ) : list.length === 0 ? (
@@ -195,6 +198,7 @@ export default function CartDrawer() {
             <span className="empty-cone" aria-hidden="true">🍦</span>
             <p>הסל עדיין ריק...</p>
             <p className="empty-hint">לחצו +1 על כל פינוק שבא לכם 😋</p>
+            <p className="empty-fee-note">כל הזמנה יוצאת בבוקס עם שקית קרח ❄️ (₪{BOX_FEE})</p>
           </div>
         ) : (
           <>
@@ -230,13 +234,23 @@ export default function CartDrawer() {
             </ul>
 
             <footer className="cart-footer">
-              <div className="cart-total">
-                <span>סה״כ לתשלום:</span>
-                <strong>₪{total}</strong>
+              <div className="cart-summary">
+                <div className="summary-row">
+                  <span>המוצרים שלכם</span>
+                  <span>₪{total}</span>
+                </div>
+                <div className="summary-row summary-fee">
+                  <span>בוקס + שקית קרח ❄️</span>
+                  <span>₪{BOX_FEE}</span>
+                </div>
+                <div className="summary-row summary-grand">
+                  <span>סה״כ לתשלום</span>
+                  <strong>₪{grandTotal}</strong>
+                </div>
               </div>
               {!meetsMinimum && (
                 <p className="min-order-notice">
-                  מינימום להזמנה ₪{MIN_ORDER} — המשלוח מגיע בקופסת גלידה עם קרח כדי שהיא לא תימס ❄️
+                  מינימום מוצרים להזמנה ₪{MIN_ORDER} — כדי שהמשלוח יצא בבוקס עם שקית קרח וישמור על הגלידה קפואה ❄️
                 </p>
               )}
               <button

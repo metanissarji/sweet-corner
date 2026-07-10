@@ -417,18 +417,45 @@
   background: var(--paper);
 }
 
-.cart-total {
+.cart-summary {
+  margin-bottom: 0.9rem;
+}
+
+.summary-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.9rem;
+  font-size: 0.98rem;
+  color: var(--brown);
+  padding: 0.15rem 0;
+}
+
+.summary-fee {
+  color: var(--brown-light);
+  font-size: 0.9rem;
+}
+
+.summary-grand {
+  margin-top: 0.55rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--cream-dark);
   font-size: 1.1rem;
 }
 
-.cart-total strong {
+.summary-grand strong {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   color: var(--pink);
+}
+
+.empty-fee-note {
+  margin-top: 0.9rem;
+  font-size: 0.82rem;
+  color: var(--brown-light);
+  background: var(--white);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
 }
 
 .min-order-notice {
