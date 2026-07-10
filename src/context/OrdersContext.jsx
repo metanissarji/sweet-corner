@@ -1,7 +1,27 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase.js';
 
 const OrdersContext = createContext(null);
 const STORAGE_KEY = 'sweet-corner-orders';
+
+/** שומר הזמנה חדשה ב-Supabase (אם מוגדר). לא חוסם — נכשל בשקט ל-localStorage. */
+async function saveOrderToSupabase(order) {
+  if (!supabase) return;
+  try {
+    const { error } = await supabase.from('orders').insert({
+      order_number: order.number,
+      status: order.status,
+      items: order.items,
+      customer: order.customer,
+      payment: order.payment,
+      box_fee: order.boxFee ?? null,
+      total: order.total,
+    });
+    if (error) console.error('Supabase order insert failed:', error.message);
+  } catch (e) {
+    console.error('Supabase order insert error:', e);
+  }
+}
 
 function loadOrders() {
   try {
@@ -32,7 +52,7 @@ export function OrdersProvider({ children }) {
   }, []);
 
   /** Place a new order from the storefront checkout */
-  function placeOrder({ items, customer, payment, total }) {
+  function placeOrder({ items, customer, payment, boxFee, total }) {
     const order = {
       id: nextOrderId++,
       number: Math.floor(1000 + Math.random() * 9000),
@@ -41,9 +61,11 @@ export function OrdersProvider({ children }) {
       items,                       // [{ name, price, qty, emoji }]
       customer,                    // { firstName, lastName, phone, email, address }
       payment,                     // 'cash' | 'visa' | 'apple-pay'
+      boxFee,                      // דמי בוקס + שקית קרח
       total,
     };
     setOrders((prev) => [order, ...prev]);
+    saveOrderToSupabase(order);    // שמירה מקבילה ב-Supabase (לא חוסמת)
     return order;
   }
 
