@@ -1,38 +1,52 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useMediaQuery from '../hooks/useMediaQuery.js';
 import './IntroOverlay.css';
 
-const DESKTOP_IMG = '/images/home-hero-pc.jpg';
-const MOBILE_IMG = '/images/home-hero.jpg';
-const HOLD = 5000;   // כמה זמן ה-home page מוצג
+const DESKTOP_VIDEO = '/videos/home-intro.mp4';          // אנימציית הפתיחה למחשב (16:9, ~4ש')
+const MOBILE_VIDEO = '/videos/home-intro-mobile.mp4';    // אנימציית הפתיחה לטלפון (9:16, ~4ש')
+const DESKTOP_POSTER = '/images/home-hero-pc.jpg';       // מוצג עד שהווידאו נטען
+const MOBILE_POSTER = '/images/home-hero.jpg';
+const MAX_HOLD = 9000; // חגורת ביטחון — אם הווידאו נתקע/לא נטען, ממשיכים בכל מקרה
 
 /**
- * מסך פתיחה: מציג את ה-home page ~5 שניות עם דמות שעפה ונוחתת על השקית,
- * ואז נמוג בעדינות וחושף את התוכן שמתחת. (ללא מוזיקה)
+ * מסך פתיחה: מנגן את וידאו האנימציה של עמוד הבית (ללא קול),
+ * וכשהוא מסתיים — נמוג בעדינות וחושף את התוכן שמתחת.
  */
 export default function IntroOverlay({ onDone }) {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [leaving, setLeaving] = useState(false);
+  const videoRef = useRef(null);
+  const leftRef = useRef(false);
+
+  function leave() {
+    if (leftRef.current) return;
+    leftRef.current = true;
+    setLeaving(true);
+    setTimeout(() => onDone && onDone(), 700);
+  }
 
   useEffect(() => {
-    const leaveT = setTimeout(() => setLeaving(true), HOLD);
-    const doneT = setTimeout(() => onDone && onDone(), HOLD + 700);
-    return () => {
-      clearTimeout(leaveT); clearTimeout(doneT);
-    };
-  }, [onDone]);
-
-  function skip() {
-    setLeaving(true);
-    setTimeout(() => onDone && onDone(), 600);
-  }
+    const v = videoRef.current;
+    if (v) v.play().catch(() => {}); // autoplay מושתק — מותר בדפדפנים
+    const safety = setTimeout(leave, MAX_HOLD);
+    return () => clearTimeout(safety);
+  }, []);
 
   return (
     <div className={`intro-overlay ${leaving ? 'intro-leaving' : ''}`}>
-      <img src={isMobile ? MOBILE_IMG : DESKTOP_IMG} className="intro-poster" alt="הפינה המתוקה" />
-      <div className="intro-flash" aria-hidden="true" />
-      <img src="/images/character.png" className="intro-character" alt="" aria-hidden="true" />
-      <button className="intro-skip" onClick={skip}>דלג ←</button>
+      <video
+        ref={videoRef}
+        className="intro-video"
+        src={isMobile ? MOBILE_VIDEO : DESKTOP_VIDEO}
+        poster={isMobile ? MOBILE_POSTER : DESKTOP_POSTER}
+        muted
+        autoPlay
+        playsInline
+        preload="auto"
+        onEnded={leave}
+        onError={leave}
+      />
+      <button className="intro-skip" onClick={leave}>דלג ←</button>
     </div>
   );
 }
