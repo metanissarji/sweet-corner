@@ -1,9 +1,27 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { flavors as defaultFlavors, favorites as defaultFavorites, dealCatalogs as defaultDealCatalogs, deals as defaultDeals, packages as defaultPackages, freezerDeals as defaultFreezerDeals } from '../data/products.js';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { supabase } from '../lib/supabase.js';
+import {
+  flavors as defaultFlavors,
+  favorites as defaultFavorites,
+  dealCatalogs as defaultDealCatalogs,
+  deals as defaultDeals,
+  packages as defaultPackages,
+  freezerDeals as defaultFreezerDeals,
+} from '../data/products.js';
 
 const ProductsContext = createContext(null);
-
 const STORAGE_KEY = 'sweet-corner-products';
+
+const DEFAULT_DATA = {
+  flavors: defaultFlavors,
+  favorites: defaultFavorites,
+  dealCatalogs: defaultDealCatalogs,
+  deals: defaultDeals,
+  packages: defaultPackages,
+  freezerDeals: defaultFreezerDeals,
+};
+
+const CATEGORIES = ['flavors', 'favorites', 'dealCatalogs', 'deals', 'packages', 'freezerDeals'];
 
 function loadFromStorage() {
   try {
@@ -16,23 +34,49 @@ function loadFromStorage() {
 }
 
 export function ProductsProvider({ children }) {
-  const [data, setData] = useState(() => {
-    const saved = loadFromStorage();
-    return {
-      flavors: saved?.flavors ?? defaultFlavors,
-      favorites: saved?.favorites ?? defaultFavorites,
-      dealCatalogs: saved?.dealCatalogs ?? defaultDealCatalogs,
-      deals: saved?.deals ?? defaultDeals,
-      packages: saved?.packages ?? defaultPackages,
-      freezerDeals: saved?.freezerDeals ?? defaultFreezerDeals,
-    };
-  });
+  const [data, setData] = useState(() => loadFromStorage() ?? DEFAULT_DATA);
+  const [loaded, setLoaded] = useState(false); // true once Supabase data arrives
+  const saveTimer = useRef(null);
 
+  /* ── 1. Load from Supabase on mount ── */
+  useEffect(() => {
+    if (!supabase) { setLoaded(true); return; }
+
+    supabase
+      .from('products_catalog')
+      .select('id, data')
+      .then(({ data: rows, error }) => {
+        if (error || !rows || rows.length === 0) { setLoaded(true); return; }
+        const merged = { ...DEFAULT_DATA };
+        rows.forEach((row) => { if (merged[row.id] !== undefined) merged[row.id] = row.data; });
+        setData(merged);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        setLoaded(true);
+      });
+
+    /* ── 2. Realtime: admin changes → all customers see update immediately ── */
+    const channel = supabase
+      .channel('products-sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products_catalog' }, (payload) => {
+        const { id, data: newData } = payload.new || {};
+        if (!id || !newData) return;
+        setData((prev) => {
+          const next = { ...prev, [id]: newData };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+          return next;
+        });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  /* ── 3. Persist to localStorage whenever data changes ── */
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
-  // Sync state if another tab changes localStorage (e.g. Admin changes a product)
+  /* ── 4. Cross-tab sync (same computer, different tabs) ── */
   useEffect(() => {
     function handleStorageChange(e) {
       if (e.key === STORAGE_KEY) {
@@ -44,145 +88,133 @@ export function ProductsProvider({ children }) {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  /* ---- helpers ---- */
+  /* ── 5. Debounced save to Supabase ── */
+  const saveToSupabase = useCallback((category, value) => {
+    if (!supabase) return;
+    clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(async () => {
+      await supabase.from('products_catalog').upsert({ id: category, data: value, updated_at: new Date().toISOString() });
+    }, 600); // wait 600ms after last change before saving
+  }, []);
+
+  /* ── Helpers ── */
   function updateProduct(category, id, updates) {
-    setData((prev) => ({
-      ...prev,
-      [category]: prev[category].map((item) =>
-        item.id === id ? { ...item, ...updates } : item
-      ),
-    }));
+    setData((prev) => {
+      const next = { ...prev, [category]: prev[category].map((item) => item.id === id ? { ...item, ...updates } : item) };
+      saveToSupabase(category, next[category]);
+      return next;
+    });
   }
 
   function addProduct(category, product) {
     setData((prev) => {
       const maxId = prev[category].reduce((max, p) => Math.max(max, p.id), 0);
-      return {
-        ...prev,
-        [category]: [...prev[category], { ...product, id: maxId + 1 }],
-      };
+      const next = { ...prev, [category]: [...prev[category], { ...product, id: maxId + 1 }] };
+      saveToSupabase(category, next[category]);
+      return next;
     });
   }
 
   function deleteProduct(category, id) {
-    setData((prev) => ({
-      ...prev,
-      [category]: prev[category].filter((item) => item.id !== id),
-    }));
+    setData((prev) => {
+      const next = { ...prev, [category]: prev[category].filter((item) => item.id !== id) };
+      saveToSupabase(category, next[category]);
+      return next;
+    });
   }
 
   function moveProduct(category, id, direction, catalogId = null) {
     setData((prev) => {
       const arr = prev[category];
-      
-      // Get the items currently visible in the view
       const viewArr = catalogId ? arr.filter(item => item.catalogId === catalogId) : [...arr];
       const indexInView = viewArr.findIndex(item => item.id === id);
-      
       if (indexInView === -1) return prev;
-      
-      // Remove the item from its current position
       const item = viewArr.splice(indexInView, 1)[0];
-      
-      // Insert it at the new position
-      if (direction === 'up') {
-        viewArr.splice(Math.max(0, indexInView - 1), 0, item);
-      } else if (direction === 'down') {
-        viewArr.splice(Math.min(viewArr.length, indexInView + 1), 0, item);
-      } else if (direction === 'top') {
-        viewArr.unshift(item);
-      } else if (direction === 'bottom') {
-        viewArr.push(item);
-      }
-      
-      // Merge back into the main array preserving original slots of this category
+      if (direction === 'up') viewArr.splice(Math.max(0, indexInView - 1), 0, item);
+      else if (direction === 'down') viewArr.splice(Math.min(viewArr.length, indexInView + 1), 0, item);
+      else if (direction === 'top') viewArr.unshift(item);
+      else if (direction === 'bottom') viewArr.push(item);
+
+      let newCategoryArr;
       if (catalogId) {
-        const viewIndices = arr
-          .map((it, idx) => it.catalogId === catalogId ? idx : -1)
-          .filter(idx => idx !== -1);
-          
-        const newArr = [...arr];
-        for (let i = 0; i < viewIndices.length; i++) {
-          newArr[viewIndices[i]] = viewArr[i];
-        }
-        return { ...prev, [category]: newArr };
+        const viewIndices = arr.map((it, idx) => it.catalogId === catalogId ? idx : -1).filter(idx => idx !== -1);
+        newCategoryArr = [...arr];
+        for (let i = 0; i < viewIndices.length; i++) newCategoryArr[viewIndices[i]] = viewArr[i];
       } else {
-        return { ...prev, [category]: viewArr };
+        newCategoryArr = viewArr;
       }
+      const next = { ...prev, [category]: newCategoryArr };
+      saveToSupabase(category, next[category]);
+      return next;
     });
   }
 
   function resetToDefaults() {
-    setData({
-      flavors: defaultFlavors,
-      favorites: defaultFavorites,
-      dealCatalogs: defaultDealCatalogs,
-      deals: defaultDeals,
-      packages: defaultPackages,
-      freezerDeals: defaultFreezerDeals,
-    });
+    setData(DEFAULT_DATA);
+    CATEGORIES.forEach((cat) => saveToSupabase(cat, DEFAULT_DATA[cat]));
   }
 
   function addFreezerProduct(freezerId, product) {
-    setData((prev) => ({
-      ...prev,
-      freezerDeals: prev.freezerDeals.map((fd) => {
-        if (fd.id === freezerId) {
+    setData((prev) => {
+      const next = {
+        ...prev,
+        freezerDeals: prev.freezerDeals.map((fd) => {
+          if (fd.id !== freezerId) return fd;
           const maxId = fd.products.reduce((max, p) => Math.max(max, p.id || 0), 0);
           return { ...fd, products: [...(fd.products || []), { ...product, id: maxId + 1 }] };
-        }
-        return fd;
-      }),
-    }));
+        }),
+      };
+      saveToSupabase('freezerDeals', next.freezerDeals);
+      return next;
+    });
   }
 
   function updateFreezerProduct(freezerId, productId, updates) {
-    setData((prev) => ({
-      ...prev,
-      freezerDeals: prev.freezerDeals.map((fd) => {
-        if (fd.id === freezerId) {
-          return {
-            ...fd,
-            products: (fd.products || []).map((p) => (p.id === productId ? { ...p, ...updates } : p)),
-          };
-        }
-        return fd;
-      }),
-    }));
+    setData((prev) => {
+      const next = {
+        ...prev,
+        freezerDeals: prev.freezerDeals.map((fd) => {
+          if (fd.id !== freezerId) return fd;
+          return { ...fd, products: (fd.products || []).map((p) => p.id === productId ? { ...p, ...updates } : p) };
+        }),
+      };
+      saveToSupabase('freezerDeals', next.freezerDeals);
+      return next;
+    });
   }
 
   function deleteFreezerProduct(freezerId, productId) {
-    setData((prev) => ({
-      ...prev,
-      freezerDeals: prev.freezerDeals.map((fd) => {
-        if (fd.id === freezerId) {
+    setData((prev) => {
+      const next = {
+        ...prev,
+        freezerDeals: prev.freezerDeals.map((fd) => {
+          if (fd.id !== freezerId) return fd;
           return { ...fd, products: (fd.products || []).filter((p) => p.id !== productId) };
-        }
-        return fd;
-      }),
-    }));
+        }),
+      };
+      saveToSupabase('freezerDeals', next.freezerDeals);
+      return next;
+    });
   }
 
   function moveFreezerProduct(freezerId, productId, direction) {
     setData((prev) => {
       const fdIndex = prev.freezerDeals.findIndex(fd => fd.id === freezerId);
       if (fdIndex === -1) return prev;
-      
       const fd = prev.freezerDeals[fdIndex];
       const arr = [...(fd.products || [])];
       const index = arr.findIndex(p => p.id === productId);
       if (index === -1) return prev;
-      
       const item = arr.splice(index, 1)[0];
       if (direction === 'up') arr.splice(Math.max(0, index - 1), 0, item);
       else if (direction === 'down') arr.splice(Math.min(arr.length, index + 1), 0, item);
       else if (direction === 'top') arr.unshift(item);
       else if (direction === 'bottom') arr.push(item);
-      
       const nextFreezers = [...prev.freezerDeals];
       nextFreezers[fdIndex] = { ...fd, products: arr };
-      
-      return { ...prev, freezerDeals: nextFreezers };
+      const next = { ...prev, freezerDeals: nextFreezers };
+      saveToSupabase('freezerDeals', next.freezerDeals);
+      return next;
     });
   }
 
@@ -190,6 +222,7 @@ export function ProductsProvider({ children }) {
     <ProductsContext.Provider
       value={{
         ...data,
+        loaded,
         updateProduct,
         addProduct,
         deleteProduct,
