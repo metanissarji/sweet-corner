@@ -126,7 +126,7 @@ function FlavorsPreview() {
   }
 
   return (
-    <section className="bestsellers">
+    <section className="bestsellers blue-bg-section">
       <div className="container">
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>
@@ -180,7 +180,7 @@ function HomeFreezers() {
   }
 
   return (
-    <section className="bestsellers deals-bg-section">
+    <section className="bestsellers blue-bg-section">
       <div className="container">
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>

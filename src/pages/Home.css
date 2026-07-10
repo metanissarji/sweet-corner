@@ -316,8 +316,8 @@
   }
 }
 
-/* ===== רקע כחול למבצעים ===== */
-.deals-bg-section {
+/* ===== רקע כחול למבצעים ולנמכרים ביותר ===== */
+.blue-bg-section {
   background-image: url('/images/section-bg-mobile.png');
   background-size: cover;
   background-position: center top;
@@ -327,17 +327,17 @@
 }
 
 @media (min-width: 1024px) {
-  .deals-bg-section {
+  .blue-bg-section {
     background-image: url('/images/section-bg-pc.png');
   }
 }
 
-.deals-bg-section .section-title,
-.deals-bg-section .home-section-sub {
+.blue-bg-section .section-title,
+.blue-bg-section .home-section-sub {
   color: var(--white) !important;
 }
 
-.deals-bg-section .section-title .highlight {
+.blue-bg-section .section-title .highlight {
   color: var(--yellow) !important;
 }
 
