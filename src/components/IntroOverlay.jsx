@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import useMediaQuery from '../hooks/useMediaQuery.js';
 import './IntroOverlay.css';
 
-const VIDEO_SRC = '/videos/home-intro.mp4';           // אנימציית הפתיחה (וידאו 16:9, ~4ש')
-const DESKTOP_POSTER = '/images/home-hero-pc.jpg';    // מוצג עד שהווידאו נטען
+const DESKTOP_VIDEO = '/videos/home-intro.mp4';          // אנימציית הפתיחה למחשב (16:9, ~4ש')
+const MOBILE_VIDEO = '/videos/home-intro-mobile.mp4';    // אנימציית הפתיחה לטלפון (9:16, ~4ש')
+const DESKTOP_POSTER = '/images/home-hero-pc.jpg';       // מוצג עד שהווידאו נטען
 const MOBILE_POSTER = '/images/home-hero.jpg';
 const MAX_HOLD = 9000; // חגורת ביטחון — אם הווידאו נתקע/לא נטען, ממשיכים בכל מקרה
 
@@ -36,7 +37,7 @@ export default function IntroOverlay({ onDone }) {
       <video
         ref={videoRef}
         className="intro-video"
-        src={VIDEO_SRC}
+        src={isMobile ? MOBILE_VIDEO : DESKTOP_VIDEO}
         poster={isMobile ? MOBILE_POSTER : DESKTOP_POSTER}
         muted
         autoPlay
