@@ -133,14 +133,14 @@ export default function CartDrawer() {
         onClick={() => setDrawerOpen(!drawerOpen)}
         aria-label={`סל הקניות — ${count} פריטים`}
       >
-        🛒
+        <img src="/images/cart-bag.png" alt="סל קניות" className="cart-bag-icon" />
         {count > 0 && <span className="fab-badge" key={count}>{count}</span>}
       </button>
 
       {/* שורת סל תחתונה — מובייל בלבד (אזור האגודל) */}
       {count > 0 && !drawerOpen && (
         <button className="cart-bar" onClick={() => setDrawerOpen(true)} aria-label={`פתיחת הסל — ${count} פריטים בסך ₪${grandTotal}`}>
-          <span className="cart-bar-count">🛒 {count}</span>
+          <span className="cart-bar-count"><img src="/images/cart-bag.png" alt="סל" className="cart-bag-icon-small" /> {count}</span>
           <span className="cart-bar-label">לצפייה בסל ולתשלום</span>
           <strong className="cart-bar-total">₪{grandTotal}</strong>
         </button>
