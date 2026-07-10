@@ -25,9 +25,19 @@ export default function IntroOverlay({ onDone }) {
     setTimeout(() => onDone && onDone(), 700);
   }
 
-  useEffect(() => {
+  // הפעלת הווידאו — במובייל autoplay מותר רק כשהווידאו באמת מושתק.
+  // React לא תמיד מסמן muted כתכונת-HTML, לכן מכריחים אותה דרך ה-ref.
+  function playVideo() {
     const v = videoRef.current;
-    if (v) v.play().catch(() => {}); // autoplay מושתק — מותר בדפדפנים
+    if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
+    const p = v.play();
+    if (p && p.catch) p.catch(() => {});
+  }
+
+  useEffect(() => {
+    playVideo();
     const safety = setTimeout(leave, MAX_HOLD);
     return () => clearTimeout(safety);
   }, []);
@@ -43,6 +53,8 @@ export default function IntroOverlay({ onDone }) {
         autoPlay
         playsInline
         preload="auto"
+        onLoadedData={playVideo}
+        onCanPlay={playVideo}
         onEnded={leave}
         onError={leave}
       />
