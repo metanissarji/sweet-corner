@@ -13,7 +13,7 @@ export default function Flavors() {
   return (
     <>
       <header className="page-header">
-        <h1>הטעמים שלנו</h1>
+        <h1>מיוחדים שלנו</h1>
         <p>קלאסיקות שאהובים, טעמים מיוחדים וכל מה שביניהם — בואו לטעום 🍦</p>
       </header>
 

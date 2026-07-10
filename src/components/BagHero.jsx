@@ -24,7 +24,7 @@ const HOME_PHOTO_PC = '/images/home-hero-pc.png';
 const POSTER_NAV = [
   // Row 1
   { to: '/', label: 'דף הבית', left: 70, top: 15, width: 20, height: 3.5 },
-  { to: '/flavors', label: 'הטעמים שלנו', left: 40, top: 15, width: 20, height: 3.5 },
+  { to: '/flavors', label: 'מיוחדים שלנו', left: 40, top: 15, width: 20, height: 3.5 },
   { to: '/deals', label: 'מבצעים', left: 10, top: 15, width: 20, height: 3.5 },
   // Row 2
   { to: '/contact', label: 'צור קשר', left: 40, top: 19, width: 20, height: 3.5 },
@@ -36,7 +36,7 @@ const POSTER_NAV = [
 /* אזורי לחיצה לתמונת הדסקטופ (אחוזים מתוך 1672×941) */
 const POSTER_NAV_PC = [
   { to: '/', label: 'דף הבית', left: 75, top: 3.4, width: 6.5, height: 4.6 },
-  { to: '/flavors', label: 'הטעמים שלנו', left: 64, top: 3.4, width: 9, height: 4.6 },
+  { to: '/flavors', label: 'מיוחדים שלנו', left: 64, top: 3.4, width: 9, height: 4.6 },
   { to: '/deals', label: 'מבצעים', left: 55, top: 3.4, width: 6.5, height: 4.6 },
   { to: '/contact', label: 'צור קשר', left: 29, top: 3.4, width: 7, height: 4.6 },
   { to: '/branches', label: 'סניפים', left: 17, top: 2.3, width: 9.5, height: 6 },

@@ -12,7 +12,7 @@ import './PhotoHero.css';
  */
 export const hotspots = [
   { to: '/',         label: 'דף הבית',       left: 64.6, top: 4.4, width: 6.0,  height: 6.0 },
-  { to: '/flavors',  label: 'הטעמים שלנו',   left: 54.2, top: 4.4, width: 8.8,  height: 6.0 },
+  { to: '/flavors',  label: 'מיוחדים שלנו',   left: 54.2, top: 4.4, width: 8.8,  height: 6.0 },
   { to: '/packages', label: 'מארזים',        left: 46.7, top: 4.4, width: 5.9,  height: 6.0 },
   { to: '/deals',    label: 'מבצעים',        left: 40.2, top: 4.4, width: 5.7,  height: 6.0 },
   { to: '/contact',  label: 'צור קשר',       left: 22.3, top: 4.4, width: 6.5,  height: 6.0 },

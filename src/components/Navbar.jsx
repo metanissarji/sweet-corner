@@ -3,7 +3,7 @@ import './Navbar.css';
 
 const links = [
   { to: '/', label: 'דף הבית' },
-  { to: '/flavors', label: 'הטעמים שלנו' },
+  { to: '/flavors', label: 'מיוחדים שלנו' },
   { to: '/deals', label: 'מבצעים' },
   { to: '/contact', label: 'צור קשר' },
 ];
@@ -16,7 +16,7 @@ export default function Navbar() {
           דף הבית
         </NavLink>
         <NavLink to="/flavors" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-          הטעמים שלנו
+          מיוחדים שלנו
         </NavLink>
         <NavLink to="/deals" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
           מבצעים

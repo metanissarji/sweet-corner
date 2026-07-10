@@ -17,7 +17,7 @@ export default function Footer() {
         <div className="footer-col">
           <h4>ניווט מהיר</h4>
           <ul>
-            <li><Link to="/flavors">הטעמים שלנו</Link></li>
+            <li><Link to="/flavors">מיוחדים שלנו</Link></li>
             <li><Link to="/deals">מבצעים</Link></li>
             <li><Link to="/packages">מארזים</Link></li>
             <li><Link to="/branches">סניפים</Link></li>
