@@ -453,7 +453,6 @@ const TABS = [
   { key: 'home', label: ' דף הבית', title: 'ניהול דף הבית' },
   { key: 'flavors', label: ' מיוחדים שלנו', title: 'מיוחדים שלנו' },
   { key: 'deals', label: ' מבצעים חמים', title: 'מבצעים חמים' },
-  { key: 'packages', label: ' מארזים', title: 'מארזים' },
 ];
 
 export default function Admin() {
@@ -483,11 +482,11 @@ export default function Admin() {
     }
   } else if (activeTab === 'deals') {
     if (selectedCatalogId) {
-      displayCategory = 'deals';
-      currentData = deals.filter(d => d.catalogId === selectedCatalogId);
+      displayCategory = 'freezerProducts';
+      currentData = freezerDeals.find(f => f.id === selectedCatalogId)?.products || [];
     } else {
-      displayCategory = 'dealCatalogs';
-      currentData = dealCatalogs;
+      displayCategory = 'freezerDeals';
+      currentData = freezerDeals;
     }
   }
 
@@ -628,13 +627,8 @@ export default function Admin() {
           </div>
           <div className="admin-stat-card">
             <span className="stat-emoji"></span>
-            <div className="stat-value">{deals.length}</div>
+            <div className="stat-value">{freezerDeals.length}</div>
             <div className="stat-label">מבצעים</div>
-          </div>
-          <div className="admin-stat-card">
-            <span className="stat-emoji"></span>
-            <div className="stat-value">{packages.length}</div>
-            <div className="stat-label">מארזים</div>
           </div>
         </div>
       </div>
@@ -661,7 +655,7 @@ export default function Admin() {
             <h2 className="admin-section-title">
               {displayCategory === 'deals' 
                 ? `${dealCatalogs.find(c => c.id === selectedCatalogId)?.title} — מוצרים`
-                : `מקפיא מס' ${selectedCatalogId} — גלידות בפנים`
+                : `מקפיא מבצע — גלידות בפנים`
               }
             </h2>
           </div>
