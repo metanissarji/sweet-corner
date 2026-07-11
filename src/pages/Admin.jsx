@@ -452,7 +452,7 @@ function Toast({ message }) {
 const TABS = [
   { key: 'home', label: ' דף הבית', title: 'ניהול דף הבית' },
   { key: 'flavors', label: ' מיוחדים שלנו', title: 'מיוחדים שלנו' },
-  { key: 'deals', label: ' מבצעים חמים', title: 'מבצעים חמים' },
+  { key: 'deals', label: ' מבצעים', title: 'מבצעים' },
 ];
 
 export default function Admin() {
