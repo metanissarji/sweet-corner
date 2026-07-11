@@ -65,7 +65,7 @@ export default function Home() {
 
           {/* מרכז — כותרת */}
           <div className="hero-center">
-            <div className="hero-doodle" aria-hidden="true"> ✦</div>
+            <div className="hero-doodle" aria-hidden="true"> </div>
             <h1 className="hero-title">
               <span className="title-pink">הפינה</span>
               <span className="title-brown">המתוקה</span>

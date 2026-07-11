@@ -286,9 +286,9 @@ export default function BagHero() {
               )}
               <div className="bag-glow" aria-hidden="true" />
               <div className="bag-shine" aria-hidden="true" />
-              <span className="bag-twinkle t1" aria-hidden="true">✦</span>
-              <span className="bag-twinkle t2" aria-hidden="true">✦</span>
-              <span className="bag-twinkle t3" aria-hidden="true">✦</span>
+              <span className="bag-twinkle t1" aria-hidden="true"></span>
+              <span className="bag-twinkle t2" aria-hidden="true"></span>
+              <span className="bag-twinkle t3" aria-hidden="true"></span>
             </div>
           </div>
           <div className="bag-shadow" aria-hidden="true" />

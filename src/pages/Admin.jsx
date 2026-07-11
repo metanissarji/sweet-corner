@@ -89,7 +89,7 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
       return { badge: '', title: '', desc: '', price: 0, oldPrice: 0, emoji: '', image: '', catalogId: selectedCatalogId || dealCatalogs?.[0]?.id || 1 };
     }
     if (isCatalogCat) {
-      return { badge: '', title: '', desc: '', emoji: '️', image: '' };
+      return { badge: '', title: '', desc: '', emoji: '', image: '' };
     }
     if (isFreezerCat) {
       return { qty: 0, price: 0, image: '', products: [] };
@@ -146,7 +146,7 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
     <div className="admin-modal-overlay" onClick={onClose}>
       <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
         <div className="admin-modal-header">
-          <h3>{mode === 'edit' ? 'עריכת מוצר ️' : 'מוצר חדש '}</h3>
+          <h3>{mode === 'edit' ? 'עריכת מוצר ' : 'מוצר חדש '}</h3>
           <button className="admin-modal-close" onClick={onClose}>✕</button>
         </div>
 
@@ -343,7 +343,7 @@ function DeleteModal({ product, category, onConfirm, onClose }) {
         </div>
         <div className="admin-modal-body">
           <div className="admin-delete-confirm">
-            <span className="delete-emoji">️</span>
+            <span className="delete-emoji"></span>
             <p>בטוחים שרוצים למחוק?</p>
             <p className="delete-name">{product[nameField]}</p>
           </div>
@@ -356,7 +356,7 @@ function DeleteModal({ product, category, onConfirm, onClose }) {
             style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }}
             onClick={onConfirm}
           >
-            ️ מחיקה
+             מחיקה
           </button>
         </div>
       </div>
@@ -395,7 +395,7 @@ function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete
           <span className="emoji-placeholder">{product.emoji}</span>
         )}
         <div className="admin-card-image-overlay">
-          <span>{isCatalog ? ' כניסה לקטלוג' : '️ עריכה'}</span>
+          <span>{isCatalog ? ' כניסה לקטלוג' : ' עריכה'}</span>
         </div>
       </div>
       <div className="admin-card-body">
@@ -428,10 +428,10 @@ function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete
             </button>
           )}
           <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEdit(product)}>
-            ️ עריכה
+             עריכה
           </button>
           <button className="admin-card-btn admin-card-btn-delete" onClick={() => onDelete(product)}>
-            ️ מחיקה
+             מחיקה
           </button>
         </div>
       </div>
@@ -453,7 +453,7 @@ const TABS = [
   { key: 'flavors', label: ' טעמים', title: 'טעמים' },
   { key: 'favorites', label: ' הכי נמכרים', title: 'הטעמים שכולם אוהבים' },
   { key: 'freezerDeals', label: ' כל המבצעים', title: 'מבצעי מקפיאים' },
-  { key: 'dealCatalogs', label: '️ קטלוגים', title: 'קטלוגים' },
+  { key: 'dealCatalogs', label: ' קטלוגים', title: 'קטלוגים' },
   { key: 'packages', label: ' מארזים', title: 'מארזים' },
 ];
 
@@ -546,7 +546,7 @@ export default function Admin() {
     } else {
       deleteProduct(displayCategory, deleteModal.id);
     }
-    showToast('️ המוצר נמחק');
+    showToast(' המוצר נמחק');
     setDeleteModal(null);
   }
 
@@ -609,7 +609,7 @@ export default function Admin() {
             <div className="stat-label">טעמים</div>
           </div>
           <div className="admin-stat-card">
-            <span className="stat-emoji">️</span>
+            <span className="stat-emoji"></span>
             <div className="stat-value">{dealCatalogs.length}</div>
             <div className="stat-label">קטלוגים</div>
           </div>
