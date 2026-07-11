@@ -4,7 +4,7 @@ import './FeatureStrip.css';
 /* פס נתונים מונפש: המספרים נספרים מ-0 כשהפס נכנס למסך (בהשראת עמודי מוצר מודרניים).
    כל המספרים אמיתיים — מינימום הזמנה, משלוח חינם, סניפים, מבצעי מקפיא. */
 const stats = [
-  { value: 10, prefix: '₪', title: 'מינימום הזמנה', text: 'כל משלוח יוצא בבוקס עם שקית קרח ️' },
+  { value: 10, prefix: '₪', title: 'מינימום הזמנה', text: 'כל משלוח יוצא בבוקס עם שקית קרח ' },
   { value: 250, prefix: '₪', title: 'משלוח חינם', text: 'בהזמנה מעל הסכום הזה' },
   { value: 6, prefix: '', title: 'סניפים בגליל', text: 'נצרת, נוף הגליל, יפיע ועוד' },
   { value: 15, prefix: '', title: 'מבצעי מקפיא', text: 'כמויות שוות במחיר מיוחד' },
@@ -50,7 +50,7 @@ export default function FeatureStrip() {
     <section className={`feature-strip ${visible ? 'stats-on' : ''}`} ref={ref}>
       <div className="container">
         <div className="stats-intro">
-          <h2>משלוח קפוא עד הבית ️</h2>
+          <h2>משלוח קפוא עד הבית </h2>
           <p>
             כל הזמנה יוצאת אליכם <strong>בבוקס ממותג של הפינה המתוקה עם שקית קרח</strong>,
             כדי שהכל יגיע קפוא ומושלם — ולכן הזמנה מתחילה מ־<strong>₪10</strong> בלבד.

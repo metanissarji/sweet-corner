@@ -42,7 +42,7 @@ function buildReceiptHTML(order) {
         <span>סה״כ לתשלום</span><span>₪${order.total}</span>
       </div>
       <div style="text-align:center;margin-top:1.2rem;font-size:0.78rem;color:#aaa">
-        <p>תודה שקניתם אצלנו! ️</p>
+        <p>תודה שקניתם אצלנו! </p>
         <p>הפינה המתוקה — טעם של קיץ בכל כפית</p>
       </div>
     </div>`;
@@ -66,7 +66,7 @@ function ReceiptModal({ order, onClose }) {
     const phone = order.customer.phone.replace(/[^0-9]/g, '');
     const msg = ` הפינה המתוקה — קבלה #${order.number}\n\n` +
       order.items.map((it) => `${it.emoji} ${it.name} x${it.qty} = ₪${it.qty * it.price}`).join('\n') +
-      `\n\n סה״כ: ₪${order.total}\n ההזמנה אושרה!\nתודה רבה ️`;
+      `\n\n סה״כ: ₪${order.total}\n ההזמנה אושרה!\nתודה רבה `;
     window.open(`https://wa.me/972${phone.startsWith('0') ? phone.slice(1) : phone}?text=${encodeURIComponent(msg)}`, '_blank');
   }
 
@@ -117,7 +117,7 @@ function ReceiptModal({ order, onClose }) {
               <span>סה״כ לתשלום</span><span>₪{order.total}</span>
             </div>
             <div className="receipt-footer">
-              <p>תודה שקניתם אצלנו! ️</p>
+              <p>תודה שקניתם אצלנו! </p>
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ function ReceiptModal({ order, onClose }) {
              שליחה בוואטסאפ
           </button>
           <button type="button" className="admin-btn-save" onClick={handlePrint}>
-            ️ הדפסה
+             הדפסה
           </button>
         </div>
       </div>
@@ -199,7 +199,7 @@ function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
             }}> הודעה ללקוח</button>
           </>
         )}
-        <button className="order-action-btn order-btn-delete" onClick={() => onDelete(order.id)}>️</button>
+        <button className="order-action-btn order-btn-delete" onClick={() => onDelete(order.id)}></button>
       </div>
     </div>
   );
@@ -220,7 +220,7 @@ export default function AdminOrdersTab({ showToast }) {
   useEffect(() => {
     if (prevCount.current === null) { prevCount.current = orders.length; return; }
     if (orders.length > prevCount.current) {
-      showToast('🔔 התקבלה הזמנה חדשה!');
+      showToast(' התקבלה הזמנה חדשה!');
     }
     prevCount.current = orders.length;
   }, [orders.length, showToast]);
@@ -242,7 +242,7 @@ export default function AdminOrdersTab({ showToast }) {
 
   function handleDelete(id) {
     remove(id);
-    showToast('️ ההזמנה נמחקה');
+    showToast(' ההזמנה נמחקה');
   }
 
   return (
@@ -251,7 +251,7 @@ export default function AdminOrdersTab({ showToast }) {
         <h2>הזמנות <span className="item-count">({orders.length} סה״כ)</span></h2>
         {orders.length > 0 && (
           <button className="admin-btn-add" style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }} onClick={clearAll}>
-            ️ מחיקת הכל
+             מחיקת הכל
           </button>
         )}
       </div>

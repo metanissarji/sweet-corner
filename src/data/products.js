@@ -22,7 +22,7 @@ export const dealCatalogs = [
   {
     id: 1,
     title: 'מבצעי קיץ חמים',
-    emoji: '️',
+    emoji: '',
     badge: 'קטלוג מבצעים',
     desc: 'כל המבצעים הכי שווים לעונה החמה',
     image: '/images/deal-one-plus-one.png',

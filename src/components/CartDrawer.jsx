@@ -167,7 +167,7 @@ export default function CartDrawer() {
           <div className="cart-success">
             <span className="success-icecream" aria-hidden="true"></span>
             <h3>ההזמנה התקבלה!</h3>
-            <p>מתחילים להקפיא את החבילה שלכם ️</p>
+            <p>מתחילים להקפיא את החבילה שלכם </p>
             <p className="success-number">מס׳ הזמנה: #{orderNumber}</p>
             <p style={{ fontSize: '0.85rem', color: 'var(--brown-light)', marginBottom: '0.5rem' }}>
               ההזמנה נשלחה לחנות — תקבלו אישור בקרוב 
@@ -198,7 +198,7 @@ export default function CartDrawer() {
             <span className="empty-cone" aria-hidden="true"></span>
             <p>הסל עדיין ריק...</p>
             <p className="empty-hint">לחצו +1 על כל פינוק שבא לכם </p>
-            <p className="empty-fee-note">כל הזמנה יוצאת בבוקס עם שקית קרח ️ (₪{BOX_FEE})</p>
+            <p className="empty-fee-note">כל הזמנה יוצאת בבוקס עם שקית קרח  (₪{BOX_FEE})</p>
           </div>
         ) : (
           <>
@@ -240,7 +240,7 @@ export default function CartDrawer() {
                   <span>₪{total}</span>
                 </div>
                 <div className="summary-row summary-fee">
-                  <span>בוקס + שקית קרח ️</span>
+                  <span>בוקס + שקית קרח </span>
                   <span>₪{BOX_FEE}</span>
                 </div>
                 <div className="summary-row summary-grand">
@@ -250,7 +250,7 @@ export default function CartDrawer() {
               </div>
               {!meetsMinimum && (
                 <p className="min-order-notice">
-                  מינימום מוצרים להזמנה ₪{MIN_ORDER} — כדי שהמשלוח יצא בבוקס עם שקית קרח וישמור על הגלידה קפואה ️
+                  מינימום מוצרים להזמנה ₪{MIN_ORDER} — כדי שהמשלוח יצא בבוקס עם שקית קרח וישמור על הגלידה קפואה 
                 </p>
               )}
               <button
