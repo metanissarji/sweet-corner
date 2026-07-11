@@ -13,7 +13,7 @@ export default function CatalogProducts() {
   if (!catalogInfo) {
     return (
       <div className="container" style={{ textAlign: 'center', padding: '4rem 1rem' }}>
-        <h2>הקטלוג לא נמצא 😕</h2>
+        <h2>הקטלוג לא נמצא </h2>
         <Link to="/deals" className="btn btn-pink" style={{ marginTop: '1rem' }}>חזרה למבצעים</Link>
       </div>
     );

@@ -23,7 +23,7 @@ export const hotspots = [
 ];
 
 const SPRINKLE_COLORS = ['#e0245e', '#f7c948', '#2e86e0', '#f6a9bc', '#ffffff', '#5b3218'];
-const SPRINKLE_EMOJI = ['🍦', '🍫', '🍓', '✨', '💗'];
+const SPRINKLE_EMOJI = ['', '', '', '', ''];
 
 function spawnSprinkle(x, y, counter) {
   const s = document.createElement('span');

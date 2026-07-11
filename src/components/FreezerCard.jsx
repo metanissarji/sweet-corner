@@ -14,11 +14,11 @@ export default function FreezerCard({ deal }) {
       aria-label={`פתיחת מבצע ${deal.qty} ב-${deal.price} שקלים`}
     >
       <span className="freezer-ribbon">מבצע</span>
-      <span className="freezer-flake" aria-hidden="true">❄</span>
+      <span className="freezer-flake" aria-hidden="true"></span>
 
       {/* חלון הזכוכית עם גלידות המבצע */}
       <div className="freezer-glass">
-        <ProductImage src={deal.image} alt="" emoji="🍦" />
+        <ProductImage src={deal.image} alt="" emoji="" />
         <span className="freezer-shine" aria-hidden="true" />
       </div>
 

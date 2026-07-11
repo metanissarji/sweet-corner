@@ -6,7 +6,7 @@ export default function About() {
   return (
     <>
       <header className="page-header">
-        <h1>הסיפור שלנו 💗</h1>
+        <h1>הסיפור שלנו </h1>
         <p>איך פינה קטנה בשכונה הפכה לפינה הכי מתוקה בעיר</p>
       </header>
 
@@ -25,7 +25,7 @@ export default function About() {
           <p style={{ fontSize: '1.15rem', marginBottom: '2.5rem' }}>
             תמצאו אצלנו את כל הקלאסיקות שגדלתם עליהן, לצד טעמים מיוחדים
             שמתחדשים כל עונה, מארזים לכל אירוע ומחירים שעושים חשק לחזור.
-            כי בסוף, זה מה שאנחנו — טעם של קיץ בכל כפית. 🍦
+            כי בסוף, זה מה שאנחנו — טעם של קיץ בכל כפית. 
           </p>
           <div className="text-center" style={{ marginBottom: '3rem' }}>
             <Link to="/branches" className="btn btn-pink">מצאו סניף קרוב ←</Link>

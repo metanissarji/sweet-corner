@@ -17,7 +17,7 @@ export default function FreezerCatalog() {
   if (!deal) {
     return (
       <div className="page-header">
-        <h1>המקפיא לא נמצא 🧊</h1>
+        <h1>המקפיא לא נמצא </h1>
         <p style={{ marginTop: '1rem' }}>
           <Link to="/deals" className="btn btn-pink">← חזרה למבצעים</Link>
         </p>
@@ -30,7 +30,7 @@ export default function FreezerCatalog() {
   return (
     <>
       <header className="page-header">
-        <h1>מבצע {deal.qty} ב־₪{deal.price} 🧊</h1>
+        <h1>מבצע {deal.qty} ב־₪{deal.price} </h1>
         <p>בוחרים {deal.qty} מהגלידות שבמקפיא — ומשלמים ₪{deal.price} בלבד</p>
       </header>
 
@@ -43,7 +43,7 @@ export default function FreezerCatalog() {
               <ProductImage
                 src={deal.image}
                 alt={`מבצע ${deal.qty} ב-${deal.price} שקלים`}
-                emoji="🍦"
+                emoji=""
               />
               <span className="freezer-shine" aria-hidden="true" />
             </div>
@@ -60,7 +60,7 @@ export default function FreezerCatalog() {
                     key: `freezer-${deal.id}`,
                     name: `מבצע ${deal.qty} ב־₪${deal.price}`,
                     price: deal.price,
-                    emoji: '🍦',
+                    emoji: '',
                   }}
                 />
               </div>
@@ -78,7 +78,7 @@ export default function FreezerCatalog() {
               {products.map((p) => (
                 <article className="card" key={p.id}>
                   <div style={{ aspectRatio: '4 / 3' }}>
-                    <ProductImage src={p.image} alt={p.name} emoji={p.emoji || '🍦'} />
+                    <ProductImage src={p.image} alt={p.name} emoji={p.emoji || ''} />
                   </div>
                   <div className="card-body">
                     <h3>{p.name}</h3>
@@ -88,7 +88,7 @@ export default function FreezerCatalog() {
             </div>
           ) : (
             <div className="freezer-empty">
-              <span aria-hidden="true">🍦🍫🍓</span>
+              <span aria-hidden="true"></span>
               <p>הגלידות של המקפיא הזה יתווספו ממש בקרוב!</p>
               <p className="freezer-empty-hint">כל גלידה שתופיע כאן נכנסת במבצע {deal.qty} ב־₪{deal.price}</p>
             </div>

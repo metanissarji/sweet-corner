@@ -284,7 +284,7 @@
   transform: scaleX(-1);
 }
 
-/* ===== 🎉 חגיגת משלוח חינם ===== */
+/* =====  חגיגת משלוח חינם ===== */
 .delivery-progress.celebrate .progress-fill {
   background: linear-gradient(90deg, var(--pink), var(--yellow), var(--blue), var(--pink-splash), var(--pink));
   background-size: 300% 100%;

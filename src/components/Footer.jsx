@@ -10,7 +10,7 @@ export default function Footer() {
           <h3 className="footer-logo">
             <span>הפינה</span> המתוקה
           </h3>
-          <p>טעם של קיץ בכל כפית 🍦</p>
+          <p>טעם של קיץ בכל כפית </p>
           <p>גלידות, אייסים, מארזים ופינוקים בטעמים שאהובים על כולם.</p>
         </div>
 
@@ -28,8 +28,8 @@ export default function Footer() {
           <h4>שירות לקוחות</h4>
           <ul>
             <li><Link to="/contact">צור קשר</Link></li>
-            <li><a href={PHONE_LINK}>📞 {PHONE}</a></li>
-            <li><a href={INSTAGRAM} target="_blank" rel="noreferrer">📸 {INSTAGRAM_HANDLE}</a></li>
+            <li><a href={PHONE_LINK}> {PHONE}</a></li>
+            <li><a href={INSTAGRAM} target="_blank" rel="noreferrer"> {INSTAGRAM_HANDLE}</a></li>
           </ul>
         </div>
 
@@ -43,7 +43,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} הפינה המתוקה — כל הזכויות שמורות 💗</p>
+        <p> {new Date().getFullYear()} הפינה המתוקה — כל הזכויות שמורות </p>
       </div>
     </footer>
   );

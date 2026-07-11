@@ -77,7 +77,7 @@ export function showCartToast(text, duration = 1500) {
 
 /* חיווי "נוסף לסל" — חשוב במובייל, שם כפתור הסל רחוק מהאצבע */
 function showToast(product) {
-  showCartToast(`${product.emoji || '🍦'} ${product.name} נוסף לסל ✓`);
+  showCartToast(`${product.emoji || ''} ${product.name} נוסף לסל ✓`);
 }
 
 /**
@@ -92,7 +92,7 @@ export default function AddToCart({ product }) {
   function handleAdd() {
     add(product);
     popPlusOne(plusRef.current);
-    flyToCart(plusRef.current, product.emoji || '🍦');
+    flyToCart(plusRef.current, product.emoji || '');
     showToast(product);
   }
 

@@ -14,7 +14,7 @@ export default function Flavors() {
     <>
       <header className="page-header">
         <h1>מיוחדים שלנו</h1>
-        <p>קלאסיקות שאהובים, טעמים מיוחדים וכל מה שביניהם — בואו לטעום 🍦</p>
+        <p>קלאסיקות שאהובים, טעמים מיוחדים וכל מה שביניהם — בואו לטעום </p>
       </header>
 
       <section className="page-section">

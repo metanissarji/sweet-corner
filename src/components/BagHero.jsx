@@ -44,24 +44,24 @@ const POSTER_NAV_PC = [
 ];
 
 const BURST_COLORS = ['#e0245e', '#f7c948', '#2e86e0', '#f6a9bc', '#ffffff'];
-const BURST_EMOJI = ['🍦', '🍫', '🍓', '✨', '💗', '🍪', '🍬'];
+const BURST_EMOJI = ['', '', '', '', '', '', ''];
 
 /* הפינוקים שנוחתים סביב השקית ונשארים מרחפים */
 const TREATS = [
-  { x: 27, y: 31, emoji: '🍦', rot: -14 },
-  { x: 71.5, y: 28, emoji: '🍨', rot: 11 },
-  { x: 25, y: 57, emoji: '🍭', rot: -8 },
-  { x: 74, y: 55, emoji: '🍫', rot: 15 },
-  { x: 49.5, y: 17, emoji: '🍓', rot: 6 },
+  { x: 27, y: 31, emoji: '', rot: -14 },
+  { x: 71.5, y: 28, emoji: '', rot: 11 },
+  { x: 25, y: 57, emoji: '', rot: -8 },
+  { x: 74, y: 55, emoji: '', rot: 15 },
+  { x: 49.5, y: 17, emoji: '', rot: 6 },
 ];
 
 /* במובייל התמונה חתוכה למרכזה — הפינוקים צמודים יותר לשקית כדי להישאר בפריים */
 const TREATS_MOBILE = [
-  { x: 36, y: 30, emoji: '🍦', rot: -14 },
-  { x: 64, y: 27, emoji: '🍨', rot: 11 },
-  { x: 34.5, y: 56, emoji: '🍭', rot: -8 },
-  { x: 65.5, y: 54, emoji: '🍫', rot: 15 },
-  { x: 50, y: 16, emoji: '🍓', rot: 6 },
+  { x: 36, y: 30, emoji: '', rot: -14 },
+  { x: 64, y: 27, emoji: '', rot: 11 },
+  { x: 34.5, y: 56, emoji: '', rot: -8 },
+  { x: 65.5, y: 54, emoji: '', rot: 15 },
+  { x: 50, y: 16, emoji: '', rot: 6 },
 ];
 
 /* מזרקת פינוקים מפתח השקית — קשתות עם "כוח כבידה" */
@@ -272,7 +272,7 @@ export default function BagHero() {
           </p>
           <div className="bag-ctas">
             <Link to="/flavors" className="btn btn-pink">לכל הטעמים ←</Link>
-            <Link to="/contact" className="btn btn-outline">הזמינו עכשיו 🍦</Link>
+            <Link to="/contact" className="btn btn-outline">הזמינו עכשיו </Link>
           </div>
         </div>
 

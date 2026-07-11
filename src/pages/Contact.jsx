@@ -12,7 +12,7 @@ export default function Contact() {
   return (
     <>
       <header className="page-header">
-        <h1>צור קשר 💌</h1>
+        <h1>צור קשר </h1>
         <p>שאלה? הזמנה מיוחדת? סתם בא לכם להגיד שלום? אנחנו כאן</p>
       </header>
 
@@ -29,12 +29,12 @@ export default function Contact() {
           <div className="card" style={{ padding: '2rem' }}>
             {sent ? (
               <div className="text-center" style={{ padding: '2rem 0' }}>
-                <p style={{ fontSize: '3rem' }}>🍦</p>
+                <p style={{ fontSize: '3rem' }}></p>
                 <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', color: 'var(--pink)' }}>
                   ההודעה נשלחה!
                 </h3>
                 <p style={{ color: 'var(--brown-light)', marginTop: '0.5rem' }}>
-                  נחזור אליכם ממש בקרוב. בינתיים — מגיע לכם שלגון 😉
+                  נחזור אליכם ממש בקרוב. בינתיים — מגיע לכם שלגון 
                 </p>
               </div>
             ) : (
@@ -61,7 +61,7 @@ export default function Contact() {
                   <textarea id="message" rows="4" required placeholder="ספרו לנו הכל..." />
                 </div>
                 <button type="submit" className="btn btn-pink" style={{ width: '100%', justifyContent: 'center' }}>
-                  שליחה 💗
+                  שליחה 
                 </button>
               </form>
             )}
@@ -72,10 +72,10 @@ export default function Contact() {
               דרכים נוספות להגיע אלינו
             </h3>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', fontSize: '1.05rem' }}>
-              <li>📞 <a href={PHONE_LINK} style={{ fontWeight: 600 }}>{PHONE}</a></li>
-              <li>📸 <a href={INSTAGRAM} target="_blank" rel="noreferrer" style={{ fontWeight: 600 }}>{INSTAGRAM_HANDLE}</a></li>
-              <li>📍 שישה סניפים בגליל</li>
-              <li>🕙 {HOURS}</li>
+              <li> <a href={PHONE_LINK} style={{ fontWeight: 600 }}>{PHONE}</a></li>
+              <li> <a href={INSTAGRAM} target="_blank" rel="noreferrer" style={{ fontWeight: 600 }}>{INSTAGRAM_HANDLE}</a></li>
+              <li> שישה סניפים בגליל</li>
+              <li> {HOURS}</li>
             </ul>
             <p style={{ marginTop: '1.5rem', color: 'var(--brown-light)' }}>
               להזמנות גדולות ואירועים מומלץ ליצור קשר לפחות 3 ימים מראש —

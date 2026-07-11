@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useAdminOrders } from '../lib/useAdminOrders.js';
 import './AdminOrders.css';
 
-const PAYMENT_LABELS = { cash: '💵 מזומן', visa: '💳 ויזה / אשראי', 'apple-pay': '🍎 Apple Pay' };
+const PAYMENT_LABELS = { cash: ' מזומן', visa: ' ויזה / אשראי', 'apple-pay': ' Apple Pay' };
 
 function formatDate(iso) {
   const d = new Date(iso);
@@ -17,7 +17,7 @@ function buildReceiptHTML(order) {
   return `
     <div style="font-family:'Rubik',sans-serif;direction:rtl;max-width:400px;margin:0 auto;padding:2rem;color:#333">
       <div style="text-align:center;margin-bottom:1rem">
-        <div style="font-size:2.5rem">🍦</div>
+        <div style="font-size:2.5rem"></div>
         <h2 style="margin:0.3rem 0;font-size:1.4rem">הפינה המתוקה</h2>
         <p style="font-size:0.8rem;color:#888">קבלה מס׳ #${order.number}</p>
         <p style="font-size:0.8rem;color:#888">${formatDate(order.createdAt)}</p>
@@ -42,7 +42,7 @@ function buildReceiptHTML(order) {
         <span>סה״כ לתשלום</span><span>₪${order.total}</span>
       </div>
       <div style="text-align:center;margin-top:1.2rem;font-size:0.78rem;color:#aaa">
-        <p>תודה שקניתם אצלנו! 🍦❤️</p>
+        <p>תודה שקניתם אצלנו! ️</p>
         <p>הפינה המתוקה — טעם של קיץ בכל כפית</p>
       </div>
     </div>`;
@@ -64,9 +64,9 @@ function ReceiptModal({ order, onClose }) {
 
   function handleSendPhone() {
     const phone = order.customer.phone.replace(/[^0-9]/g, '');
-    const msg = `🍦 הפינה המתוקה — קבלה #${order.number}\n\n` +
+    const msg = ` הפינה המתוקה — קבלה #${order.number}\n\n` +
       order.items.map((it) => `${it.emoji} ${it.name} x${it.qty} = ₪${it.qty * it.price}`).join('\n') +
-      `\n\n💰 סה״כ: ₪${order.total}\n✅ ההזמנה אושרה!\nתודה רבה ❤️`;
+      `\n\n סה״כ: ₪${order.total}\n ההזמנה אושרה!\nתודה רבה ️`;
     window.open(`https://wa.me/972${phone.startsWith('0') ? phone.slice(1) : phone}?text=${encodeURIComponent(msg)}`, '_blank');
   }
 
@@ -84,13 +84,13 @@ function ReceiptModal({ order, onClose }) {
     <div className="admin-modal-overlay" onClick={onClose}>
       <div className="admin-modal" style={{ maxWidth: 500 }} onClick={(e) => e.stopPropagation()}>
         <div className="admin-modal-header">
-          <h3>📄 קבלה #{order.number}</h3>
+          <h3> קבלה #{order.number}</h3>
           <button className="admin-modal-close" onClick={onClose}>✕</button>
         </div>
         <div className="admin-modal-body" style={{ padding: '1rem' }}>
           <div className="receipt-preview" ref={receiptRef}>
             <div className="receipt-header">
-              <span className="receipt-logo">🍦</span>
+              <span className="receipt-logo"></span>
               <h3 className="receipt-title">הפינה המתוקה</h3>
               <p className="receipt-subtitle">קבלה #{order.number} • {formatDate(order.createdAt)}</p>
             </div>
@@ -117,17 +117,17 @@ function ReceiptModal({ order, onClose }) {
               <span>סה״כ לתשלום</span><span>₪{order.total}</span>
             </div>
             <div className="receipt-footer">
-              <p>תודה שקניתם אצלנו! 🍦❤️</p>
+              <p>תודה שקניתם אצלנו! ️</p>
             </div>
           </div>
         </div>
         <div className="admin-modal-footer" style={{ flexWrap: 'wrap' }}>
           <button type="button" className="admin-btn-cancel" onClick={onClose}>סגירה</button>
           <button type="button" className="admin-btn-save" style={{ background: 'linear-gradient(135deg, #1ec878, #149e5e)' }} onClick={handleSendPhone}>
-            📱 שליחה בוואטסאפ
+             שליחה בוואטסאפ
           </button>
           <button type="button" className="admin-btn-save" onClick={handlePrint}>
-            🖨️ הדפסה
+            ️ הדפסה
           </button>
         </div>
       </div>
@@ -138,7 +138,7 @@ function ReceiptModal({ order, onClose }) {
 /* ===== Single Order Card ===== */
 function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
   const statusClass = order.status === 'pending' ? 'status-pending' : order.status === 'accepted' ? 'status-accepted' : 'status-declined';
-  const statusLabel = order.status === 'pending' ? '⏳ ממתין' : order.status === 'accepted' ? '✅ אושר' : '❌ נדחה';
+  const statusLabel = order.status === 'pending' ? ' ממתין' : order.status === 'accepted' ? ' אושר' : ' נדחה';
 
   return (
     <div className="order-card">
@@ -152,13 +152,13 @@ function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
 
       <div className="order-card-body">
         <div className="order-customer">
-          <span className="order-customer-label">👤 לקוח</span>
+          <span className="order-customer-label"> לקוח</span>
           <span className="order-customer-value">{order.customer.firstName} {order.customer.lastName}</span>
-          <span className="order-customer-label">📱 טלפון</span>
+          <span className="order-customer-label"> טלפון</span>
           <span className="order-customer-value">{order.customer.phone}</span>
-          <span className="order-customer-label">📍 כתובת</span>
+          <span className="order-customer-label"> כתובת</span>
           <span className="order-customer-value">{order.customer.address}</span>
-          <span className="order-customer-label">💳 תשלום</span>
+          <span className="order-customer-label"> תשלום</span>
           <span className="order-customer-value">{PAYMENT_LABELS[order.payment] || order.payment}</span>
         </div>
 
@@ -186,20 +186,20 @@ function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
       <div className="order-card-actions">
         {order.status === 'pending' && (
           <>
-            <button className="order-action-btn order-btn-accept" onClick={() => onAccept(order.id)}>✅ אישור</button>
-            <button className="order-action-btn order-btn-decline" onClick={() => onDecline(order.id)}>❌ דחייה</button>
+            <button className="order-action-btn order-btn-accept" onClick={() => onAccept(order.id)}> אישור</button>
+            <button className="order-action-btn order-btn-decline" onClick={() => onDecline(order.id)}> דחייה</button>
           </>
         )}
         {order.status === 'accepted' && (
           <>
-            <button className="order-action-btn order-btn-receipt" onClick={() => onReceipt(order)}>📄 קבלה</button>
+            <button className="order-action-btn order-btn-receipt" onClick={() => onReceipt(order)}> קבלה</button>
             <button className="order-action-btn order-btn-phone" onClick={() => {
               const p = order.customer.phone.replace(/[^0-9]/g, '');
-              window.open(`https://wa.me/972${p.startsWith('0') ? p.slice(1) : p}?text=${encodeURIComponent(`שלום ${order.customer.firstName}! ✅ ההזמנה #${order.number} אושרה ובדרך אליך! 🍦`)}`, '_blank');
-            }}>📱 הודעה ללקוח</button>
+              window.open(`https://wa.me/972${p.startsWith('0') ? p.slice(1) : p}?text=${encodeURIComponent(`שלום ${order.customer.firstName}!  ההזמנה #${order.number} אושרה ובדרך אליך! `)}`, '_blank');
+            }}> הודעה ללקוח</button>
           </>
         )}
-        <button className="order-action-btn order-btn-delete" onClick={() => onDelete(order.id)}>🗑️</button>
+        <button className="order-action-btn order-btn-delete" onClick={() => onDelete(order.id)}>️</button>
       </div>
     </div>
   );
@@ -222,17 +222,17 @@ export default function AdminOrdersTab({ showToast }) {
 
   function handleAccept(id) {
     setStatus(id, 'accepted');
-    showToast('✅ ההזמנה אושרה');
+    showToast(' ההזמנה אושרה');
   }
 
   function handleDecline(id) {
     setStatus(id, 'declined');
-    showToast('❌ ההזמנה נדחתה');
+    showToast(' ההזמנה נדחתה');
   }
 
   function handleDelete(id) {
     remove(id);
-    showToast('🗑️ ההזמנה נמחקה');
+    showToast('️ ההזמנה נמחקה');
   }
 
   return (
@@ -241,7 +241,7 @@ export default function AdminOrdersTab({ showToast }) {
         <h2>הזמנות <span className="item-count">({orders.length} סה״כ)</span></h2>
         {orders.length > 0 && (
           <button className="admin-btn-add" style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }} onClick={clearAll}>
-            🗑️ מחיקת הכל
+            ️ מחיקת הכל
           </button>
         )}
       </div>
@@ -249,9 +249,9 @@ export default function AdminOrdersTab({ showToast }) {
       <div className="orders-filter-row">
         {[
           { key: 'all', label: 'הכל', count: orders.length },
-          { key: 'pending', label: '⏳ ממתינות', count: pending.length },
-          { key: 'accepted', label: '✅ אושרו', count: accepted.length },
-          { key: 'declined', label: '❌ נדחו', count: declined.length },
+          { key: 'pending', label: ' ממתינות', count: pending.length },
+          { key: 'accepted', label: ' אושרו', count: accepted.length },
+          { key: 'declined', label: ' נדחו', count: declined.length },
         ].map((f) => (
           <button key={f.key} className={`orders-filter-btn ${filter === f.key ? 'active' : ''}`} onClick={() => setFilter(f.key)}>
             {f.label}
@@ -262,12 +262,12 @@ export default function AdminOrdersTab({ showToast }) {
 
       {loading && orders.length === 0 ? (
         <div className="orders-empty">
-          <span className="empty-icon">⏳</span>
+          <span className="empty-icon"></span>
           <p>טוען הזמנות…</p>
         </div>
       ) : filtered.length === 0 ? (
         <div className="orders-empty">
-          <span className="empty-icon">📋</span>
+          <span className="empty-icon"></span>
           <p>{filter === 'all' ? 'אין הזמנות עדיין' : 'אין הזמנות בקטגוריה זו'}</p>
         </div>
       ) : (

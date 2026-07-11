@@ -51,21 +51,21 @@ export default function Home() {
           {/* עמודה ימנית (RTL: ראשונה) — מוצרים */}
           <div className="hero-side hero-side-right">
             <div className="hero-product tilt-left">
-              <ProductImage src="/images/hero-choc-bar.png" alt="שלגון שוקולד" emoji="🍫" />
+              <ProductImage src="/images/hero-choc-bar.png" alt="שלגון שוקולד" emoji="" />
             </div>
             <LabelTag top="מועדים" bottom="שמנצחים" flip className="tag-top-right" />
             <div className="hero-product tilt-right small">
-              <ProductImage src="/images/hero-cookie-pop.png" alt="שלגון עוגיות" emoji="🍪" />
+              <ProductImage src="/images/hero-cookie-pop.png" alt="שלגון עוגיות" emoji="" />
             </div>
             <div className="hero-product tilt-left small">
-              <ProductImage src="/images/hero-raspberry.png" alt="שלגון פטל כפול" emoji="🍓" />
+              <ProductImage src="/images/hero-raspberry.png" alt="שלגון פטל כפול" emoji="" />
             </div>
             <LabelTag top="טעמים" bottom="מיוחדים" className="tag-bottom-right" />
           </div>
 
           {/* מרכז — כותרת */}
           <div className="hero-center">
-            <div className="hero-doodle" aria-hidden="true">💗 ✦</div>
+            <div className="hero-doodle" aria-hidden="true"> ✦</div>
             <h1 className="hero-title">
               <span className="title-pink">הפינה</span>
               <span className="title-brown">המתוקה</span>
@@ -78,21 +78,21 @@ export default function Home() {
             </p>
             <div className="hero-ctas">
               <Link to="/flavors" className="btn btn-pink">לכל הטעמים ←</Link>
-              <Link to="/contact" className="btn btn-outline">הזמינו עכשיו 🍦</Link>
+              <Link to="/contact" className="btn btn-outline">הזמינו עכשיו </Link>
             </div>
           </div>
 
           {/* עמודה שמאלית — מוצרים */}
           <div className="hero-side hero-side-left">
             <div className="hero-product tilt-right">
-              <ProductImage src="/images/hero-cookie-sandwich.png" alt="סנדוויץ׳ עוגיות" emoji="🍪" />
+              <ProductImage src="/images/hero-cookie-sandwich.png" alt="סנדוויץ׳ עוגיות" emoji="" />
             </div>
             <LabelTag top="קלאסיקות" bottom="שאהובים" className="tag-top-left" />
             <div className="hero-product tilt-left small">
-              <ProductImage src="/images/hero-manbake.png" alt="קוביות מן-בייק" emoji="🍬" />
+              <ProductImage src="/images/hero-manbake.png" alt="קוביות מן-בייק" emoji="" />
             </div>
             <div className="hero-product tilt-right small">
-              <ProductImage src="/images/hero-nougat-crunch.png" alt="שלגון נוגט קראנצ׳י" emoji="🥜" />
+              <ProductImage src="/images/hero-nougat-crunch.png" alt="שלגון נוגט קראנצ׳י" emoji="" />
             </div>
             <LabelTag top="קרונצ׳י" bottom="פריך וממכר" flip className="tag-bottom-left" />
           </div>
@@ -131,7 +131,7 @@ function FlavorsPreview() {
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>
             <h2 className="section-title" style={{ margin: 0 }}>
-              הכי <span className="highlight">נמכרים</span> 🔥
+              הכי <span className="highlight">נמכרים</span> 
             </h2>
           </div>
           <div className="bestsellers-arrows">
@@ -185,7 +185,7 @@ function HomeFreezers() {
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>
             <h2 className="section-title" style={{ margin: 0 }}>
-              כל <span className="highlight">המבצעים</span> 🧊
+              כל <span className="highlight">המבצעים</span> 
             </h2>
             <p className="home-section-sub" style={{ marginTop: '0.2rem', marginBottom: 0 }}>
               לוחצים על מקפיא ורואים אילו גלידות יש בפנים

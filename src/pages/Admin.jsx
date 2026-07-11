@@ -53,7 +53,7 @@ function LoginScreen({ onLogin }) {
   return (
     <div className="admin-login-wrapper">
       <form className="admin-login-card" onSubmit={handleSubmit}>
-        <span className="login-emoji">🔐</span>
+        <span className="login-emoji"></span>
         <h1>לוח ניהול</h1>
         <p>הזינו את קוד הגישה בן 4 ספרות</p>
 
@@ -98,18 +98,18 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
   const [form, setForm] = useState(() => {
     if (product) return { ...product };
     if (isFlavorCat || isFavoriteCat || isFreezerProductCat) {
-      return { name: '', category: 'גלידות', tag: '', emoji: '🍦', image: '', desc: '', price: 0 };
+      return { name: '', category: 'גלידות', tag: '', emoji: '', image: '', desc: '', price: 0 };
     }
     if (isDealCat) {
-      return { badge: '', title: '', desc: '', price: 0, oldPrice: 0, emoji: '🍫', image: '', catalogId: selectedCatalogId || dealCatalogs?.[0]?.id || 1 };
+      return { badge: '', title: '', desc: '', price: 0, oldPrice: 0, emoji: '', image: '', catalogId: selectedCatalogId || dealCatalogs?.[0]?.id || 1 };
     }
     if (isCatalogCat) {
-      return { badge: '', title: '', desc: '', emoji: '🗂️', image: '' };
+      return { badge: '', title: '', desc: '', emoji: '️', image: '' };
     }
     if (isFreezerCat) {
       return { qty: 0, price: 0, image: '', products: [] };
     }
-    return { title: '', desc: '', items: '', price: 0, emoji: '📦', image: '' };
+    return { title: '', desc: '', items: '', price: 0, emoji: '', image: '' };
   });
 
   const [preview, setPreview] = useState(product?.image || '');
@@ -141,7 +141,7 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
     <div className="admin-modal-overlay" onClick={onClose}>
       <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
         <div className="admin-modal-header">
-          <h3>{mode === 'edit' ? 'עריכת מוצר ✏️' : 'מוצר חדש ✨'}</h3>
+          <h3>{mode === 'edit' ? 'עריכת מוצר ️' : 'מוצר חדש '}</h3>
           <button className="admin-modal-close" onClick={onClose}>✕</button>
         </div>
 
@@ -152,7 +152,7 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
               <label>תמונה</label>
               <div className="admin-photo-upload">
                 <input type="file" accept="image/*" onChange={handlePhoto} />
-                <span className="upload-icon">📷</span>
+                <span className="upload-icon"></span>
                 <p className="upload-text">
                   <strong>לחצו להעלאת תמונה</strong> או גררו לכאן
                 </p>
@@ -313,7 +313,7 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
               ביטול
             </button>
             <button type="submit" className="admin-btn-save">
-              {mode === 'edit' ? '💾 שמירה' : '➕ הוספה'}
+              {mode === 'edit' ? ' שמירה' : ' הוספה'}
             </button>
           </div>
         </form>
@@ -336,7 +336,7 @@ function DeleteModal({ product, category, onConfirm, onClose }) {
         </div>
         <div className="admin-modal-body">
           <div className="admin-delete-confirm">
-            <span className="delete-emoji">🗑️</span>
+            <span className="delete-emoji">️</span>
             <p>בטוחים שרוצים למחוק?</p>
             <p className="delete-name">{product[nameField]}</p>
           </div>
@@ -349,7 +349,7 @@ function DeleteModal({ product, category, onConfirm, onClose }) {
             style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }}
             onClick={onConfirm}
           >
-            🗑️ מחיקה
+            ️ מחיקה
           </button>
         </div>
       </div>
@@ -388,7 +388,7 @@ function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete
           <span className="emoji-placeholder">{product.emoji}</span>
         )}
         <div className="admin-card-image-overlay">
-          <span>{isCatalog ? '📂 כניסה לקטלוג' : '✏️ עריכה'}</span>
+          <span>{isCatalog ? ' כניסה לקטלוג' : '️ עריכה'}</span>
         </div>
       </div>
       <div className="admin-card-body">
@@ -412,19 +412,19 @@ function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete
         <div className="admin-card-actions">
           {isCatalog && (
             <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEnterCatalog(product)} style={{background: 'var(--blue)', color: 'white', borderColor: 'var(--blue)'}}>
-              📂 מוצרים
+               מוצרים
             </button>
           )}
           {isFreezer && (
             <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEnterCatalog(product)} style={{background: 'var(--blue)', color: 'white', borderColor: 'var(--blue)'}}>
-              🧊 גלידות בפנים
+               גלידות בפנים
             </button>
           )}
           <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEdit(product)}>
-            ✏️ עריכה
+            ️ עריכה
           </button>
           <button className="admin-card-btn admin-card-btn-delete" onClick={() => onDelete(product)}>
-            🗑️ מחיקה
+            ️ מחיקה
           </button>
         </div>
       </div>
@@ -443,11 +443,11 @@ function Toast({ message }) {
    ADMIN PAGE
    ==================================================================== */
 const TABS = [
-  { key: 'flavors', label: '🍦 טעמים', title: 'טעמים' },
-  { key: 'favorites', label: '🔥 הכי נמכרים', title: 'הטעמים שכולם אוהבים' },
-  { key: 'freezerDeals', label: '🧊 כל המבצעים', title: 'מבצעי מקפיאים' },
-  { key: 'dealCatalogs', label: '🗂️ קטלוגים', title: 'קטלוגים' },
-  { key: 'packages', label: '📦 מארזים', title: 'מארזים' },
+  { key: 'flavors', label: ' טעמים', title: 'טעמים' },
+  { key: 'favorites', label: ' הכי נמכרים', title: 'הטעמים שכולם אוהבים' },
+  { key: 'freezerDeals', label: ' כל המבצעים', title: 'מבצעי מקפיאים' },
+  { key: 'dealCatalogs', label: '️ קטלוגים', title: 'קטלוגים' },
+  { key: 'packages', label: ' מארזים', title: 'מארזים' },
 ];
 
 export default function Admin() {
@@ -508,14 +508,14 @@ export default function Admin() {
       } else {
         updateProduct(displayCategory, editModal.product.id, form);
       }
-      showToast('✅ המוצר עודכן בהצלחה');
+      showToast(' המוצר עודכן בהצלחה');
     } else {
       if (displayCategory === 'freezerProducts') {
         addFreezerProduct(selectedCatalogId, form);
       } else {
         addProduct(displayCategory, form);
       }
-      showToast('✅ מוצר חדש נוסף');
+      showToast(' מוצר חדש נוסף');
     }
     setEditModal(null);
   }
@@ -531,7 +531,7 @@ export default function Admin() {
     } else {
       deleteProduct(displayCategory, deleteModal.id);
     }
-    showToast('🗑️ המוצר נמחק');
+    showToast('️ המוצר נמחק');
     setDeleteModal(null);
   }
 
@@ -565,15 +565,15 @@ export default function Admin() {
       {/* Top bar */}
       <header className="admin-topbar">
         <div className="admin-topbar-title">
-          <span>🍦</span>
+          <span></span>
           לוח ניהול — הפינה המתוקה
         </div>
         <div className="admin-topbar-actions">
           <button className="admin-btn-ghost" onClick={resetToDefaults}>
-            🔄 איפוס
+             איפוס
           </button>
           <button className="admin-btn-ghost admin-btn-logout" onClick={() => setLoggedIn(false)}>
-            🚪 יציאה
+             יציאה
           </button>
         </div>
       </header>
@@ -582,22 +582,22 @@ export default function Admin() {
       <div className="admin-content">
         <div className="admin-stats">
           <div className="admin-stat-card">
-            <span className="stat-emoji">🍦</span>
+            <span className="stat-emoji"></span>
             <div className="stat-value">{flavors.length}</div>
             <div className="stat-label">טעמים</div>
           </div>
           <div className="admin-stat-card">
-            <span className="stat-emoji">🗂️</span>
+            <span className="stat-emoji">️</span>
             <div className="stat-value">{dealCatalogs.length}</div>
             <div className="stat-label">קטלוגים</div>
           </div>
           <div className="admin-stat-card">
-            <span className="stat-emoji">🔥</span>
+            <span className="stat-emoji"></span>
             <div className="stat-value">{deals.length}</div>
             <div className="stat-label">מבצעים</div>
           </div>
           <div className="admin-stat-card">
-            <span className="stat-emoji">📦</span>
+            <span className="stat-emoji"></span>
             <div className="stat-value">{packages.length}</div>
             <div className="stat-label">מארזים</div>
           </div>
@@ -634,7 +634,7 @@ export default function Admin() {
           <h2 className="admin-section-title">{currentTab?.title}</h2>
         )}
         <button className="btn btn-pink admin-btn-add" onClick={openAdd}>
-          ➕ הוספת {((activeTab === 'dealCatalogs' || activeTab === 'freezerDeals') && !selectedCatalogId) ? (activeTab === 'dealCatalogs' ? 'קטלוג' : 'מקפיא מבצע') : 'מוצר'}
+           הוספת {((activeTab === 'dealCatalogs' || activeTab === 'freezerDeals') && !selectedCatalogId) ? (activeTab === 'dealCatalogs' ? 'קטלוג' : 'מקפיא מבצע') : 'מוצר'}
         </button>
       </div>
 

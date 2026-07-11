@@ -36,7 +36,7 @@ function LoginScreen() {
   return (
     <div className="admin-login-wrapper">
       <form className="admin-login-card" onSubmit={handleSubmit}>
-        <span className="login-emoji">📋</span>
+        <span className="login-emoji"></span>
         <h1>לוח הזמנות</h1>
         <p>התחברות מנהל</p>
 
@@ -109,12 +109,12 @@ export default function OrdersPanel() {
     <div className="admin-dashboard">
       <header className="admin-topbar">
         <div className="admin-topbar-title">
-          <span>📋</span>
+          <span></span>
           לוח הזמנות — הפינה המתוקה
         </div>
         <div className="admin-topbar-actions">
           <button className="admin-btn-ghost admin-btn-logout" onClick={() => supabase.auth.signOut()}>
-            🚪 יציאה
+             יציאה
           </button>
         </div>
       </header>

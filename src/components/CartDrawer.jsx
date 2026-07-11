@@ -7,7 +7,7 @@ import './CartDrawer.css';
 const FREE_DELIVERY = 250;
 const MIN_ORDER = 10;
 const BOX_FEE = 10; // בוקס ממותג + שקית קרח — נוסף לכל הזמנה כדי שהגלידה תגיע קפואה
-const CONFETTI = ['🍦', '🍫', '🍓', '🍪', '💗', '✨'];
+const CONFETTI = ['', '', '', '', '', ''];
 
 /* פיצוץ קונפטי בתוך המגירה בסיום הזמנה */
 function burstConfetti(container) {
@@ -66,12 +66,12 @@ export default function CartDrawer() {
     prevCount.current = count;
   }, [count]);
 
-  // 🎉 חגיגת משלוח חינם — ברגע שחוצים את הרף
+  //  חגיגת משלוח חינם — ברגע שחוצים את הרף
   useEffect(() => {
     if (prevTotal.current < FREE_DELIVERY && total >= FREE_DELIVERY) {
       setFreeCelebrate(true);
       burstConfetti(confettiRef.current);
-      showCartToast('🎉 הרווחתם משלוח חינם! 🛵💨', 2200);
+      showCartToast(' הרווחתם משלוח חינם! ', 2200);
       const t = setTimeout(() => setFreeCelebrate(false), 2600);
       prevTotal.current = total;
       return () => clearTimeout(t);
@@ -154,23 +154,23 @@ export default function CartDrawer() {
         <div className="confetti-layer" ref={confettiRef} aria-hidden="true" />
         {freeCelebrate && (
           <div className="free-delivery-badge" aria-hidden="true">
-            🎉 משלוח חינם! 🛵💨
+             משלוח חינם! 
           </div>
         )}
 
         <header className="cart-header">
-          <h2>הסל שלי 🍦</h2>
+          <h2>הסל שלי </h2>
           <button className="cart-close" onClick={closeDrawer} aria-label="סגירת הסל">✕</button>
         </header>
 
         {ordered ? (
           <div className="cart-success">
-            <span className="success-icecream" aria-hidden="true">🍦</span>
+            <span className="success-icecream" aria-hidden="true"></span>
             <h3>ההזמנה התקבלה!</h3>
-            <p>מתחילים להקפיא את החבילה שלכם ❄️</p>
+            <p>מתחילים להקפיא את החבילה שלכם ️</p>
             <p className="success-number">מס׳ הזמנה: #{orderNumber}</p>
             <p style={{ fontSize: '0.85rem', color: 'var(--brown-light)', marginBottom: '0.5rem' }}>
-              ההזמנה נשלחה לחנות — תקבלו אישור בקרוב 📱
+              ההזמנה נשלחה לחנות — תקבלו אישור בקרוב 
             </p>
             <button className="btn btn-pink" onClick={closeDrawer}>סגירה</button>
           </div>
@@ -195,10 +195,10 @@ export default function CartDrawer() {
           </form>
         ) : list.length === 0 ? (
           <div className="cart-empty">
-            <span className="empty-cone" aria-hidden="true">🍦</span>
+            <span className="empty-cone" aria-hidden="true"></span>
             <p>הסל עדיין ריק...</p>
-            <p className="empty-hint">לחצו +1 על כל פינוק שבא לכם 😋</p>
-            <p className="empty-fee-note">כל הזמנה יוצאת בבוקס עם שקית קרח ❄️ (₪{BOX_FEE})</p>
+            <p className="empty-hint">לחצו +1 על כל פינוק שבא לכם </p>
+            <p className="empty-fee-note">כל הזמנה יוצאת בבוקס עם שקית קרח ️ (₪{BOX_FEE})</p>
           </div>
         ) : (
           <>
@@ -206,12 +206,12 @@ export default function CartDrawer() {
             <div className={`delivery-progress ${freeCelebrate ? 'celebrate' : ''}`}>
               <p>
                 {remaining > 0
-                  ? <>עוד <strong>₪{remaining}</strong> למשלוח חינם 🛵</>
-                  : <>יש לכם משלוח חינם! 🛵💨</>}
+                  ? <>עוד <strong>₪{remaining}</strong> למשלוח חינם </>
+                  : <>יש לכם משלוח חינם! </>}
               </p>
               <div className="progress-track">
                 <div className="progress-fill" style={{ width: `${progress}%` }} />
-                <span className="progress-scooter" style={{ insetInlineStart: `calc(${progress}% - 14px)` }}>🛵</span>
+                <span className="progress-scooter" style={{ insetInlineStart: `calc(${progress}% - 14px)` }}></span>
               </div>
             </div>
 
@@ -240,7 +240,7 @@ export default function CartDrawer() {
                   <span>₪{total}</span>
                 </div>
                 <div className="summary-row summary-fee">
-                  <span>בוקס + שקית קרח ❄️</span>
+                  <span>בוקס + שקית קרח ️</span>
                   <span>₪{BOX_FEE}</span>
                 </div>
                 <div className="summary-row summary-grand">
@@ -250,7 +250,7 @@ export default function CartDrawer() {
               </div>
               {!meetsMinimum && (
                 <p className="min-order-notice">
-                  מינימום מוצרים להזמנה ₪{MIN_ORDER} — כדי שהמשלוח יצא בבוקס עם שקית קרח וישמור על הגלידה קפואה ❄️
+                  מינימום מוצרים להזמנה ₪{MIN_ORDER} — כדי שהמשלוח יצא בבוקס עם שקית קרח וישמור על הגלידה קפואה ️
                 </p>
               )}
               <button
@@ -258,7 +258,7 @@ export default function CartDrawer() {
                 onClick={() => setCheckout(true)}
                 disabled={!meetsMinimum}
               >
-                השלמת הזמנה 🎉
+                השלמת הזמנה 
               </button>
             </footer>
           </>

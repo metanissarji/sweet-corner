@@ -30,7 +30,7 @@ export default function Navbar() {
           צור קשר
         </NavLink>
         <NavLink to="/branches" className="btn btn-pink branches-btn">
-          <span aria-hidden="true">📍</span> סניפים
+          <span aria-hidden="true"></span> סניפים
         </NavLink>
       </div>
     </header>

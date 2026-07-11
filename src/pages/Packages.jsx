@@ -8,7 +8,7 @@ export default function Packages() {
   return (
     <>
       <header className="page-header">
-        <h1>מארזים 📦</h1>
+        <h1>מארזים </h1>
         <p>לאירועים, למשפחה או סתם לפנק את המקפיא — יש לנו מארז בדיוק בשבילכם</p>
       </header>
 

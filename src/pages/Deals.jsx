@@ -12,8 +12,8 @@ export default function Deals() {
   return (
     <>
       <header className="page-header">
-        <h1>מבצעים חמים 🔥</h1>
-        <p>לוחצים על מקפיא כדי לפתוח אותו ולראות את כל הגלידות שבמבצע 🧊</p>
+        <h1>מבצעים חמים </h1>
+        <p>לוחצים על מקפיא כדי לפתוח אותו ולראות את כל הגלידות שבמבצע </p>
       </header>
 
       <section className="page-section">

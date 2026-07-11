@@ -6,7 +6,7 @@ import './ProductImage.css';
  * מוצג placeholder מעוצב עם שם הקובץ הצפוי — פשוט שימו את
  * התמונה האמיתית בתיקייה והיא תופיע אוטומטית.
  */
-export default function ProductImage({ src, alt, emoji = '🍦', className = '' }) {
+export default function ProductImage({ src, alt, emoji = '', className = '' }) {
   const [missing, setMissing] = useState(false);
 
   if (missing) {
