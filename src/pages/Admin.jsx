@@ -289,8 +289,8 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
             {isDealCat && dealCatalogs && (
               <div className="admin-form-group">
                 <label>שיוך לקטלוג</label>
-                <select 
-                  value={form.catalogId || ''} 
+                <select
+                  value={form.catalogId || ''}
                   onChange={(e) => set('catalogId', parseInt(e.target.value, 10))}
                   required
                 >
@@ -356,7 +356,7 @@ function DeleteModal({ product, category, onConfirm, onClose }) {
             style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }}
             onClick={onConfirm}
           >
-             מחיקה
+            מחיקה
           </button>
         </div>
       </div>
@@ -371,7 +371,7 @@ function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete
   const nameField = (category === 'flavors' || category === 'favorites' || category === 'freezerProducts') ? 'name' : 'title';
   const isCatalog = category === 'dealCatalogs';
   const isFreezer = category === 'freezerDeals';
-  
+
   const displayName = product[nameField] || (isFreezer ? `מקפיא מס' ${product.id} (${product.qty} ב-${product.price}₪)` : '');
 
   function handleMainClick() {
@@ -418,20 +418,20 @@ function AdminCard({ product, category, index, isFirst, isLast, onEdit, onDelete
         </p>
         <div className="admin-card-actions">
           {isCatalog && (
-            <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEnterCatalog(product)} style={{background: 'var(--blue)', color: 'white', borderColor: 'var(--blue)'}}>
-               מוצרים
+            <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEnterCatalog(product)} style={{ background: 'var(--blue)', color: 'white', borderColor: 'var(--blue)' }}>
+              מוצרים
             </button>
           )}
           {isFreezer && (
-            <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEnterCatalog(product)} style={{background: 'var(--blue)', color: 'white', borderColor: 'var(--blue)'}}>
-               גלידות בפנים
+            <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEnterCatalog(product)} style={{ background: 'var(--blue)', color: 'white', borderColor: 'var(--blue)' }}>
+              גלידות בפנים
             </button>
           )}
           <button className="admin-card-btn admin-card-btn-edit" onClick={() => onEdit(product)}>
-             עריכה
+            עריכה
           </button>
           <button className="admin-card-btn admin-card-btn-delete" onClick={() => onDelete(product)}>
-             מחיקה
+            מחיקה
           </button>
         </div>
       </div>
@@ -468,10 +468,10 @@ export default function Admin() {
     useProducts();
 
   const dataSets = { flavors, favorites, freezerDeals, dealCatalogs, deals, packages };
-  
+
   let displayCategory = activeTab;
   let currentData = dataSets[activeTab] || [];
-  
+
   // Custom routing based on new tabs
   if (activeTab === 'home') {
     if (selectedCatalogId) {
@@ -604,10 +604,10 @@ export default function Admin() {
         </div>
         <div className="admin-topbar-actions">
           <button className="admin-btn-ghost" onClick={resetToDefaults}>
-             איפוס
+            איפוס
           </button>
           <button className="admin-btn-ghost admin-btn-logout" onClick={() => supabase.auth.signOut()}>
-             יציאה
+            יציאה
           </button>
         </div>
       </header>
@@ -648,12 +648,12 @@ export default function Admin() {
 
       <div className="admin-actions-bar">
         {(displayCategory === 'deals' || displayCategory === 'freezerProducts') && selectedCatalogId ? (
-          <div style={{display: 'flex', gap: '1rem', alignItems: 'center'}}>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <button className="admin-btn-ghost" onClick={() => setSelectedCatalogId(null)}>
               ← חזרה לכל {displayCategory === 'deals' ? 'הקטלוגים' : 'המבצעים'}
             </button>
             <h2 className="admin-section-title">
-              {displayCategory === 'deals' 
+              {displayCategory === 'deals'
                 ? `${dealCatalogs.find(c => c.id === selectedCatalogId)?.title} — מוצרים`
                 : `מקפיא מבצע — גלידות בפנים`
               }
@@ -662,11 +662,11 @@ export default function Admin() {
         ) : (
           <h2 className="admin-section-title">{currentTab?.title}</h2>
         )}
-        
+
         {/* Global Add button only if not in home_overview */}
         {displayCategory !== 'home_overview' && (
           <button className="btn btn-pink admin-btn-add" onClick={() => openAdd()}>
-             הוספת {(displayCategory === 'dealCatalogs') ? 'קטלוג' : (displayCategory === 'freezerDeals') ? 'מקפיא מבצע' : 'מוצר'}
+            הוספת {(displayCategory === 'dealCatalogs') ? 'קטלוג' : (displayCategory === 'freezerDeals') ? 'מקפיא מבצע' : 'מוצר'}
           </button>
         )}
       </div>
@@ -697,7 +697,7 @@ export default function Admin() {
             <div className="admin-actions-bar" style={{ marginTop: '1rem' }}>
               <h3 className="admin-section-title" style={{ fontSize: '1.2rem', color: 'var(--blue)' }}>כל המבצעים (מקפיאים)</h3>
               <button className="btn btn-pink admin-btn-add" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }} onClick={() => openAdd('freezerDeals')}>
-                 הוספת מקפיא
+                הוספת מקפיא
               </button>
             </div>
             <div className="admin-product-grid" style={{ marginBottom: '3rem' }}>
@@ -724,7 +724,7 @@ export default function Admin() {
             <div className="admin-actions-bar">
               <h3 className="admin-section-title" style={{ fontSize: '1.2rem', color: 'var(--blue)' }}>הכי נמכרים</h3>
               <button className="btn btn-pink admin-btn-add" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }} onClick={() => openAdd('favorites')}>
-                 הוספת טעם אהוב
+                הוספת טעם אהוב
               </button>
             </div>
             <div className="admin-product-grid">
