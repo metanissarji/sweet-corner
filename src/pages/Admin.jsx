@@ -1,84 +1,69 @@
 import { useState, useRef, useEffect } from 'react';
 import { useProducts } from '../context/ProductsContext.jsx';
+import { supabase } from '../lib/supabase.js';
 import './Admin.css';
 
-const ADMIN_PIN = '1234';
+const inputStyle = {
+  width: '100%',
+  padding: '0.8rem 1rem',
+  margin: '0.4rem 0',
+  border: '2px solid #e5d5c8',
+  borderRadius: 12,
+  fontFamily: 'inherit',
+  fontSize: '1rem',
+  boxSizing: 'border-box',
+};
 
 /* ====================================================================
-   LOGIN SCREEN
+   LOGIN SCREEN — התחברות מנהל דרך Supabase (אימייל + סיסמה)
    ==================================================================== */
-function LoginScreen({ onLogin }) {
-  const [pin, setPin] = useState(['', '', '', '']);
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const refs = [useRef(), useRef(), useRef(), useRef()];
+function LoginScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
 
-  function handleChange(idx, value) {
-    if (!/^\d*$/.test(value)) return;
-    const next = [...pin];
-    next[idx] = value.slice(-1);
-    setPin(next);
-    setError(false);
-    if (value && idx < 3) refs[idx + 1].current?.focus();
-  }
-
-  function handleKeyDown(idx, e) {
-    if (e.key === 'Backspace' && !pin[idx] && idx > 0) {
-      refs[idx - 1].current?.focus();
-    }
-  }
-
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const code = pin.join('');
-    if (code.length < 4) {
-      setError(true);
-      setErrorMsg('הזינו 4 ספרות');
-      return;
-    }
-    if (code === ADMIN_PIN) {
-      onLogin();
-    } else {
-      setError(true);
-      setErrorMsg('קוד שגוי — נסו שוב');
-      setPin(['', '', '', '']);
-      refs[0].current?.focus();
-    }
+    if (!supabase) { setError('החיבור לשרת אינו זמין כרגע'); return; }
+    setBusy(true);
+    setError('');
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    setBusy(false);
+    if (error) setError('אימייל או סיסמה שגויים');
   }
-
-  useEffect(() => {
-    refs[0].current?.focus();
-  }, []);
 
   return (
     <div className="admin-login-wrapper">
       <form className="admin-login-card" onSubmit={handleSubmit}>
-        <span className="login-emoji"></span>
+        <span className="login-emoji">🍦</span>
         <h1>לוח ניהול</h1>
-        <p>הזינו את קוד הגישה בן 4 ספרות</p>
+        <p>התחברות מנהל</p>
 
-        <div className="pin-input-row">
-          {pin.map((digit, i) => (
-            <input
-              key={i}
-              ref={refs[i]}
-              type="text"
-              inputMode="numeric"
-              maxLength={1}
-              value={digit}
-              className={error ? 'pin-error' : ''}
-              onChange={(e) => handleChange(i, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(i, e)}
-              autoComplete="off"
-            />
-          ))}
-        </div>
+        <input
+          type="email"
+          placeholder="אימייל"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+          style={inputStyle}
+        />
+        <input
+          type="password"
+          placeholder="סיסמה"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+          style={inputStyle}
+        />
 
-        <button type="submit" className="admin-login-btn">
-          כניסה
+        <button type="submit" className="admin-login-btn" disabled={busy}>
+          {busy ? 'מתחבר…' : 'כניסה'}
         </button>
 
-        {errorMsg && error && <p className="login-error-msg">{errorMsg}</p>}
+        {error && <p className="login-error-msg">{error}</p>}
       </form>
     </div>
   );
@@ -113,21 +98,41 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
   });
 
   const [preview, setPreview] = useState(product?.image || '');
+  const [uploading, setUploading] = useState(false);
 
   function set(key, val) {
     setForm((prev) => ({ ...prev, [key]: val }));
   }
 
-  function handlePhoto(e) {
+  async function handlePhoto(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result;
-      set('image', dataUrl);
-      setPreview(dataUrl);
-    };
-    reader.readAsDataURL(file);
+
+    // ללא Supabase (פיתוח מקומי) — נשמור כ-base64
+    if (!supabase) {
+      const reader = new FileReader();
+      reader.onload = () => { set('image', reader.result); setPreview(reader.result); };
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    // העלאה ל-Supabase Storage — נשמר רק קישור קליל (מהיר בטלפון), לא base64 כבד
+    setUploading(true);
+    try {
+      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error } = await supabase.storage
+        .from('product-images')
+        .upload(path, file, { cacheControl: '31536000', upsert: false });
+      if (error) throw error;
+      const { data } = supabase.storage.from('product-images').getPublicUrl(path);
+      set('image', data.publicUrl);
+      setPreview(data.publicUrl);
+    } catch (err) {
+      alert('שגיאה בהעלאת התמונה: ' + (err.message || err));
+    } finally {
+      setUploading(false);
+    }
   }
 
   function handleSubmit(e) {
@@ -151,10 +156,12 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
             <div className="admin-form-group">
               <label>תמונה</label>
               <div className="admin-photo-upload">
-                <input type="file" accept="image/*" onChange={handlePhoto} />
-                <span className="upload-icon"></span>
+                <input type="file" accept="image/*" onChange={handlePhoto} disabled={uploading} />
+                <span className="upload-icon">📷</span>
                 <p className="upload-text">
-                  <strong>לחצו להעלאת תמונה</strong> או גררו לכאן
+                  {uploading
+                    ? <strong>מעלה תמונה…</strong>
+                    : <><strong>לחצו להעלאת תמונה</strong> או גררו לכאן</>}
                 </p>
               </div>
               {preview && (
@@ -451,7 +458,7 @@ const TABS = [
 ];
 
 export default function Admin() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [session, setSession] = useState(undefined); // undefined = טוען, null = לא מחובר
   const [activeTab, setActiveTab] = useState('flavors');
   const [selectedCatalogId, setSelectedCatalogId] = useState(null);
   const [editModal, setEditModal] = useState(null);   // { mode, product }
@@ -486,6 +493,14 @@ export default function Admin() {
     setToast(msg);
     setTimeout(() => setToast(''), 2500);
   }
+
+  // מצב התחברות Supabase — צריך התחברות כדי שהעריכות יישמרו בענן (RLS)
+  useEffect(() => {
+    if (!supabase) { setSession(null); return; }
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
+    return () => sub.subscription.unsubscribe();
+  }, []);
 
   /* ---- Edit ---- */
   function openEdit(product) {
@@ -555,9 +570,16 @@ export default function Admin() {
     else moveProduct(displayCategory, product.id, 'bottom', selectedCatalogId);
   }
 
-  /* ---- Not logged in ---- */
-  if (!loggedIn) {
-    return <LoginScreen onLogin={() => setLoggedIn(true)} />;
+  /* ---- Auth gate ---- */
+  if (session === undefined) {
+    return (
+      <div className="admin-login-wrapper">
+        <p style={{ color: '#fff', fontSize: '1.1rem' }}>טוען…</p>
+      </div>
+    );
+  }
+  if (!session) {
+    return <LoginScreen />;
   }
 
   return (
@@ -572,7 +594,7 @@ export default function Admin() {
           <button className="admin-btn-ghost" onClick={resetToDefaults}>
              איפוס
           </button>
-          <button className="admin-btn-ghost admin-btn-logout" onClick={() => setLoggedIn(false)}>
+          <button className="admin-btn-ghost admin-btn-logout" onClick={() => supabase.auth.signOut()}>
              יציאה
           </button>
         </div>
