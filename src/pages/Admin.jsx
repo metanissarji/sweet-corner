@@ -333,7 +333,7 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
    DELETE CONFIRM MODAL
    ==================================================================== */
 function DeleteModal({ product, category, onConfirm, onClose }) {
-  const nameField = category === 'flavors' ? 'name' : 'title';
+  const nameField = (category === 'flavors' || category === 'favorites' || category === 'freezerProducts') ? 'name' : 'title';
   return (
     <div className="admin-modal-overlay" onClick={onClose}>
       <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
@@ -450,10 +450,9 @@ function Toast({ message }) {
    ADMIN PAGE
    ==================================================================== */
 const TABS = [
-  { key: 'flavors', label: ' טעמים', title: 'טעמים' },
-  { key: 'favorites', label: ' הכי נמכרים', title: 'הטעמים שכולם אוהבים' },
-  { key: 'freezerDeals', label: ' כל המבצעים', title: 'מבצעי מקפיאים' },
-  { key: 'dealCatalogs', label: ' קטלוגים', title: 'קטלוגים' },
+  { key: 'home', label: ' דף הבית', title: 'ניהול דף הבית' },
+  { key: 'flavors', label: ' מיוחדים שלנו', title: 'מיוחדים שלנו' },
+  { key: 'deals', label: ' מבצעים חמים', title: 'מבצעים חמים' },
   { key: 'packages', label: ' מארזים', title: 'מארזים' },
 ];
 
@@ -462,8 +461,8 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState('flavors');
   const [selectedCatalogId, setSelectedCatalogId] = useState(null);
   const [flavorFilter, setFlavorFilter] = useState('הכל');
-  const [editModal, setEditModal] = useState(null);   // { mode, product }
-  const [deleteModal, setDeleteModal] = useState(null);
+  const [editModal, setEditModal] = useState(null);   // { mode, product, overrideCategory }
+  const [deleteModal, setDeleteModal] = useState(null); // { product, category }
   const [toast, setToast] = useState('');
 
   const { flavors, favorites, freezerDeals, dealCatalogs, deals, packages, updateProduct, addProduct, deleteProduct, moveProduct, addFreezerProduct, updateFreezerProduct, deleteFreezerProduct, moveFreezerProduct, resetToDefaults } =
@@ -474,13 +473,22 @@ export default function Admin() {
   let displayCategory = activeTab;
   let currentData = dataSets[activeTab] || [];
   
-  // If we are viewing a specific catalog, show its deals instead
-  if (activeTab === 'dealCatalogs' && selectedCatalogId) {
-    displayCategory = 'deals';
-    currentData = deals.filter(d => d.catalogId === selectedCatalogId);
-  } else if (activeTab === 'freezerDeals' && selectedCatalogId) {
-    displayCategory = 'freezerProducts';
-    currentData = freezerDeals.find(f => f.id === selectedCatalogId)?.products || [];
+  // Custom routing based on new tabs
+  if (activeTab === 'home') {
+    if (selectedCatalogId) {
+      displayCategory = 'freezerProducts';
+      currentData = freezerDeals.find(f => f.id === selectedCatalogId)?.products || [];
+    } else {
+      displayCategory = 'home_overview'; // Custom handler
+    }
+  } else if (activeTab === 'deals') {
+    if (selectedCatalogId) {
+      displayCategory = 'deals';
+      currentData = deals.filter(d => d.catalogId === selectedCatalogId);
+    } else {
+      displayCategory = 'dealCatalogs';
+      currentData = dealCatalogs;
+    }
   }
 
   const currentTab = TABS.find((t) => t.key === activeTab);
@@ -509,8 +517,8 @@ export default function Admin() {
     setEditModal({ mode: 'edit', product });
   }
 
-  function openAdd() {
-    setEditModal({ mode: 'add', product: null });
+  function openAdd(overrideCategory = null) {
+    setEditModal({ mode: 'add', product: null, overrideCategory });
   }
 
   function handleSave(form) {
@@ -519,18 +527,20 @@ export default function Admin() {
       form.catalogId = selectedCatalogId;
     }
 
+    const actualCategory = editModal.overrideCategory || displayCategory;
+
     if (editModal.mode === 'edit') {
-      if (displayCategory === 'freezerProducts') {
+      if (actualCategory === 'freezerProducts') {
         updateFreezerProduct(selectedCatalogId, editModal.product.id, form);
       } else {
-        updateProduct(displayCategory, editModal.product.id, form);
+        updateProduct(actualCategory, editModal.product.id, form);
       }
       showToast(' המוצר עודכן בהצלחה');
     } else {
-      if (displayCategory === 'freezerProducts') {
+      if (actualCategory === 'freezerProducts') {
         addFreezerProduct(selectedCatalogId, form);
       } else {
-        addProduct(displayCategory, form);
+        addProduct(actualCategory, form);
       }
       showToast(' מוצר חדש נוסף');
     }
@@ -538,15 +548,16 @@ export default function Admin() {
   }
 
   /* ---- Delete ---- */
-  function openDelete(product) {
-    setDeleteModal(product);
+  function openDelete(product, overrideCategory = null) {
+    setDeleteModal({ product, category: overrideCategory || displayCategory });
   }
 
   function handleDelete() {
-    if (displayCategory === 'freezerProducts') {
-      deleteFreezerProduct(selectedCatalogId, deleteModal.id);
+    const cat = deleteModal.category;
+    if (cat === 'freezerProducts') {
+      deleteFreezerProduct(selectedCatalogId, deleteModal.product.id);
     } else {
-      deleteProduct(displayCategory, deleteModal.id);
+      deleteProduct(cat, deleteModal.product.id);
     }
     showToast(' המוצר נמחק');
     setDeleteModal(null);
@@ -642,13 +653,13 @@ export default function Admin() {
       </div>
 
       <div className="admin-actions-bar">
-        {(activeTab === 'dealCatalogs' || activeTab === 'freezerDeals') && selectedCatalogId ? (
+        {(displayCategory === 'deals' || displayCategory === 'freezerProducts') && selectedCatalogId ? (
           <div style={{display: 'flex', gap: '1rem', alignItems: 'center'}}>
             <button className="admin-btn-ghost" onClick={() => setSelectedCatalogId(null)}>
-              ← חזרה לכל {activeTab === 'dealCatalogs' ? 'הקטלוגים' : 'המבצעים'}
+              ← חזרה לכל {displayCategory === 'deals' ? 'הקטלוגים' : 'המבצעים'}
             </button>
             <h2 className="admin-section-title">
-              {activeTab === 'dealCatalogs' 
+              {displayCategory === 'deals' 
                 ? `${dealCatalogs.find(c => c.id === selectedCatalogId)?.title} — מוצרים`
                 : `מקפיא מס' ${selectedCatalogId} — גלידות בפנים`
               }
@@ -657,9 +668,13 @@ export default function Admin() {
         ) : (
           <h2 className="admin-section-title">{currentTab?.title}</h2>
         )}
-        <button className="btn btn-pink admin-btn-add" onClick={openAdd}>
-           הוספת {((activeTab === 'dealCatalogs' || activeTab === 'freezerDeals') && !selectedCatalogId) ? (activeTab === 'dealCatalogs' ? 'קטלוג' : 'מקפיא מבצע') : 'מוצר'}
-        </button>
+        
+        {/* Global Add button only if not in home_overview */}
+        {displayCategory !== 'home_overview' && (
+          <button className="btn btn-pink admin-btn-add" onClick={() => openAdd()}>
+             הוספת {(displayCategory === 'dealCatalogs') ? 'קטלוג' : (displayCategory === 'freezerDeals') ? 'מקפיא מבצע' : 'מוצר'}
+          </button>
+        )}
       </div>
 
       {/* Flavor Category Filters */}
@@ -682,32 +697,89 @@ export default function Admin() {
       {/* Content */}
       <div className="admin-content">
 
-        <div className="admin-product-grid">
-          {currentData.filter(p => activeTab !== 'flavors' || flavorFilter === 'הכל' || p.category === flavorFilter).map((product, index, arr) => (
-            <AdminCard
-              key={product.id}
-              product={product}
-              category={displayCategory}
-              index={index}
-              isFirst={index === 0}
-              isLast={index === arr.length - 1}
-              onEdit={openEdit}
-              onDelete={openDelete}
-              onEnterCatalog={(catalog) => setSelectedCatalogId(catalog.id)}
-              onMoveUp={handleMoveUp}
-              onMoveDown={handleMoveDown}
-              onMoveTop={handleMoveTop}
-              onMoveBottom={handleMoveBottom}
-            />
-          ))}
-        </div>
+        {displayCategory === 'home_overview' ? (
+          <>
+            {/* Freezer Deals Section */}
+            <div className="admin-actions-bar" style={{ marginTop: '1rem' }}>
+              <h3 className="admin-section-title" style={{ fontSize: '1.2rem', color: 'var(--blue)' }}>כל המבצעים (מקפיאים)</h3>
+              <button className="btn btn-pink admin-btn-add" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }} onClick={() => openAdd('freezerDeals')}>
+                 הוספת מקפיא
+              </button>
+            </div>
+            <div className="admin-product-grid" style={{ marginBottom: '3rem' }}>
+              {freezerDeals.map((product, index) => (
+                <AdminCard
+                  key={product.id}
+                  product={product}
+                  category="freezerDeals"
+                  index={index}
+                  isFirst={index === 0}
+                  isLast={index === freezerDeals.length - 1}
+                  onEdit={(p) => setEditModal({ mode: 'edit', product: p, overrideCategory: 'freezerDeals' })}
+                  onDelete={(p) => openDelete(p, 'freezerDeals')}
+                  onEnterCatalog={(catalog) => setSelectedCatalogId(catalog.id)}
+                  onMoveUp={(p) => moveProduct('freezerDeals', p.id, 'up')}
+                  onMoveDown={(p) => moveProduct('freezerDeals', p.id, 'down')}
+                  onMoveTop={(p) => moveProduct('freezerDeals', p.id, 'top')}
+                  onMoveBottom={(p) => moveProduct('freezerDeals', p.id, 'bottom')}
+                />
+              ))}
+            </div>
+
+            {/* Favorites Section */}
+            <div className="admin-actions-bar">
+              <h3 className="admin-section-title" style={{ fontSize: '1.2rem', color: 'var(--blue)' }}>הכי נמכרים</h3>
+              <button className="btn btn-pink admin-btn-add" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }} onClick={() => openAdd('favorites')}>
+                 הוספת טעם אהוב
+              </button>
+            </div>
+            <div className="admin-product-grid">
+              {favorites.map((product, index) => (
+                <AdminCard
+                  key={product.id}
+                  product={product}
+                  category="favorites"
+                  index={index}
+                  isFirst={index === 0}
+                  isLast={index === favorites.length - 1}
+                  onEdit={(p) => setEditModal({ mode: 'edit', product: p, overrideCategory: 'favorites' })}
+                  onDelete={(p) => openDelete(p, 'favorites')}
+                  onMoveUp={(p) => moveProduct('favorites', p.id, 'up')}
+                  onMoveDown={(p) => moveProduct('favorites', p.id, 'down')}
+                  onMoveTop={(p) => moveProduct('favorites', p.id, 'top')}
+                  onMoveBottom={(p) => moveProduct('favorites', p.id, 'bottom')}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="admin-product-grid">
+            {currentData.filter(p => activeTab !== 'flavors' || flavorFilter === 'הכל' || p.category === flavorFilter).map((product, index, arr) => (
+              <AdminCard
+                key={product.id}
+                product={product}
+                category={displayCategory}
+                index={index}
+                isFirst={index === 0}
+                isLast={index === arr.length - 1}
+                onEdit={openEdit}
+                onDelete={(p) => openDelete(p)}
+                onEnterCatalog={(catalog) => setSelectedCatalogId(catalog.id)}
+                onMoveUp={handleMoveUp}
+                onMoveDown={handleMoveDown}
+                onMoveTop={handleMoveTop}
+                onMoveBottom={handleMoveBottom}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Edit/Add Modal */}
       {editModal && (
         <ProductModal
           mode={editModal.mode}
-          category={displayCategory}
+          category={editModal.overrideCategory || displayCategory}
           product={editModal.product}
           dealCatalogs={dealCatalogs}
           selectedCatalogId={selectedCatalogId}
@@ -719,8 +791,8 @@ export default function Admin() {
       {/* Delete Modal */}
       {deleteModal && (
         <DeleteModal
-          product={deleteModal}
-          category={displayCategory}
+          product={deleteModal.product}
+          category={deleteModal.category}
           onConfirm={handleDelete}
           onClose={() => setDeleteModal(null)}
         />
