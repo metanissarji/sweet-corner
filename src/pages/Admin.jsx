@@ -461,6 +461,7 @@ export default function Admin() {
   const [session, setSession] = useState(undefined); // undefined = טוען, null = לא מחובר
   const [activeTab, setActiveTab] = useState('flavors');
   const [selectedCatalogId, setSelectedCatalogId] = useState(null);
+  const [flavorFilter, setFlavorFilter] = useState('הכל');
   const [editModal, setEditModal] = useState(null);   // { mode, product }
   const [deleteModal, setDeleteModal] = useState(null);
   const [toast, setToast] = useState('');
@@ -487,6 +488,7 @@ export default function Admin() {
   function handleTabChange(key) {
     setActiveTab(key);
     setSelectedCatalogId(null);
+    setFlavorFilter('הכל');
   }
 
   function showToast(msg) {
@@ -660,18 +662,35 @@ export default function Admin() {
         </button>
       </div>
 
+      {/* Flavor Category Filters */}
+      {activeTab === 'flavors' && (
+        <div className="admin-content" style={{ paddingBottom: 0 }}>
+          <div className="chip-row" style={{ justifyContent: 'center' }}>
+            {['הכל', 'גלידות', 'אייסים', 'חטיפים'].map(cat => (
+              <button
+                key={cat}
+                className={`chip ${flavorFilter === cat ? 'active' : ''}`}
+                onClick={() => setFlavorFilter(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Content */}
       <div className="admin-content">
 
         <div className="admin-product-grid">
-          {currentData.map((product, index) => (
+          {currentData.filter(p => activeTab !== 'flavors' || flavorFilter === 'הכל' || p.category === flavorFilter).map((product, index, arr) => (
             <AdminCard
               key={product.id}
               product={product}
               category={displayCategory}
               index={index}
               isFirst={index === 0}
-              isLast={index === currentData.length - 1}
+              isLast={index === arr.length - 1}
               onEdit={openEdit}
               onDelete={openDelete}
               onEnterCatalog={(catalog) => setSelectedCatalogId(catalog.id)}
