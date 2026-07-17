@@ -36,8 +36,9 @@ export default function App() {
   const posterHome = pathname === '/' && homePhotoExists === true;
 
   useEffect(() => {
-    const pcBgPages = ['/flavors', '/deals', '/about', '/contact', '/branches'];
-    if (pcBgPages.includes(pathname)) {
+    const pcBgPages = ['/flavors', '/deals', '/packages', '/about', '/contact', '/branches'];
+    // התאמה גם לעמודי משנה (למשל /deals/freezer/3) — שהמעבר בין עמודים ירגיש אחיד
+    if (pcBgPages.some((p) => pathname === p || pathname.startsWith(p + '/'))) {
       document.body.classList.add('page-bg-sections');
     } else {
       document.body.classList.remove('page-bg-sections');

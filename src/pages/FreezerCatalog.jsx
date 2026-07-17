@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import ProductImage from '../components/ProductImage.jsx';
 import AddToCart from '../components/AddToCart.jsx';
 import { useProducts } from '../context/ProductsContext.jsx';
+import { useCart } from '../context/CartContext.jsx';
 import './FreezerDeals.css';
 
 /**
@@ -12,6 +13,7 @@ import './FreezerDeals.css';
 export default function FreezerCatalog() {
   const { id } = useParams();
   const { freezerDeals } = useProducts();
+  const { items } = useCart();
   const deal = (freezerDeals || []).find((d) => String(d.id) === id);
 
   if (!deal) {
@@ -30,6 +32,7 @@ export default function FreezerCatalog() {
   return (
     <>
       <header className="page-header">
+        <Link to="/deals" className="freezer-back-top">← כל המקפיאים</Link>
         <h1>מבצע {deal.qty} ב־₪{deal.price} </h1>
         <p>בוחרים {deal.qty} מהגלידות שבמקפיא — ומשלמים ₪{deal.price} בלבד</p>
       </header>
@@ -75,29 +78,39 @@ export default function FreezerCatalog() {
 
           {products.length > 0 ? (
             <div className="card-grid" style={{ marginTop: '2rem' }}>
-              {products.map((p, i) => (
-                <article className="card" key={p.id}>
-                  <div style={{ aspectRatio: '4 / 3' }}>
-                    <ProductImage src={p.image} alt={`גלידה ${i + 1} — מבצע ${deal.qty} ב־₪${deal.price}`} emoji="" />
-                  </div>
-                  <div className="card-body freezer-product-body">
-                    {deal.single ? (
-                      <p className="freezer-single-price">₪{deal.single} <span>ליחידה</span></p>
-                    ) : null}
-                    <AddToCart
-                      product={{
-                        key: `fz-${deal.id}-${p.id}`,
-                        name: `גלידה ${i + 1} · מבצע ${deal.qty} ב־₪${deal.price}`,
-                        price: deal.single || deal.price,
-                        emoji: '',
-                        dealId: deal.id,
-                        dealQty: deal.qty,
-                        dealPrice: deal.price,
-                      }}
-                    />
-                  </div>
-                </article>
-              ))}
+              {products.map((p, i) => {
+                const qty = items[`fz-${deal.id}-${p.id}`]?.qty || 0;
+                return (
+                  <article className={`card ${qty >= deal.qty ? 'freezer-card-active' : ''}`} key={p.id}>
+                    <div style={{ aspectRatio: '4 / 3' }}>
+                      <ProductImage src={p.image} alt={`גלידה ${i + 1} — מבצע ${deal.qty} ב־₪${deal.price}`} emoji="" />
+                    </div>
+                    <div className="card-body freezer-product-body">
+                      {deal.single ? (
+                        <p className="freezer-single-price">₪{deal.single} <span>ליחידה</span></p>
+                      ) : null}
+                      <AddToCart
+                        product={{
+                          key: `fz-${deal.id}-${p.id}`,
+                          name: `גלידה ${i + 1} · מבצע ${deal.qty} ב־₪${deal.price}`,
+                          price: deal.single || deal.price,
+                          emoji: '',
+                          dealId: deal.id,
+                          dealQty: deal.qty,
+                          dealPrice: deal.price,
+                        }}
+                      />
+                      {/* חיווי התקדמות למבצע — דוחף להשלים את הכמות */}
+                      {qty > 0 && qty < deal.qty && (
+                        <p className="freezer-deal-progress">עוד {deal.qty - qty} מהטעם הזה = ₪{deal.price} 🎯</p>
+                      )}
+                      {qty >= deal.qty && (
+                        <p className="freezer-deal-progress freezer-deal-done">המבצע הופעל! 🎉</p>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           ) : (
             <div className="freezer-empty">
