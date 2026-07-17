@@ -151,7 +151,7 @@ function FlavorsPreview() {
                 <h3>{f.name}</h3>
                 <div className="card-buy-row">
                   <p className="price">₪{f.price}</p>
-                  <AddToCart product={{ key: `bs-${f.id}`, name: f.name, price: f.price, emoji: f.emoji }} />
+                  <AddToCart product={{ key: `bs-${f.id}`, name: f.name, price: f.price, emoji: f.emoji, image: f.image }} />
                 </div>
               </div>
             </article>

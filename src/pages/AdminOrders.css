@@ -180,3 +180,13 @@
     background: #fff; padding: 1rem;
   }
 }
+
+/* תמונת מוצר קטנה בטבלת פריטי הזמנה — מזהים את הגלידה במבט */
+.order-item-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e5e0d8;
+  display: block;
+}

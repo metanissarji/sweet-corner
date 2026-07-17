@@ -167,7 +167,9 @@ function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
           <tbody>
             {order.items.map((it, i) => (
               <tr key={i}>
-                <td className="item-emoji-cell">{it.emoji}</td>
+                <td className="item-emoji-cell">
+                  {it.image ? <img className="order-item-thumb" src={it.image} alt={it.name} loading="lazy" /> : it.emoji}
+                </td>
                 <td>{it.name}</td>
                 <td>{it.qty}</td>
                 <td>₪{it.price}</td>

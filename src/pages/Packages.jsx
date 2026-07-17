@@ -26,7 +26,7 @@ export default function Packages() {
                   <p>{p.desc}</p>
                   <div className="card-buy-row">
                     <p className="price">₪{p.price}</p>
-                    <AddToCart product={{ key: `package-${p.id}`, name: p.title, price: p.price, emoji: p.emoji }} />
+                    <AddToCart product={{ key: `package-${p.id}`, name: p.title, price: p.price, emoji: p.emoji, image: p.image }} />
                   </div>
                 </div>
               </article>

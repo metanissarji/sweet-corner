@@ -57,7 +57,7 @@ export default function CatalogProducts() {
                         ₪{d.price}
                         {d.oldPrice > 0 && <span className="old-price">₪{d.oldPrice}</span>}
                       </p>
-                      <AddToCart product={{ key: `deal-${d.id}`, name: d.title, price: d.price, emoji: d.emoji }} />
+                      <AddToCart product={{ key: `deal-${d.id}`, name: d.title, price: d.price, emoji: d.emoji, image: d.image }} />
                     </div>
                   </div>
                 </article>

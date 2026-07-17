@@ -43,7 +43,7 @@ export default function Flavors() {
                   <p>{f.desc}</p>
                   <div className="card-buy-row">
                     <p className="price">₪{f.price}</p>
-                    <AddToCart product={{ key: `flavor-${f.id}`, name: f.name, price: f.price, emoji: f.emoji }} />
+                    <AddToCart product={{ key: `flavor-${f.id}`, name: f.name, price: f.price, emoji: f.emoji, image: f.image }} />
                   </div>
                 </div>
               </article>

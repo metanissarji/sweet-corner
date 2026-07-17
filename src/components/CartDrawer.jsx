@@ -97,6 +97,7 @@ export default function CartDrawer() {
         price: it.price,
         qty: it.qty,
         emoji: it.emoji,
+        image: it.image,
         key: it.key,
       })),
       customer,
@@ -218,7 +219,11 @@ export default function CartDrawer() {
             <ul className="cart-items">
               {list.map((it) => (
                 <li className="cart-item" key={it.key}>
-                  <span className="item-emoji" aria-hidden="true">{it.emoji}</span>
+                  {it.image ? (
+                    <img className="item-thumb" src={it.image} alt={it.name} loading="lazy" />
+                  ) : (
+                    <span className="item-emoji" aria-hidden="true">{it.emoji}</span>
+                  )}
                   <div className="item-info">
                     <span className="item-name">{it.name}</span>
                     <span className="item-price">₪{it.price} ליח׳</span>

@@ -365,6 +365,18 @@
   font-size: 1.6rem;
 }
 
+/* תמונת מוצר קטנה בסל — כדי שיהיה ברור בדיוק איזו גלידה נבחרה */
+.item-thumb {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid var(--cream-dark);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
 .item-info {
   flex: 1;
   min-width: 0;
