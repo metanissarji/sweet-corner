@@ -100,6 +100,9 @@ export default function FreezerCatalog() {
                         name: `גלידה ${i + 1} · מבצע ${deal.qty} ב־₪${deal.price}`,
                         price: deal.single || deal.price,
                         emoji: '',
+                        dealId: deal.id,
+                        dealQty: deal.qty,
+                        dealPrice: deal.price,
                       }}
                     />
                   </div>

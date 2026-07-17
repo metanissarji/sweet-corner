@@ -41,7 +41,7 @@ function burstConfetti(container) {
 }
 
 export default function CartDrawer() {
-  const { list, count, total, add, remove, clear, drawerOpen, setDrawerOpen } = useCart();
+  const { list, count, total, fullTotal, dealSavings, add, remove, clear, drawerOpen, setDrawerOpen } = useCart();
   const { placeOrder } = useOrders();
   const [ordered, setOrdered] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
@@ -237,8 +237,14 @@ export default function CartDrawer() {
               <div className="cart-summary">
                 <div className="summary-row">
                   <span>המוצרים שלכם</span>
-                  <span>₪{total}</span>
+                  <span>₪{fullTotal}</span>
                 </div>
+                {dealSavings > 0 && (
+                  <div className="summary-row summary-deal">
+                    <span> הנחת מבצע</span>
+                    <span>−₪{dealSavings}</span>
+                  </div>
+                )}
                 <div className="summary-row summary-fee">
                   <span>בוקס + שקית קרח </span>
                   <span>₪{BOX_FEE}</span>

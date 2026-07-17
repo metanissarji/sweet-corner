@@ -449,6 +449,11 @@
   font-size: 0.9rem;
 }
 
+.summary-deal {
+  color: #1f9d55;
+  font-weight: 700;
+}
+
 .summary-grand {
   margin-top: 0.55rem;
   padding-top: 0.6rem;

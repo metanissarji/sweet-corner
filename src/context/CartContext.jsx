@@ -46,11 +46,32 @@ export function CartProvider({ children }) {
 
   const list = Object.values(items);
   const count = list.reduce((sum, it) => sum + it.qty, 0);
-  const total = list.reduce((sum, it) => sum + it.qty * it.price, 0);
+
+  // מחיר "מלא" — כל יחידה לפי מחירה הבודד, בלי הנחות מבצע
+  const fullTotal = list.reduce((sum, it) => sum + it.qty * it.price, 0);
+
+  // מחיר בפועל — יחידות של אותו מבצע נצברות יחד: כל {dealQty} יחידות
+  // מתומחרות במחיר המבצע, והשארית לפי המחיר הבודד.
+  const dealGroups = {};
+  let total = 0;
+  for (const it of list) {
+    if (it.dealId != null && it.dealQty && it.dealPrice != null) {
+      const g = dealGroups[it.dealId] || (dealGroups[it.dealId] = { qty: 0, dealQty: it.dealQty, dealPrice: it.dealPrice, single: it.price });
+      g.qty += it.qty;
+    } else {
+      total += it.qty * it.price;
+    }
+  }
+  for (const id in dealGroups) {
+    const g = dealGroups[id];
+    total += Math.floor(g.qty / g.dealQty) * g.dealPrice + (g.qty % g.dealQty) * g.single;
+  }
+
+  const dealSavings = Math.max(0, fullTotal - total);
 
   return (
     <CartContext.Provider
-      value={{ items, list, count, total, add, remove, clear, drawerOpen, setDrawerOpen }}
+      value={{ items, list, count, total, fullTotal, dealSavings, add, remove, clear, drawerOpen, setDrawerOpen }}
     >
       {children}
     </CartContext.Provider>
