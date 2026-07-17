@@ -65,6 +65,13 @@ export default function FreezerCatalog() {
                 />
               </div>
               <p className="freezer-units" style={{ opacity: 0.75 }}>ההוספה לסל היא למבצע שלם</p>
+              {deal.single ? (
+                <p className="freezer-single-note">
+                  רוצים פחות מ־{deal.qty}? אפשר לבחור יחידות בודדות — כל יחידה <strong>₪{deal.single}</strong>.
+                  <br />
+                  בקנייה של {deal.qty} יחד משלמים רק <strong>₪{deal.price}</strong> (במקום ₪{deal.qty * deal.single})
+                </p>
+              ) : null}
             </div>
           </div>
 
@@ -72,16 +79,29 @@ export default function FreezerCatalog() {
           <h2 className="section-title" style={{ marginTop: '3rem' }}>
             הגלידות <span className="highlight">שבמבצע</span>
           </h2>
+          {deal.single ? (
+            <p className="freezer-pick-hint">בחרו את הגלידות שאתם רוצים — כל יחידה ₪{deal.single}</p>
+          ) : null}
 
           {products.length > 0 ? (
             <div className="card-grid" style={{ marginTop: '2rem' }}>
-              {products.map((p) => (
+              {products.map((p, i) => (
                 <article className="card" key={p.id}>
                   <div style={{ aspectRatio: '4 / 3' }}>
-                    <ProductImage src={p.image} alt={p.name} emoji={p.emoji || ''} />
+                    <ProductImage src={p.image} alt={`גלידה ${i + 1} — מבצע ${deal.qty} ב־₪${deal.price}`} emoji="" />
                   </div>
-                  <div className="card-body">
-                    <h3>{p.name}</h3>
+                  <div className="card-body freezer-product-body">
+                    {deal.single ? (
+                      <p className="freezer-single-price">₪{deal.single} <span>ליחידה</span></p>
+                    ) : null}
+                    <AddToCart
+                      product={{
+                        key: `fz-${deal.id}-${p.id}`,
+                        name: `גלידה ${i + 1} · מבצע ${deal.qty} ב־₪${deal.price}`,
+                        price: deal.single || deal.price,
+                        emoji: '',
+                      }}
+                    />
                   </div>
                 </article>
               ))}
