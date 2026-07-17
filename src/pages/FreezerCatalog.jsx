@@ -28,6 +28,10 @@ export default function FreezerCatalog() {
   }
 
   const products = deal.products || [];
+  // כמה גלידות מהמבצע הזה כבר בסל (מכל הטעמים ביחד) — לצורך חיווי ההתקדמות
+  const inCart = products.reduce((sum, p) => sum + (items[`fz-${deal.id}-${p.id}`]?.qty || 0), 0);
+  const dealReached = inCart >= deal.qty;
+  const remainingToDeal = Math.max(0, deal.qty - inCart);
 
   return (
     <>
@@ -61,8 +65,8 @@ export default function FreezerCatalog() {
                 <p className="freezer-single-note">
                   כל יחידה בודדת <strong>₪{deal.single}</strong>.
                   <br />
-                  {deal.qty} מאותו הטעם ביחד = <strong>₪{deal.price}</strong> בלבד (במקום ₪{deal.qty * deal.single}).
-                  כל יחידה נוספת מאותו הטעם — ₪{deal.single}.
+                  {deal.qty} גלידות כלשהן מהמבצע (גם מטעמים שונים) = <strong>₪{deal.price}</strong> בלבד (במקום ₪{deal.qty * deal.single}).
+                  כל יחידה נוספת — ₪{deal.single}.
                 </p>
               ) : null}
             </div>
@@ -73,7 +77,16 @@ export default function FreezerCatalog() {
             הגלידות <span className="highlight">שבמבצע</span>
           </h2>
           {deal.single ? (
-            <p className="freezer-pick-hint">בחרו את הגלידות שאתם רוצים — כל יחידה ₪{deal.single}</p>
+            <p className="freezer-pick-hint">בחרו {deal.qty} גלידות כלשהן (גם מטעמים שונים) ותקבלו את המבצע — ₪{deal.price}</p>
+          ) : null}
+
+          {/* חיווי התקדמות למבצע — נצבר מכל הטעמים יחד */}
+          {deal.single && inCart > 0 ? (
+            <div className={`freezer-deal-banner ${dealReached ? 'freezer-deal-banner-done' : ''}`}>
+              {dealReached
+                ? <>המבצע הופעל! 🎉 בסל {inCart} גלידות · כל גלידה נוספת ₪{deal.single}</>
+                : <>בחרתם {inCart} — עוד <strong>{remainingToDeal}</strong> גלידות ותשלמו רק ₪{deal.price} 🎯</>}
+            </div>
           ) : null}
 
           {products.length > 0 ? (
@@ -81,7 +94,7 @@ export default function FreezerCatalog() {
               {products.map((p, i) => {
                 const qty = items[`fz-${deal.id}-${p.id}`]?.qty || 0;
                 return (
-                  <article className={`card ${qty >= deal.qty ? 'freezer-card-active' : ''}`} key={p.id}>
+                  <article className={`card ${qty > 0 ? 'freezer-card-active' : ''}`} key={p.id}>
                     <div style={{ aspectRatio: '4 / 3' }}>
                       <ProductImage src={p.image} alt={`גלידה ${i + 1} — מבצע ${deal.qty} ב־₪${deal.price}`} emoji="" />
                     </div>
@@ -101,13 +114,6 @@ export default function FreezerCatalog() {
                           dealPrice: deal.price,
                         }}
                       />
-                      {/* חיווי התקדמות למבצע — דוחף להשלים את הכמות */}
-                      {qty > 0 && qty < deal.qty && (
-                        <p className="freezer-deal-progress">עוד {deal.qty - qty} מהטעם הזה = ₪{deal.price} 🎯</p>
-                      )}
-                      {qty >= deal.qty && (
-                        <p className="freezer-deal-progress freezer-deal-done">המבצע הופעל! 🎉</p>
-                      )}
                     </div>
                   </article>
                 );

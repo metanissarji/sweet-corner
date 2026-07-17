@@ -383,6 +383,28 @@
 }
 .freezer-back-top:hover { background: rgba(255, 255, 255, 0.28); }
 
+/* ── באנר התקדמות למבצע (נצבר מכל הטעמים) ── */
+.freezer-deal-banner {
+  max-width: 480px;
+  margin: 1rem auto 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--blue, #2e86e0);
+  background: var(--blue-soft, #d8eafc);
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  box-shadow: var(--shadow-soft);
+  position: sticky;
+  top: 0.5rem;
+  z-index: 5;
+}
+.freezer-deal-banner strong { font-size: 1.15rem; }
+.freezer-deal-banner-done {
+  color: #1f9d55;
+  background: #ddf5e6;
+}
+
 /* ── חיווי התקדמות למבצע על כרטיס טעם ── */
 .freezer-deal-progress {
   margin: 0;
