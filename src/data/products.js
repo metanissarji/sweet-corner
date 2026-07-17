@@ -56,21 +56,23 @@ export const deals = [
    לכל מבצע: products — הגלידות שנכללות בו (מוצגות בעמוד המקפיא הפתוח).
    מבנה מוצר: { id, name, image, emoji } */
 export const freezerDeals = [
-  { id: 1, qty: 4, price: 20, image: '/images/mivtza-01.png', products: [] },
-  { id: 2, qty: 3, price: 21, image: '/images/mivtza-02.png', products: [] },
-  { id: 3, qty: 3, price: 27, image: '/images/mivtza-03.png', products: [] },
-  { id: 4, qty: 3, price: 18, image: '/images/mivtza-04.png', products: [] },
-  { id: 5, qty: 10, price: 12, image: '/images/mivtza-05.png', products: [] },
-  { id: 6, qty: 3, price: 14, image: '/images/mivtza-06.png', products: [] },
-  { id: 7, qty: 3, price: 21, image: '/images/mivtza-07.png', products: [] },
-  { id: 8, qty: 13, price: 10, image: '/images/mivtza-08.png', products: [] },
-  { id: 9, qty: 3, price: 24, image: '/images/mivtza-09.png', products: [] },
-  { id: 10, qty: 3, price: 13, image: '/images/mivtza-10.png', products: [] },
-  { id: 11, qty: 5, price: 11, image: '/images/mivtza-11.png', products: [] },
-  { id: 12, qty: 5, price: 10, image: '/images/mivtza-12.png', products: [] },
-  { id: 13, qty: 4, price: 13, image: '/images/mivtza-13.png', products: [] },
-  { id: 14, qty: 3, price: 26, image: '/images/mivtza-14.png', products: [] },
-  { id: 15, qty: 3, price: 17, image: '/images/mivtza-15.png', products: [] },
+  { id: 1, qty: 2, price: 45, image: '/images/mivtza-01.png', products: [] },
+  { id: 2, qty: 3, price: 13, image: '/images/mivtza-02.png', products: [] },
+  { id: 3, qty: 3, price: 14, image: '/images/mivtza-03.png', products: [] },
+  { id: 4, qty: 3, price: 17, image: '/images/mivtza-04.png', products: [] },
+  { id: 5, qty: 3, price: 18, image: '/images/mivtza-05.png', products: [] },
+  { id: 6, qty: 3, price: 21, image: '/images/mivtza-06.png', products: [] },
+  { id: 7, qty: 3, price: 24, image: '/images/mivtza-07.png', products: [] },
+  { id: 8, qty: 3, price: 26, image: '/images/mivtza-08.png', products: [] },
+  { id: 9, qty: 3, price: 27, image: '/images/mivtza-09.png', products: [] },
+  { id: 10, qty: 4, price: 11, image: '/images/mivtza-10.png', products: [] },
+  { id: 11, qty: 4, price: 13, image: '/images/mivtza-11.png', products: [] },
+  { id: 12, qty: 4, price: 20, image: '/images/mivtza-12.png', products: [] },
+  { id: 13, qty: 5, price: 10, image: '/images/mivtza-13.png', products: [] },
+  { id: 14, qty: 5, price: 11, image: '/images/mivtza-14.png', products: [] },
+  { id: 15, qty: 7, price: 10, image: '/images/mivtza-15.png', products: [] },
+  { id: 16, qty: 12, price: 10, image: '/images/mivtza-16.png', products: [] },
+  { id: 17, qty: 13, price: 10, image: '/images/mivtza-17.png', products: [] },
 ];
 
 export const packages = [
