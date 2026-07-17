@@ -67,9 +67,10 @@ export default function FreezerCatalog() {
               <p className="freezer-units" style={{ opacity: 0.75 }}>ההוספה לסל היא למבצע שלם</p>
               {deal.single ? (
                 <p className="freezer-single-note">
-                  רוצים פחות מ־{deal.qty}? אפשר לבחור יחידות בודדות — כל יחידה <strong>₪{deal.single}</strong>.
+                  כל יחידה בודדת <strong>₪{deal.single}</strong>.
                   <br />
-                  בקנייה של {deal.qty} יחד משלמים רק <strong>₪{deal.price}</strong> (במקום ₪{deal.qty * deal.single})
+                  {deal.qty} מאותו הטעם ביחד = <strong>₪{deal.price}</strong> בלבד (במקום ₪{deal.qty * deal.single}).
+                  כל יחידה נוספת מאותו הטעם — ₪{deal.single}.
                 </p>
               ) : null}
             </div>

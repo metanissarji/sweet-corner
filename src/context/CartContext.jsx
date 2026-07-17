@@ -50,23 +50,18 @@ export function CartProvider({ children }) {
   // מחיר "מלא" — כל יחידה לפי מחירה הבודד, בלי הנחות מבצע
   const fullTotal = list.reduce((sum, it) => sum + it.qty * it.price, 0);
 
-  // מחיר בפועל — יחידות של אותו מבצע נצברות יחד. המבצע חל פעם אחת בלבד:
-  // {dealQty} יחידות במחיר המבצע, וכל יחידה נוספת מעבר לכך במחיר הבודד המלא.
-  const dealGroups = {};
+  // מחיר בפועל — המבצע חל לכל טעם בנפרד ופעם אחת: {dealQty} יחידות מאותו
+  // הטעם במחיר המבצע, וכל יחידה נוספת מאותו הטעם במחיר הבודד המלא.
+  // טעם שלא הגיע לכמות המבצע — כל יחידה במחיר הבודד.
   let total = 0;
   for (const it of list) {
     if (it.dealId != null && it.dealQty && it.dealPrice != null) {
-      const g = dealGroups[it.dealId] || (dealGroups[it.dealId] = { qty: 0, dealQty: it.dealQty, dealPrice: it.dealPrice, single: it.price });
-      g.qty += it.qty;
+      total += it.qty >= it.dealQty
+        ? it.dealPrice + (it.qty - it.dealQty) * it.price
+        : it.qty * it.price;
     } else {
       total += it.qty * it.price;
     }
-  }
-  for (const id in dealGroups) {
-    const g = dealGroups[id];
-    total += g.qty >= g.dealQty
-      ? g.dealPrice + (g.qty - g.dealQty) * g.single
-      : g.qty * g.single;
   }
 
   const dealSavings = Math.max(0, fullTotal - total);
