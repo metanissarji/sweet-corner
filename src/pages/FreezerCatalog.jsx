@@ -54,17 +54,6 @@ export default function FreezerCatalog() {
                 <span className="freezer-price">₪{deal.price}</span>
               </p>
               <p className="freezer-units">{deal.qty} יחידות לבחירה</p>
-              <div className="freezer-buy">
-                <AddToCart
-                  product={{
-                    key: `freezer-${deal.id}`,
-                    name: `מבצע ${deal.qty} ב־₪${deal.price}`,
-                    price: deal.price,
-                    emoji: '',
-                  }}
-                />
-              </div>
-              <p className="freezer-units" style={{ opacity: 0.75 }}>ההוספה לסל היא למבצע שלם</p>
               {deal.single ? (
                 <p className="freezer-single-note">
                   כל יחידה בודדת <strong>₪{deal.single}</strong>.
