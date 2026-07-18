@@ -18,6 +18,8 @@ import Contact from './pages/Contact.jsx';
 import Branches from './pages/Branches.jsx';
 import Admin from './pages/Admin.jsx';
 import OrdersPanel from './pages/OrdersPanel.jsx';
+import Trends from './pages/Trends.jsx';
+import FamilyIceCream from './pages/FamilyIceCream.jsx';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -36,7 +38,7 @@ export default function App() {
   const posterHome = pathname === '/' && homePhotoExists === true;
 
   useEffect(() => {
-    const pcBgPages = ['/flavors', '/deals', '/packages', '/about', '/contact', '/branches'];
+    const pcBgPages = ['/flavors', '/deals', '/packages', '/about', '/contact', '/branches', '/trends', '/family'];
     // התאמה גם לעמודי משנה (למשל /deals/freezer/3) — שהמעבר בין עמודים ירגיש אחיד
     if (pcBgPages.some((p) => pathname === p || pathname.startsWith(p + '/'))) {
       document.body.classList.add('page-bg-sections');
@@ -56,6 +58,8 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/flavors" element={<Flavors />} />
             <Route path="/deals" element={<Deals />} />
+            <Route path="/trends" element={<Trends />} />
+            <Route path="/family" element={<FamilyIceCream />} />
             <Route path="/deals/catalog/:id" element={<CatalogProducts />} />
             <Route path="/deals/freezer/:id" element={<FreezerCatalog />} />
             <Route path="/packages" element={<Packages />} />

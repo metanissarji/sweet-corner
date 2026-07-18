@@ -5,6 +5,8 @@ const links = [
   { to: '/', label: 'דף הבית' },
   { to: '/flavors', label: 'מיוחדים שלנו' },
   { to: '/deals', label: 'מבצעים' },
+  { to: '/trends', label: 'טרנדים' },
+  { to: '/family', label: 'גלידה משפחתית' },
   { to: '/contact', label: 'צור קשר' },
 ];
 
@@ -20,6 +22,12 @@ export default function Navbar() {
         </NavLink>
         <NavLink to="/deals" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
           מבצעים
+        </NavLink>
+        <NavLink to="/trends" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+          טרנדים
+        </NavLink>
+        <NavLink to="/family" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+          גלידה משפחתית
         </NavLink>
 
         <Link to="/" className="logo">
