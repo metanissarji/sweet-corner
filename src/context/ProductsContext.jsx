@@ -7,6 +7,7 @@ import {
   deals as defaultDeals,
   packages as defaultPackages,
   freezerDeals as defaultFreezerDeals,
+  STATIC_DATA_VERSION,
 } from '../data/products.js';
 
 const ProductsContext = createContext(null);
@@ -44,11 +45,19 @@ export function ProductsProvider({ children }) {
 
     supabase
       .from('products_catalog')
-      .select('id, data')
+      .select('id, data, updated_at')
       .then(({ data: rows, error }) => {
-        if (error || !rows || rows.length === 0) { setLoaded(true); return; }
+        // תמיד ממזגים מחדש מעל ברירות המחדל — כך לקוח עם localStorage ישן
+        // לא נתקע עם נתונים מיושנים כשאין (או חסרה) שורה ב-Supabase.
+        if (error) { setLoaded(true); return; }
         const merged = { ...DEFAULT_DATA };
-        rows.forEach((row) => { if (merged[row.id] !== undefined) merged[row.id] = row.data; });
+        (rows || []).forEach((row) => {
+          if (merged[row.id] === undefined) return;
+          // שורה ישנה מגרסת הנתונים שבקוד (ייבוא תמונות וכו') — הקוד מנצח.
+          // עריכה של האדמין אחרי הדיפלוי תמיד חדשה יותר ולכן תנצח.
+          if (row.updated_at && new Date(row.updated_at) < new Date(STATIC_DATA_VERSION)) return;
+          merged[row.id] = row.data;
+        });
         setData(merged);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
         setLoaded(true);
