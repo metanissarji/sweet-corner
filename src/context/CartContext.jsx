@@ -51,7 +51,8 @@ export function CartProvider({ children }) {
   const fullTotal = list.reduce((sum, it) => sum + it.qty * it.price, 0);
 
   // מחיר בפועל — יחידות של אותו מבצע נצברות יחד (מכל טעם שהוא): {dealQty}
-  // גלידות כלשהן מהמבצע במחיר המבצע (פעם אחת), וכל יחידה נוספת במחיר הבודד.
+  // המבצע חוזר על עצמו ללא הגבלה: כל {dealQty} יחידות במחיר המבצע
+  // (למשל 3 ב-10: 6 יחידות = 20, 12 יחידות = 40), והשארית במחיר הבודד.
   const dealGroups = {};
   let total = 0;
   for (const it of list) {
@@ -64,9 +65,8 @@ export function CartProvider({ children }) {
   }
   for (const id in dealGroups) {
     const g = dealGroups[id];
-    total += g.qty >= g.dealQty
-      ? g.dealPrice + (g.qty - g.dealQty) * g.single
-      : g.qty * g.single;
+    const bundles = Math.floor(g.qty / g.dealQty);
+    total += bundles * g.dealPrice + (g.qty % g.dealQty) * g.single;
   }
 
   const dealSavings = Math.max(0, fullTotal - total);

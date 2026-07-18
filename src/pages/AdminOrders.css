@@ -190,3 +190,21 @@
   border: 1px solid #e5e0d8;
   display: block;
 }
+
+/* --- שורת בחירת הסניף — מודגשת מעל סינון הסטטוסים --- */
+.orders-branch-row {
+  padding: 0.6rem;
+  border-radius: 14px;
+  background: rgba(22, 153, 224, 0.08);
+  border: 1px solid rgba(22, 153, 224, 0.2);
+  margin-bottom: 1rem;
+}
+.orders-branch-row .orders-filter-btn.active {
+  background: rgba(22, 153, 224, 0.2);
+  color: #6ec6f5;
+  border-color: rgba(22, 153, 224, 0.45);
+}
+.orders-branch-row .orders-filter-btn.active .filter-count {
+  background: #1699e0;
+  color: #fff;
+}

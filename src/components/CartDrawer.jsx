@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext.jsx';
 import { useOrders } from '../context/OrdersContext.jsx';
+import { ORDER_BRANCHES } from '../data/products.js';
 import { showCartToast } from './AddToCart.jsx';
 import './CartDrawer.css';
 
@@ -43,6 +45,7 @@ function burstConfetti(container) {
 export default function CartDrawer() {
   const { list, count, total, fullTotal, dealSavings, add, remove, clear, drawerOpen, setDrawerOpen } = useCart();
   const { placeOrder } = useOrders();
+  const navigate = useNavigate();
   const [ordered, setOrdered] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
   const [checkout, setCheckout] = useState(false);
@@ -79,15 +82,24 @@ export default function CartDrawer() {
     prevTotal.current = total;
   }, [total]);
 
+  /* ניווט מהיר מתוך הסל — סוגר את המגירה ועובר לעמוד */
+  function goTo(path) {
+    setDrawerOpen(false);
+    navigate(path);
+  }
+
   function handleOrder(e) {
     e.preventDefault();
     const form = e.target;
+    const branchInfo = ORDER_BRANCHES.find((b) => b.id === form.branch.value);
     const customer = {
       firstName: form.firstName.value,
       lastName: form.lastName.value,
       phone: form.phone.value,
       email: form.email.value,
       address: form.address.value,
+      branchId: branchInfo?.id || form.branch.value,
+      branch: branchInfo?.label || form.branch.value,
     };
     const payment = form.payment.value;
 
@@ -178,6 +190,13 @@ export default function CartDrawer() {
         ) : checkout ? (
           <form className="checkout-form" onSubmit={handleOrder}>
             <h3>פרטי משלוח ותשלום</h3>
+            <label className="checkout-branch-label">📍 מאיזה סניף להזמין?</label>
+            <select name="branch" required defaultValue="" className="checkout-input checkout-branch-select">
+              <option value="" disabled>בחירת סניף...</option>
+              {ORDER_BRANCHES.map((b) => (
+                <option key={b.id} value={b.id}>{b.label}</option>
+              ))}
+            </select>
             <input name="firstName" type="text" placeholder="שם פרטי" required className="checkout-input" autoComplete="given-name" />
             <input name="lastName" type="text" placeholder="שם משפחה" required className="checkout-input" autoComplete="family-name" />
             <input name="phone" type="tel" placeholder="מספר טלפון" required className="checkout-input" autoComplete="tel" inputMode="tel" />
@@ -200,6 +219,14 @@ export default function CartDrawer() {
             <p>הסל עדיין ריק...</p>
             <p className="empty-hint">לחצו +1 על כל פינוק שבא לכם </p>
             <p className="empty-fee-note">כל הזמנה יוצאת בבוקס עם שקית קרח  (₪{BOX_FEE})</p>
+            <div className="cart-quick-nav">
+              <button type="button" className="cart-quick-link" onClick={() => goTo('/deals')}>
+                🔥 מבצעים
+              </button>
+              <button type="button" className="cart-quick-link" onClick={() => goTo('/')}>
+                🏠 דף הבית
+              </button>
+            </div>
           </div>
         ) : (
           <>
@@ -269,8 +296,16 @@ export default function CartDrawer() {
                 onClick={() => setCheckout(true)}
                 disabled={!meetsMinimum}
               >
-                השלמת הזמנה 
+                לתשלום 💳
               </button>
+              <div className="cart-quick-nav">
+                <button type="button" className="cart-quick-link" onClick={() => goTo('/deals')}>
+                  🔥 מבצעים
+                </button>
+                <button type="button" className="cart-quick-link" onClick={() => goTo('/')}>
+                  🏠 דף הבית
+                </button>
+              </div>
             </footer>
           </>
         )}

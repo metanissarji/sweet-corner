@@ -31,8 +31,10 @@ export default function FreezerCatalog() {
   const products = deal.products || [];
   // כמה גלידות מהמבצע הזה כבר בסל (מכל הטעמים ביחד) — לצורך חיווי ההתקדמות
   const inCart = products.reduce((sum, p) => sum + (items[`fz-${deal.id}-${p.id}`]?.qty || 0), 0);
-  const dealReached = inCart >= deal.qty;
-  const remainingToDeal = Math.max(0, deal.qty - inCart);
+  // המבצע חוזר על עצמו ללא הגבלה — כל {deal.qty} יחידות = ₪{deal.price} שוב
+  const bundles = Math.floor(inCart / deal.qty);
+  const dealReached = bundles > 0;
+  const remainingToDeal = deal.qty - (inCart % deal.qty);
 
   return (
     <>
@@ -67,7 +69,8 @@ export default function FreezerCatalog() {
                   כל יחידה בודדת <strong>₪{deal.single}</strong>.
                   <br />
                   {deal.qty} גלידות כלשהן מהמבצע (גם מטעמים שונים) = <strong>₪{deal.price}</strong> בלבד (במקום ₪{deal.qty * deal.single}).
-                  כל יחידה נוספת — ₪{deal.single}.
+                  <br />
+                  והמבצע חוזר בלי הגבלה — {deal.qty * 2} גלידות = <strong>₪{deal.price * 2}</strong>, {deal.qty * 3} = <strong>₪{deal.price * 3}</strong> וכן הלאה 🔁
                 </p>
               ) : null}
             </div>
@@ -83,9 +86,11 @@ export default function FreezerCatalog() {
 
           {/* חיווי התקדמות למבצע — נצבר מכל הטעמים יחד */}
           {deal.single && inCart > 0 ? (
-            <div className={`freezer-deal-banner ${dealReached ? 'freezer-deal-banner-done' : ''}`}>
-              {dealReached
-                ? <>המבצע הופעל! 🎉 בסל {inCart} גלידות · כל גלידה נוספת ₪{deal.single}</>
+            <div className={`freezer-deal-banner ${dealReached && inCart % deal.qty === 0 ? 'freezer-deal-banner-done' : ''}`}>
+              {dealReached && inCart % deal.qty === 0
+                ? <>המבצע הופעל ×{bundles}! 🎉 {inCart} גלידות = ₪{bundles * deal.price} בלבד · אפשר להמשיך — כל {deal.qty} נוספות שוב ב-₪{deal.price}</>
+                : dealReached
+                ? <>המבצע פעיל ×{bundles} 🎉 עוד <strong>{remainingToDeal}</strong> גלידות והמבצע יחול שוב 🔁</>
                 : <>בחרתם {inCart} — עוד <strong>{remainingToDeal}</strong> גלידות ותשלמו רק ₪{deal.price} 🎯</>}
             </div>
           ) : null}

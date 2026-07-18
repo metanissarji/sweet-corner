@@ -5,7 +5,7 @@ export default function Branches() {
     <>
       <header className="page-header">
         <h1>הסניפים שלנו </h1>
-        <p>שישה סניפים בגליל — תמיד יש פינה מתוקה קרובה אליכם</p>
+        <p>עשרה סניפים בגליל — תמיד יש פינה מתוקה קרובה אליכם</p>
       </header>
 
       <section className="page-section">

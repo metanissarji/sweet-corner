@@ -615,3 +615,44 @@
   padding: 0.9rem;
   font-size: 1.05rem;
 }
+
+/* ===== ניווט מהיר מתוך הסל — מבצעים / דף הבית ===== */
+.cart-quick-nav {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.8rem;
+}
+
+.cart-quick-link {
+  flex: 1;
+  padding: 0.65rem 0.6rem;
+  border: 2px solid var(--blue-soft, #bfe3f7);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--brown);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.cart-quick-link:hover {
+  background: var(--cream, #fdf6ee);
+  border-color: var(--pink);
+  transform: translateY(-1px);
+}
+
+/* ===== בחירת סניף בטופס ההזמנה ===== */
+.checkout-branch-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--brown);
+  margin-bottom: -0.2rem;
+}
+
+.checkout-branch-select {
+  border-color: var(--blue-soft, #bfe3f7);
+  font-weight: 600;
+}

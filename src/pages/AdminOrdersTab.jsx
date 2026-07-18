@@ -1,8 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAdminOrders } from '../lib/useAdminOrders.js';
+import { ORDER_BRANCHES } from '../data/products.js';
 import './AdminOrders.css';
 
 const PAYMENT_LABELS = { cash: ' מזומן', visa: ' ויזה / אשראי', 'apple-pay': ' Apple Pay' };
+
+/* הסניף שהמכשיר הזה מציג — נשמר מקומית כך שכל סניף רואה רק את ההזמנות שלו */
+const BRANCH_FILTER_KEY = 'sweet-corner-panel-branch';
+
+/* הזמנות ישנות (לפני הוספת בחירת הסניף) מוצגות בכל הסניפים — שלא יאבדו */
+function matchesBranch(order, branchId) {
+  if (branchId === 'all') return true;
+  const b = order.customer || {};
+  if (!b.branchId && !b.branch) return true;
+  return b.branchId === branchId;
+}
 
 function formatDate(iso) {
   const d = new Date(iso);
@@ -26,6 +38,7 @@ function buildReceiptHTML(order) {
       <p style="font-size:0.85rem;margin:0.2rem 0"><strong>לקוח:</strong> ${order.customer.firstName} ${order.customer.lastName}</p>
       <p style="font-size:0.85rem;margin:0.2rem 0"><strong>טלפון:</strong> ${order.customer.phone}</p>
       <p style="font-size:0.85rem;margin:0.2rem 0"><strong>כתובת:</strong> ${order.customer.address}</p>
+      ${order.customer.branch ? `<p style="font-size:0.85rem;margin:0.2rem 0"><strong>סניף:</strong> ${order.customer.branch}</p>` : ''}
       <p style="font-size:0.85rem;margin:0.2rem 0"><strong>תשלום:</strong> ${PAYMENT_LABELS[order.payment] || order.payment}</p>
       <hr style="border:none;border-top:2px dashed #ddd;margin:0.8rem 0">
       <table style="width:100%;border-collapse:collapse;margin:0.5rem 0">
@@ -98,6 +111,7 @@ function ReceiptModal({ order, onClose }) {
             <p className="receipt-info"><strong>לקוח:</strong> {order.customer.firstName} {order.customer.lastName}</p>
             <p className="receipt-info"><strong>טלפון:</strong> {order.customer.phone}</p>
             <p className="receipt-info"><strong>כתובת:</strong> {order.customer.address}</p>
+            {order.customer.branch && <p className="receipt-info"><strong>סניף:</strong> {order.customer.branch}</p>}
             <hr className="receipt-divider" />
             <table className="receipt-items">
               <thead><tr><th>פריט</th><th>כמות</th><th>מחיר</th><th>סה״כ</th></tr></thead>
@@ -158,6 +172,8 @@ function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
           <span className="order-customer-value">{order.customer.phone}</span>
           <span className="order-customer-label"> כתובת</span>
           <span className="order-customer-value">{order.customer.address}</span>
+          <span className="order-customer-label">🏪 סניף</span>
+          <span className="order-customer-value">{order.customer.branch || '—'}</span>
           <span className="order-customer-label"> תשלום</span>
           <span className="order-customer-value">{PAYMENT_LABELS[order.payment] || order.payment}</span>
         </div>
@@ -211,23 +227,36 @@ function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
 export default function AdminOrdersTab({ showToast }) {
   const { orders, loading, setStatus, remove, clearAll } = useAdminOrders();
   const [filter, setFilter] = useState('all');
+  const [branchFilter, setBranchFilter] = useState(() => localStorage.getItem(BRANCH_FILTER_KEY) || 'all');
   const [receiptOrder, setReceiptOrder] = useState(null);
 
-  const pending = orders.filter((o) => o.status === 'pending');
-  const accepted = orders.filter((o) => o.status === 'accepted');
-  const declined = orders.filter((o) => o.status === 'declined');
+  // המכשיר זוכר את הסניף שנבחר — עמדה של סניף רואה רק את ההזמנות שלו
+  useEffect(() => {
+    localStorage.setItem(BRANCH_FILTER_KEY, branchFilter);
+  }, [branchFilter]);
 
-  // התראה כשמגיעה הזמנה חדשה (כמו הודעה) — בלי להתריע בטעינה הראשונה
+  const branchOrders = orders.filter((o) => matchesBranch(o, branchFilter));
+  const pending = branchOrders.filter((o) => o.status === 'pending');
+  const accepted = branchOrders.filter((o) => o.status === 'accepted');
+  const declined = branchOrders.filter((o) => o.status === 'declined');
+
+  // מעבר סניף — איפוס הספירה כדי לא להתריע על "הזמנות חדשות" שהן בעצם סינון אחר.
+  // חייב לרוץ לפני אפקט ההתראה (אפקטים רצים לפי סדר ההצהרה).
   const prevCount = useRef(null);
   useEffect(() => {
-    if (prevCount.current === null) { prevCount.current = orders.length; return; }
-    if (orders.length > prevCount.current) {
+    prevCount.current = null;
+  }, [branchFilter]);
+
+  // התראה כשמגיעה הזמנה חדשה לסניף הזה — בלי להתריע בטעינה הראשונה
+  useEffect(() => {
+    if (prevCount.current === null) { prevCount.current = branchOrders.length; return; }
+    if (branchOrders.length > prevCount.current) {
       showToast(' התקבלה הזמנה חדשה!');
     }
-    prevCount.current = orders.length;
-  }, [orders.length, showToast]);
+    prevCount.current = branchOrders.length;
+  }, [branchOrders.length, showToast]);
 
-  const filtered = filter === 'all' ? orders
+  const filtered = filter === 'all' ? branchOrders
     : filter === 'pending' ? pending
     : filter === 'accepted' ? accepted
     : declined;
@@ -247,20 +276,51 @@ export default function AdminOrdersTab({ showToast }) {
     showToast(' ההזמנה נמחקה');
   }
 
+  // בסינון סניף — מוחק רק את הזמנות הסניף המוצג, לא של סניפים אחרים
+  function handleClearAll() {
+    if (branchFilter === 'all') {
+      clearAll();
+    } else {
+      branchOrders.forEach((o) => remove(o.id));
+    }
+    showToast(' ההזמנות נמחקו');
+  }
+
   return (
     <>
       <div className="admin-section-header">
-        <h2>הזמנות <span className="item-count">({orders.length} סה״כ)</span></h2>
-        {orders.length > 0 && (
-          <button className="admin-btn-add" style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }} onClick={clearAll}>
+        <h2>הזמנות <span className="item-count">({branchOrders.length} סה״כ)</span></h2>
+        {branchOrders.length > 0 && (
+          <button className="admin-btn-add" style={{ background: 'linear-gradient(135deg, #ff4444, #cc0000)' }} onClick={handleClearAll}>
              מחיקת הכל
           </button>
         )}
       </div>
 
+      {/* בחירת סניף — כל עמדה בוחרת פעם אחת והמכשיר זוכר */}
+      <div className="orders-filter-row orders-branch-row">
+        <button
+          className={`orders-filter-btn ${branchFilter === 'all' ? 'active' : ''}`}
+          onClick={() => setBranchFilter('all')}
+        >
+          🏪 כל הסניפים
+          <span className="filter-count">{orders.length}</span>
+        </button>
+        {ORDER_BRANCHES.map((b) => (
+          <button
+            key={b.id}
+            className={`orders-filter-btn ${branchFilter === b.id ? 'active' : ''}`}
+            onClick={() => setBranchFilter(b.id)}
+          >
+            {b.short}
+            <span className="filter-count">{orders.filter((o) => matchesBranch(o, b.id)).length}</span>
+          </button>
+        ))}
+      </div>
+
       <div className="orders-filter-row">
         {[
-          { key: 'all', label: 'הכל', count: orders.length },
+          { key: 'all', label: 'הכל', count: branchOrders.length },
           { key: 'pending', label: ' ממתינות', count: pending.length },
           { key: 'accepted', label: ' אושרו', count: accepted.length },
           { key: 'declined', label: ' נדחו', count: declined.length },

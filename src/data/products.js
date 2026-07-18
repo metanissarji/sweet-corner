@@ -96,12 +96,24 @@ export const INSTAGRAM_HANDLE = '@hapina.hamitoka';
 export const HOURS = 'כל יום: 10:00 בבוקר – 23:00 בלילה';
 
 export const branches = [
-  { id: 1, city: 'נצרת', phone: PHONE, hours: HOURS },
-  { id: 2, city: 'נוף הגליל', phone: PHONE, hours: HOURS },
-  { id: 3, city: 'יפיע', phone: PHONE, hours: HOURS },
-  { id: 4, city: 'כפר כנא', phone: PHONE, hours: HOURS },
-  { id: 5, city: 'עראבה', phone: PHONE, hours: HOURS },
-  { id: 6, city: 'ביר אלמכסור', phone: PHONE, hours: HOURS },
+  { id: 1, city: 'נצרת הוורדים', phone: PHONE, hours: HOURS },
+  { id: 2, city: 'נצרת המעיין', phone: PHONE, hours: HOURS },
+  { id: 3, city: 'נצרת דרך יפיע', phone: PHONE, hours: HOURS },
+  { id: 4, city: 'יפיע', phone: PHONE, hours: HOURS },
+  { id: 5, city: 'כפר כנא', phone: PHONE, hours: HOURS },
+  { id: 6, city: 'עראבה', phone: PHONE, hours: HOURS },
+  { id: 7, city: 'ביר אלמכסור', phone: PHONE, hours: HOURS },
+  { id: 8, city: 'נוף הגליל רסקו', phone: PHONE, hours: HOURS },
+  { id: 9, city: 'נוף הגליל דרומית', phone: PHONE, hours: HOURS },
+  { id: 10, city: 'יוקנעם', phone: PHONE, hours: HOURS },
+];
+
+/* הסניפים שמקבלים הזמנות מהאתר — ההזמנה מגיעה רק לסניף שהלקוח בחר.
+   «נצרת» באתר = סניף הוורדים. */
+export const ORDER_BRANCHES = [
+  { id: 'nazareth', label: 'נצרת (סניף הוורדים)', short: 'נצרת' },
+  { id: 'yafia', label: 'יפיע', short: 'יפיע' },
+  { id: 'kafr-kanna', label: 'כפר כנא', short: 'כפר כנא' },
 ];
 
 /* טרנדים — כל תיקייה בדסקטופ = מחיר. { id, price, image } */
