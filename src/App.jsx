@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import useHomePhoto from './hooks/useHomePhoto.js';
 import { CartProvider } from './context/CartContext.jsx';
 import { ProductsProvider } from './context/ProductsContext.jsx';
@@ -16,8 +16,9 @@ import Packages from './pages/Packages.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
 import Branches from './pages/Branches.jsx';
-import Admin from './pages/Admin.jsx';
-import OrdersPanel from './pages/OrdersPanel.jsx';
+/* עמודי הניהול נטענים רק כשנכנסים אליהם — לא מעכבים את הלקוחות */
+const Admin = lazy(() => import('./pages/Admin.jsx'));
+const OrdersPanel = lazy(() => import('./pages/OrdersPanel.jsx'));
 import Trends from './pages/Trends.jsx';
 import FamilyIceCream from './pages/FamilyIceCream.jsx';
 
@@ -54,6 +55,7 @@ export default function App() {
         <ScrollToTop />
         {!isBackoffice && <Navbar />}
         <main>
+          <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/flavors" element={<Flavors />} />
@@ -69,6 +71,7 @@ export default function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/orders-panel" element={<OrdersPanel />} />
           </Routes>
+          </Suspense>
         </main>
         {!isBackoffice && <Footer />}
         {!isBackoffice && <CartDrawer />}
