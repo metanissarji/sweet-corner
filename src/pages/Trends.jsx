@@ -1,5 +1,4 @@
 import React from 'react';
-import './Trends.css'; // Optional CSS file if you want to style this page specifically
 
 export default function Trends() {
   return (
