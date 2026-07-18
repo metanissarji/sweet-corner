@@ -10,8 +10,7 @@
 .freezer {
   position: relative;
   border-radius: 18px 18px 14px 14px;
-  /* Using the requested background image */
-  background: url('/images/deal-bg.jpg') center/cover no-repeat;
+  background: linear-gradient(180deg, #3b93e8 0%, var(--blue) 45%, #1e6dc2 100%);
   box-shadow:
     0 14px 32px rgba(30, 109, 194, 0.35),
     inset 0 2px 0 rgba(255, 255, 255, 0.35);
