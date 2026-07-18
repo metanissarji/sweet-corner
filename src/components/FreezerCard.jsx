@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import '../pages/FreezerDeals.css';
 
 /* חזית המקפיא הממותגת — אותה תמונה לכל המבצעים (הבראד של החנות) */
-export const FREEZER_FRONT = '/images/freezer-front.jpg';
+export const FREEZER_FRONT = '/images/freezer-front-v2.jpg';
 
 /**
  * כרטיס מקפיא (בראד) לחיץ — לחיצה פותחת את עמוד המבצע.
