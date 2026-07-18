@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import ProductImage from '../components/ProductImage.jsx';
 import AddToCart from '../components/AddToCart.jsx';
+import { FREEZER_FRONT } from '../components/FreezerCard.jsx';
 import { useProducts } from '../context/ProductsContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import './FreezerDeals.css';
@@ -47,10 +48,10 @@ export default function FreezerCatalog() {
           <div className="open-freezer">
             <div className="open-freezer-lid" aria-hidden="true" />
             <div className="freezer-glass open-freezer-glass">
-              <ProductImage
-                src={deal.image}
+              <img
+                src={FREEZER_FRONT}
                 alt={`מבצע ${deal.qty} ב-${deal.price} שקלים`}
-                emoji=""
+                className="freezer-front-img"
               />
               <span className="freezer-shine" aria-hidden="true" />
             </div>

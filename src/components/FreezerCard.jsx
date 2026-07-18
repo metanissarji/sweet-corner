@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
-import ProductImage from './ProductImage.jsx';
 import '../pages/FreezerDeals.css';
+
+/* חזית המקפיא הממותגת — אותה תמונה לכל המבצעים (הבראד של החנות) */
+export const FREEZER_FRONT = '/images/freezer-front.jpg';
 
 /**
  * כרטיס מקפיא (בראד) לחיץ — לחיצה פותחת את עמוד המבצע.
@@ -16,9 +18,13 @@ export default function FreezerCard({ deal }) {
       <span className="freezer-ribbon">מבצע</span>
       <span className="freezer-flake" aria-hidden="true"></span>
 
-      {/* חלון הזכוכית עם גלידות המבצע */}
+      {/* חלון הזכוכית — חזית הבראד הממותגת */}
       <div className="freezer-glass">
-        <ProductImage src={deal.image} alt="" emoji="" />
+        <img src={FREEZER_FRONT} alt="" decoding="async" className="freezer-front-img" />
+        {/* מדבקת המחיר על הזכוכית */}
+        <span className="freezer-glass-badge">
+          {deal.qty} ב־₪{deal.price}
+        </span>
         <span className="freezer-shine" aria-hidden="true" />
       </div>
 

@@ -91,6 +91,49 @@
   min-height: 0;
 }
 
+/* חזית הבראד הממותגת — ממלאת את החלון, זום עדין בריחוף */
+.freezer-front-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.45s cubic-bezier(.3,1,.4,1);
+}
+
+.freezer-link:hover .freezer-front-img {
+  transform: scale(1.09);
+}
+
+/* מדבקת מחיר על זכוכית המקפיא */
+.freezer-glass-badge {
+  position: absolute;
+  bottom: 8px;
+  inset-inline-start: 8px;
+  z-index: 2;
+  background: var(--yellow, #ffcf3f);
+  color: var(--brown, #5b3a1e);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(13, 59, 102, 0.4);
+  transform: rotate(-4deg);
+  white-space: nowrap;
+}
+
+.freezer-link:hover .freezer-glass-badge {
+  animation: badgeWiggle 0.5s ease;
+}
+
+@keyframes badgeWiggle {
+  0%, 100% { transform: rotate(-4deg); }
+  35% { transform: rotate(2deg) scale(1.08); }
+  70% { transform: rotate(-6deg); }
+}
+
 /* ברק אלכסוני על הזכוכית */
 .freezer-shine {
   position: absolute;
