@@ -6,8 +6,8 @@ import './FeatureStrip.css';
 const stats = [
   { value: 10, prefix: '₪', title: 'מינימום הזמנה', text: 'כל משלוח יוצא בבוקס עם שקית קרח ' },
   { value: 250, prefix: '₪', title: 'משלוח חינם', text: 'בהזמנה מעל הסכום הזה' },
-  { value: 6, prefix: '', title: 'סניפים בגליל', text: 'נצרת, נוף הגליל, יפיע ועוד' },
-  { value: 15, prefix: '', title: 'מבצעי מקפיא', text: 'כמויות שוות במחיר מיוחד' },
+  { value: 10, prefix: '', title: 'סניפים בגליל', text: 'נצרת, נוף הגליל, יפיע ועוד' },
+  { value: 18, prefix: '', title: 'מבצעי מקפיא', text: 'כמויות שוות במחיר מיוחד' },
 ];
 
 const COUNT_MS = 1400;

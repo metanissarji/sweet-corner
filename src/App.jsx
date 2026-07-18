@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
-import useHomePhoto from './hooks/useHomePhoto.js';
 import { CartProvider } from './context/CartContext.jsx';
 import { ProductsProvider } from './context/ProductsContext.jsx';
 import { OrdersProvider } from './context/OrdersContext.jsx';
@@ -32,11 +31,7 @@ function ScrollToTop() {
 
 export default function App() {
   const { pathname } = useLocation();
-  const homePhotoExists = useHomePhoto();
   const isBackoffice = pathname === '/admin' || pathname === '/orders-panel';
-  // בעמוד הבית מוצג הפוסטר המלא עם התפריט המצויר שבתוכו (עם אזורי לחיצה),
-  // לכן מסתירים את התפריט הרגיל שם כדי שלא יופיע תפריט כפול.
-  const posterHome = pathname === '/' && homePhotoExists === true;
 
   useEffect(() => {
     const pcBgPages = ['/flavors', '/deals', '/packages', '/about', '/contact', '/branches', '/trends', '/family'];

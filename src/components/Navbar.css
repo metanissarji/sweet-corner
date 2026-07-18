@@ -2,8 +2,7 @@
   /* התפריט יושב בראש הדף ונגלל יחד עם התוכן — לא "רודף" אחרי המסך */
   position: relative;
   z-index: 20;
-  background: var(--cream);
-  border-bottom: 1px solid rgba(13, 59, 102, 0.08);
+  background: var(--surface);
 }
 
 /* הלוגו במרכז, והקישורים סביבו בשורה אחת (או גולשים למטה במסכים צרים) */

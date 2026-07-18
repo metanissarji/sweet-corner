@@ -41,6 +41,8 @@ export default function Navbar() {
           <span aria-hidden="true"></span> סניפים
         </NavLink>
       </div>
+      {/* סוכך הדוכן — החתימה הוויזואלית, מופיע בכל עמוד */}
+      <div className="awning" aria-hidden="true" />
     </header>
   );
 }
