@@ -172,7 +172,7 @@ function OrderCard({ order, onAccept, onDecline, onDelete, onReceipt }) {
           <span className="order-customer-value">{order.customer.phone}</span>
           <span className="order-customer-label"> כתובת</span>
           <span className="order-customer-value">{order.customer.address}</span>
-          <span className="order-customer-label">🏪 סניף</span>
+          <span className="order-customer-label"> סניף</span>
           <span className="order-customer-value">{order.customer.branch || '—'}</span>
           <span className="order-customer-label"> תשלום</span>
           <span className="order-customer-value">{PAYMENT_LABELS[order.payment] || order.payment}</span>
@@ -303,7 +303,7 @@ export default function AdminOrdersTab({ showToast }) {
           className={`orders-filter-btn ${branchFilter === 'all' ? 'active' : ''}`}
           onClick={() => setBranchFilter('all')}
         >
-          🏪 כל הסניפים
+          כל הסניפים
           <span className="filter-count">{orders.length}</span>
         </button>
         {ORDER_BRANCHES.map((b) => (

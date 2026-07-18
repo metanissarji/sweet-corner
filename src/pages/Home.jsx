@@ -24,20 +24,19 @@ export default function Home() {
       <SummerHero />
       <HomeFreezers />
       <FlavorsPreview />
-      <CategoryTiles />
       <FeatureStrip />
     </>
   );
 }
 
-/* ===== Hero — דוכן הקיץ: כותרת גדולה, הדמות, ושורת אמון ===== */
+/* ===== Hero — דוכן הקיץ: כותרת גדולה, הלוגו, ושורת אמון ===== */
 function SummerHero() {
   return (
     <section className="summer-hero">
       <div className="sun-glow" aria-hidden="true" />
       <div className="container summer-hero-grid">
         <div className="summer-hero-text">
-          <p className="hero-kicker">גלידריה של הגליל · מאז ומתמיד 🍦</p>
+          <p className="hero-kicker">גלידריה של הגליל · מאז ומתמיד</p>
           <h1 className="hero-title">
             <span className="title-line-a">טעם של קיץ</span>
             <span className="title-line-b">בכל כפית</span>
@@ -47,18 +46,21 @@ function SummerHero() {
             <strong> במחירים של שכונה</strong>
           </p>
           <div className="hero-ctas">
-            <Link to="/deals" className="btn btn-pink hero-cta-main">🔥 לכל המבצעים</Link>
+            <Link to="/deals" className="btn btn-pink hero-cta-main">לכל המבצעים</Link>
             <Link to="/trends" className="btn btn-outline">מה חדש וטרנדי</Link>
           </div>
           <ul className="hero-trust" aria-label="למה אצלנו">
-            <li>🧊 מגיע קפוא — בוקס + שקית קרח</li>
-            <li>🏪 10 סניפים בגליל</li>
-            <li>💰 מבצעי מקפיא כל השנה</li>
+            <li>מגיע קפוא — בוקס + שקית קרח</li>
+            <li>10 סניפים בגליל</li>
+            <li>מבצעי מקפיא כל השנה</li>
           </ul>
         </div>
-        <div className="summer-hero-art" aria-hidden="true">
-          <img src="/images/character.png" alt="" className="hero-mascot" decoding="async" />
-          <span className="sticker hero-sticker">
+        <div className="summer-hero-art">
+          <img src="/images/logo-hero.webp" alt="" className="hero-logo" decoding="async" />
+          <p className="hero-shop-name" aria-hidden="true">
+            <span>הפינה</span> המתוקה
+          </p>
+          <span className="sticker hero-sticker" aria-hidden="true">
             <span className="sticker-top">מבצעים</span>
             <span className="sticker-bottom">מ־₪10</span>
           </span>
@@ -87,7 +89,7 @@ function HomeFreezers() {
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>
             <h2 className="section-title" style={{ margin: 0 }}>
-              כל <span className="highlight">המבצעים</span> 🧊
+              כל <span className="highlight">המבצעים</span>
             </h2>
             <p className="home-section-sub" style={{ marginTop: '0.2rem', marginBottom: 0 }}>
               לוחצים על מקפיא ורואים אילו גלידות יש בפנים
@@ -137,7 +139,7 @@ function FlavorsPreview() {
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>
             <h2 className="section-title" style={{ margin: 0 }}>
-              הכי <span className="highlight">נמכרים</span> ⭐
+              הכי <span className="highlight">נמכרים</span>
             </h2>
           </div>
           <div className="bestsellers-arrows">
@@ -172,36 +174,3 @@ function FlavorsPreview() {
   );
 }
 
-/* ===== ניווט קטגוריות — שלושה אריחים גדולים עם תמונות אמיתיות ===== */
-const CATEGORY_TILES = [
-  { to: '/trends', title: 'טרנדים', text: 'החידושים שכולם מחפשים', image: '/images/trend/23-01.jpg', tag: '🔥' },
-  { to: '/family', title: 'גלידה משפחתית', text: 'אריזות גדולות לכל המשפחה', image: '/images/family/01.jpg', tag: '👨‍👩‍👧‍👦' },
-  { to: '/flavors', title: 'המיוחדים שלנו', text: 'טעמים שרק אצלנו תמצאו', image: '/images/special/01.jpg', tag: '✨' },
-];
-
-function CategoryTiles() {
-  return (
-    <section className="category-tiles">
-      <div className="container">
-        <h2 className="section-title">
-          מה בא <span className="highlight">לכם?</span>
-        </h2>
-        <div className="tiles-grid">
-          {CATEGORY_TILES.map((t) => (
-            <Link to={t.to} className="tile" key={t.to}>
-              <div className="tile-img">
-                <img src={t.image} alt="" decoding="async" />
-              </div>
-              <div className="tile-body">
-                <span className="tile-tag" aria-hidden="true">{t.tag}</span>
-                <h3>{t.title}</h3>
-                <p>{t.text}</p>
-                <span className="tile-go">לצפייה ←</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}

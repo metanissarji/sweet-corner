@@ -12,7 +12,7 @@ export default function FamilyIceCream() {
   return (
     <>
       <header className="page-header">
-        <h1>גלידה משפחתית 🏠</h1>
+        <h1>גלידה משפחתית</h1>
         <p>אריזות גדולות לחלוק עם כולם — הטעמים שכל המשפחה מחכה להם</p>
       </header>
 
@@ -20,7 +20,7 @@ export default function FamilyIceCream() {
         <div className="container">
           {hasUnpriced && (
             <p className="show-note">
-              המחירים באתר יעודכנו ממש בקרוב 🍦 בינתיים אפשר לראות הכל כאן — ולטעום בסניף!
+              המחירים באתר יעודכנו ממש בקרוב — בינתיים אפשר לראות הכל כאן, ולטעום בסניף!
             </p>
           )}
 
@@ -29,7 +29,7 @@ export default function FamilyIceCream() {
               <article className="show-card" key={f.id}>
                 <div className="show-card-photo">
                   <img src={f.image} alt="גלידה משפחתית" loading="lazy" />
-                  <span className="show-card-tag">🏠 משפחתי</span>
+                  <span className="show-card-tag">משפחתי</span>
                   {f.price != null && <span className="price-flag">₪{f.price}</span>}
                 </div>
                 <div className="show-card-body">
@@ -44,7 +44,7 @@ export default function FamilyIceCream() {
                       }}
                     />
                   ) : (
-                    <span className="show-card-instore">זמין בסניף 🍨</span>
+                    <span className="show-card-instore">זמין בסניף</span>
                   )}
                 </div>
               </article>

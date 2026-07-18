@@ -22,7 +22,7 @@ export default function Trends() {
   return (
     <>
       <header className="page-header">
-        <h1>הטרנדים החמים 🔥</h1>
+        <h1>הטרנדים החמים</h1>
         <p>החדשים, המדוברים והכי נחטפים מהמקפיאים — תפסו לפני שנגמר</p>
       </header>
 
@@ -46,7 +46,7 @@ export default function Trends() {
               <article className="show-card" key={t.id}>
                 <div className="show-card-photo">
                   <img src={t.image} alt={`טרנד ב־₪${t.price}`} loading="lazy" />
-                  <span className="show-card-tag">🔥 טרנד</span>
+                  <span className="show-card-tag">טרנד</span>
                   <span className="price-flag">₪{t.price}</span>
                 </div>
                 <div className="show-card-body">

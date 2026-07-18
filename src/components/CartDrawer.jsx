@@ -190,7 +190,7 @@ export default function CartDrawer() {
         ) : checkout ? (
           <form className="checkout-form" onSubmit={handleOrder}>
             <h3>פרטי משלוח ותשלום</h3>
-            <label className="checkout-branch-label">📍 מאיזה סניף להזמין?</label>
+            <label className="checkout-branch-label">מאיזה סניף להזמין?</label>
             <select name="branch" required defaultValue="" className="checkout-input checkout-branch-select">
               <option value="" disabled>בחירת סניף...</option>
               {ORDER_BRANCHES.map((b) => (
@@ -221,10 +221,10 @@ export default function CartDrawer() {
             <p className="empty-fee-note">כל הזמנה יוצאת בבוקס עם שקית קרח  (₪{BOX_FEE})</p>
             <div className="cart-quick-nav">
               <button type="button" className="cart-quick-link" onClick={() => goTo('/deals')}>
-                🔥 מבצעים
+                מבצעים
               </button>
               <button type="button" className="cart-quick-link" onClick={() => goTo('/')}>
-                🏠 דף הבית
+                דף הבית
               </button>
             </div>
           </div>
@@ -296,14 +296,14 @@ export default function CartDrawer() {
                 onClick={() => setCheckout(true)}
                 disabled={!meetsMinimum}
               >
-                לתשלום 💳
+                לתשלום
               </button>
               <div className="cart-quick-nav">
                 <button type="button" className="cart-quick-link" onClick={() => goTo('/deals')}>
-                  🔥 מבצעים
+                  מבצעים
                 </button>
                 <button type="button" className="cart-quick-link" onClick={() => goTo('/')}>
-                  🏠 דף הבית
+                  דף הבית
                 </button>
               </div>
             </footer>

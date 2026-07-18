@@ -24,14 +24,14 @@ export default function Flavors() {
         <section className="page-section" style={{ paddingBottom: 0 }}>
           <div className="container">
             <div className="special-head">
-              <h2 className="section-title">החדשים <span className="highlight">שבמיוחדים</span> ✨</h2>
+              <h2 className="section-title">החדשים <span className="highlight">שבמיוחדים</span></h2>
             </div>
             <div className="special-strip">
               {specialItems.map((sp) => (
                 <article className="show-card" key={sp.id}>
                   <div className="show-card-photo">
                     <img src={sp.image} alt="מיוחד של הפינה המתוקה" loading="lazy" />
-                    <span className="show-card-tag">✨ מיוחד</span>
+                    <span className="show-card-tag">מיוחד</span>
                     {sp.price != null && <span className="price-flag">₪{sp.price}</span>}
                   </div>
                   <div className="show-card-body">
@@ -46,7 +46,7 @@ export default function Flavors() {
                         }}
                       />
                     ) : (
-                      <span className="show-card-instore">זמין בסניף 🍨</span>
+                      <span className="show-card-instore">זמין בסניף</span>
                     )}
                   </div>
                 </article>

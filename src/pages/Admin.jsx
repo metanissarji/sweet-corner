@@ -36,7 +36,7 @@ function LoginScreen() {
   return (
     <div className="admin-login-wrapper">
       <form className="admin-login-card" onSubmit={handleSubmit}>
-        <span className="login-emoji">🍦</span>
+        <span className="login-emoji"></span>
         <h1>לוח ניהול</h1>
         <p>התחברות מנהל</p>
 
@@ -157,7 +157,7 @@ function ProductModal({ mode, category, product, onSave, onClose, dealCatalogs, 
               <label>תמונה</label>
               <div className="admin-photo-upload">
                 <input type="file" accept="image/*" onChange={handlePhoto} disabled={uploading} />
-                <span className="upload-icon">📷</span>
+                <span className="upload-icon">+</span>
                 <p className="upload-text">
                   {uploading
                     ? <strong>מעלה תמונה…</strong>

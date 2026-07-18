@@ -77,7 +77,7 @@ export function showCartToast(text, duration = 1500) {
 
 /* חיווי "נוסף לסל" — חשוב במובייל, שם כפתור הסל רחוק מהאצבע */
 function showToast(product) {
-  showCartToast(`${product.emoji || ''} ${product.name} נוסף לסל ✓`);
+  showCartToast(`${product.name} נוסף לסל`);
 }
 
 /**
