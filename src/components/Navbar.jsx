@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
 const links = [
@@ -29,11 +29,6 @@ export default function Navbar() {
         <NavLink to="/family" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
           גלידה משפחתית
         </NavLink>
-
-        <Link to="/" className="logo">
-          <img src="/images/character.png" alt="הפינה המתוקה" className="logo-img logo-character" />
-        </Link>
-
         <NavLink to="/contact" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
           צור קשר
         </NavLink>

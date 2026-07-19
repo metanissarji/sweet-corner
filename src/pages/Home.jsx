@@ -56,7 +56,7 @@ function SummerHero() {
           </ul>
         </div>
         <div className="summer-hero-art">
-          <img src="/images/logo-hero.webp" alt="" className="hero-logo" decoding="async" />
+          <img src="/images/logo-hero2.webp" alt="" className="hero-logo" decoding="async" />
           <p className="hero-shop-name" aria-hidden="true">
             <span>הפינה</span> המתוקה
           </p>

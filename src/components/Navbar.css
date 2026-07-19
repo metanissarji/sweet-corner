@@ -5,31 +5,21 @@
   background: var(--surface);
 }
 
-/* הלוגו במרכז, והקישורים סביבו בשורה אחת (או גולשים למטה במסכים צרים) */
+/* הקישורים בשורה אחת, ממורכזים */
 .navbar-inner {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
   gap: 1rem 1.6rem;
-  padding: 0.8rem 0;
-}
-
-.logo-img {
-  width: 74px;
-  height: 74px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: var(--white);
-  box-shadow: var(--shadow-soft);
-  margin: 0 0.5rem; /* מרווח קל מהקישורים סביב הלוגו */
+  padding: 1rem 0;
 }
 
 .nav-link {
   position: relative;
   font-weight: 600;
   font-size: 1.05rem;
-  color: var(--brown);
+  color: var(--ink);
   padding-bottom: 6px;
   transition: color 0.15s ease;
   text-decoration: none;
@@ -43,8 +33,8 @@
   right: 10%;
   height: 3px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--pink), var(--yellow));
-  box-shadow: 0 2px 8px rgba(224, 36, 94, 0.45);
+  background: linear-gradient(90deg, var(--primary), var(--sun));
+  box-shadow: 0 2px 8px rgba(232, 71, 107, 0.45);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.32s cubic-bezier(.3,1.5,.5,1);
@@ -52,7 +42,7 @@
 
 .nav-link:hover,
 .nav-link:focus-visible {
-  color: var(--pink);
+  color: var(--primary);
 }
 
 .nav-link:hover::after,
@@ -62,7 +52,7 @@
 }
 
 .nav-link.active {
-  color: var(--pink);
+  color: var(--primary);
 }
 
 .branches-btn {
@@ -70,45 +60,59 @@
   font-size: 1rem;
 }
 
-/* ===== מובייל/מסך צר: קומפקטי, הלוגו והקישורים גולשים יחד ===== */
+/* ===== מובייל: רשת כפתורים מסודרת — כולם גלויים, בולטים ונוחים לאצבע ===== */
 @media (max-width: 900px) {
   .navbar-inner {
-    gap: 0.5rem 0.6rem;
-    padding: 0.6rem 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.55rem;
+    padding: 0.75rem 0.75rem 0.85rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  .logo-img {
-    width: 48px;
-    height: 48px;
-    margin: 0;
-  }
-
-  /* מטרות מגע נוחות + הדגשה כחולה ברורה בעמוד הפעיל ובלחיצה */
+  /* כל קישור — כפתור מלא, ברור, עם גבול וגובה מגע נוח */
   .nav-link {
-    font-size: 0.92rem;
-    padding: 0.35rem 0.8rem;
-    border-radius: 999px;
-    transition: color 0.15s ease, background 0.2s ease, transform 0.12s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 46px;
+    padding: 0.4rem 0.15rem;
+    font-size: 0.88rem;
+    line-height: 1.15;
+    white-space: nowrap;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1.5px solid var(--bg-deep);
+    border-radius: 12px;
+    transition: background 0.2s ease, color 0.15s ease, border-color 0.2s ease, transform 0.12s ease;
   }
 
   .nav-link.active {
     background: var(--primary);
+    border-color: var(--primary);
     color: var(--white);
+    box-shadow: 0 4px 12px rgba(232, 71, 107, 0.35);
   }
 
   .nav-link:active {
-    background: var(--primary-soft);
-    transform: scale(0.94);
+    transform: scale(0.95);
   }
 
-  /* הקו התחתון מוסתר במובייל — ההדגשה היא הכדור הכחול */
+  /* הקו התחתון של הדסקטופ מוסתר — ההדגשה היא הכפתור המלא */
   .nav-link::after {
     display: none;
   }
 
-  /* תכונה גבוהה יותר כדי לגבור על .btn ולהקטין את כפתור הסניפים */
+  /* כפתור הסניפים משתלב ברשת באותו גודל, בסגנון הפוך שיבלוט */
   .navbar-inner .branches-btn {
-    padding: 0.35rem 0.9rem;
-    font-size: 0.9rem;
+    min-height: 46px;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 12px;
+    justify-content: center;
   }
 }
