@@ -253,20 +253,15 @@
 }
 
 .bs-card-img {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   background: #fbf1e2; /* הרקע הלבן של הצילום נמס לתוך הקרם */
   overflow: hidden;
 }
 
-.bs-card-img img,
 .bs-card-img .product-placeholder {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.bs-card-img img {
-  mix-blend-mode: multiply;
 }
 
 .bs-card-body {

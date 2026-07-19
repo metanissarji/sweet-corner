@@ -23,12 +23,9 @@
 }
 
 .show-card-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   display: block;
-  mix-blend-mode: multiply;
   transition: transform 0.4s cubic-bezier(.3,1,.4,1);
+  /* המידות, contain וה-blend מוגדרים בכלל המשותף ב-global.css */
 }
 
 .show-card:hover .show-card-photo img {

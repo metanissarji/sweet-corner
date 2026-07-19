@@ -73,7 +73,7 @@ export default function Flavors() {
           <div className="card-grid">
             {shown.map((f) => (
               <article className="card" key={f.id}>
-                <div className="product-photo" style={{ aspectRatio: '4 / 3' }}>
+                <div className="product-photo" style={{ aspectRatio: '1 / 1' }}>
                   <ProductImage src={f.image} alt={f.name} emoji={f.emoji} />
                 </div>
                 <div className="card-body">

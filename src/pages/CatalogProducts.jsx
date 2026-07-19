@@ -45,7 +45,7 @@ export default function CatalogProducts() {
             <div className="card-grid">
               {items.map((d) => (
                 <article className="card" key={d.id}>
-                  <div className="product-photo" style={{ aspectRatio: '4 / 3' }}>
+                  <div className="product-photo" style={{ aspectRatio: '1 / 1' }}>
                     <ProductImage src={d.image} alt={d.title} emoji={d.emoji} />
                   </div>
                   <div className="card-body">

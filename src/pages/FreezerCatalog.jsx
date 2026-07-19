@@ -101,7 +101,7 @@ export default function FreezerCatalog() {
                 const qty = items[`fz-${deal.id}-${p.id}`]?.qty || 0;
                 return (
                   <article className={`card ${qty > 0 ? 'freezer-card-active' : ''}`} key={p.id}>
-                    <div className="product-photo" style={{ aspectRatio: '4 / 3' }}>
+                    <div className="product-photo" style={{ aspectRatio: '1 / 1' }}>
                       <ProductImage src={p.image} alt={`גלידה ${i + 1} — מבצע ${deal.qty} ב־₪${deal.price}`} emoji="" />
                     </div>
                     <div className="card-body freezer-product-body">

@@ -4,6 +4,7 @@ import { CartProvider } from './context/CartContext.jsx';
 import { ProductsProvider } from './context/ProductsContext.jsx';
 import { OrdersProvider } from './context/OrdersContext.jsx';
 import CartDrawer from './components/CartDrawer.jsx';
+import Lightbox from './components/Lightbox.jsx';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import Home from './pages/Home.jsx';
@@ -70,6 +71,7 @@ export default function App() {
         </main>
         {!isBackoffice && <Footer />}
         {!isBackoffice && <CartDrawer />}
+        {!isBackoffice && <Lightbox />}
       </CartProvider>
       </OrdersProvider>
     </ProductsProvider>

@@ -17,7 +17,7 @@ export default function Packages() {
           <div className="card-grid">
             {packages.map((p) => (
               <article className="card" key={p.id}>
-                <div className="product-photo" style={{ aspectRatio: '4 / 3' }}>
+                <div className="product-photo" style={{ aspectRatio: '1 / 1' }}>
                   <ProductImage src={p.image} alt={p.title} emoji={p.emoji} />
                 </div>
                 <div className="card-body">
