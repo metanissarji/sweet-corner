@@ -55,10 +55,6 @@
   color: var(--primary);
 }
 
-.branches-btn {
-  padding: 0.55rem 1.5rem;
-  font-size: 1rem;
-}
 
 /* ===== מובייל: רשת כפתורים מסודרת — כולם גלויים, בולטים ונוחים לאצבע ===== */
 @media (max-width: 900px) {
@@ -106,13 +102,8 @@
     display: none;
   }
 
-  /* כפתור הסניפים משתלב ברשת באותו גודל, בסגנון הפוך שיבלוט */
-  .navbar-inner .branches-btn {
-    min-height: 46px;
-    padding: 0.4rem 0.3rem;
-    font-size: 0.95rem;
-    font-weight: 700;
-    border-radius: 12px;
-    justify-content: center;
+  /* סניפים — הפריט השביעי משתרע על שורה מלאה, שלא יישאר בודד בפינה */
+  .nav-link-wide {
+    grid-column: 1 / -1;
   }
 }

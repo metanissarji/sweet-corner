@@ -32,8 +32,8 @@ export default function Navbar() {
         <NavLink to="/contact" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
           צור קשר
         </NavLink>
-        <NavLink to="/branches" className="btn btn-pink branches-btn">
-          <span aria-hidden="true"></span> סניפים
+        <NavLink to="/branches" className={({ isActive }) => (isActive ? 'nav-link nav-link-wide active' : 'nav-link nav-link-wide')}>
+          סניפים
         </NavLink>
       </div>
       {/* סוכך הדוכן — החתימה הוויזואלית, מופיע בכל עמוד */}

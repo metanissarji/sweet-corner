@@ -541,11 +541,11 @@ img {
   position: relative;
 }
 
-/* ===== תמונות מוצר — הרקע הלבן של הצילום נמס לתוך קרם חם =====
-   mix-blend-mode: multiply — פיקסלים לבנים מקבלים את צבע הרקע,
-   וצבעי המוצר עצמו נשארים כמו שהם. בלי לגעת בקבצי התמונות. */
+/* ===== תמונות מוצר — אריח לבן נקי, בלי שינוי צבע =====
+   הרקע לבן כמו רקע הצילום עצמו: צבעי המוצר נשארים אמיתיים ב-100%,
+   וגם עקבות עריכה בשולי הצילום נעלמים (לבן על לבן). בלי blend. */
 .product-photo {
-  background: #fbf1e2;
+  background: #ffffff;
   overflow: hidden;
 }
 
@@ -558,6 +558,5 @@ img {
   object-fit: contain;
   padding: 4%;
   box-sizing: border-box;
-  mix-blend-mode: multiply;
   cursor: zoom-in;
 }

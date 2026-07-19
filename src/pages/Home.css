@@ -254,7 +254,7 @@
 
 .bs-card-img {
   aspect-ratio: 1 / 1;
-  background: #fbf1e2; /* הרקע הלבן של הצילום נמס לתוך הקרם */
+  background: #ffffff; /* לבן כמו רקע הצילום — צבעים אמיתיים, בלי הילות */
   overflow: hidden;
 }
 

@@ -15,7 +15,7 @@
 }
 
 .lightbox-card {
-  background: #fbf1e2;
+  background: #ffffff;
   border-radius: 22px;
   padding: clamp(10px, 2.2vw, 24px);
   max-width: min(92vw, 700px);
@@ -30,7 +30,6 @@
   max-width: 100%;
   max-height: calc(84vh - 48px);
   object-fit: contain;
-  mix-blend-mode: multiply;
   border-radius: 12px;
 }
 

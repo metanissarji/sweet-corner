@@ -19,7 +19,7 @@
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: #fbf1e2; /* הרקע הלבן של הצילום נמס לתוך הקרם */
+  background: #ffffff; /* לבן כמו רקע הצילום — צבעים אמיתיים, בלי הילות */
 }
 
 .show-card-photo img {
