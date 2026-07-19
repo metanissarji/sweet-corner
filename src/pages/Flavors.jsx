@@ -1,89 +1,46 @@
-import { useState } from 'react';
-import ProductImage from '../components/ProductImage.jsx';
 import AddToCart from '../components/AddToCart.jsx';
-import { useProducts } from '../context/ProductsContext.jsx';
 import { specialItems } from '../data/products.js';
 import './Showcase.css';
 
-const categories = ['הכל', 'גלידות', 'אייסים', 'חטיפים'];
-
+/**
+ * מיוחדים שלנו — רק התמונות האמיתיות מהסניף, בפריסה מלאה על כל העמוד.
+ * מוצר עם מחיר מקבל כפתור הוספה לסל; בלי מחיר — "זמין בסניף".
+ */
 export default function Flavors() {
-  const { flavors } = useProducts();
-  const [active, setActive] = useState('הכל');
-  const shown = active === 'הכל' ? flavors : flavors.filter((f) => f.category === active);
-
   return (
     <>
       <header className="page-header">
         <h1>מיוחדים שלנו</h1>
-        <p>קלאסיקות שאהובים, טעמים מיוחדים וכל מה שביניהם — בואו לטעום </p>
+        <p>הטעמים המיוחדים שרק אצלנו תמצאו — בואו לטעום </p>
       </header>
-
-      {/* המיוחדים החדשים — תמונות אמיתיות מהסניף, גלילה אופקית */}
-      {specialItems.length > 0 && (
-        <section className="page-section" style={{ paddingBottom: 0 }}>
-          <div className="container">
-            <div className="special-head">
-              <h2 className="section-title">החדשים <span className="highlight">שבמיוחדים</span></h2>
-            </div>
-            <div className="special-strip">
-              {specialItems.map((sp) => (
-                <article className="show-card" key={sp.id}>
-                  <div className="show-card-photo">
-                    <img src={sp.image} alt="מיוחד של הפינה המתוקה" loading="lazy" />
-                    <span className="show-card-tag">מיוחד</span>
-                    {sp.price != null && <span className="price-flag">₪{sp.price}</span>}
-                  </div>
-                  <div className="show-card-body">
-                    {sp.price != null ? (
-                      <AddToCart
-                        product={{
-                          key: `special-${sp.id}`,
-                          name: `מיוחד שלנו · ₪${sp.price}`,
-                          price: sp.price,
-                          emoji: '',
-                          image: sp.image,
-                        }}
-                      />
-                    ) : (
-                      <span className="show-card-instore">זמין בסניף</span>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <section className="page-section">
         <div className="container">
-          <div className="chip-row">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                className={`chip ${active === cat ? 'active' : ''}`}
-                onClick={() => setActive(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <div className="card-grid">
-            {shown.map((f) => (
-              <article className="card" key={f.id}>
-                <div className="product-photo" style={{ aspectRatio: '1 / 1' }}>
-                  <ProductImage src={f.image} alt={f.name} emoji={f.emoji} />
+          {specialItems.some((sp) => sp.price == null) && (
+            <p className="show-note">המחירים באתר יעודכנו ממש בקרוב — בינתיים אפשר לראות הכל כאן, ולטעום בסניף!</p>
+          )}
+          <div className="show-grid">
+            {specialItems.map((sp) => (
+              <article className="show-card" key={sp.id}>
+                <div className="show-card-photo">
+                  <img src={sp.image} alt="מיוחד של הפינה המתוקה" loading="lazy" />
+                  <span className="show-card-tag">מיוחד</span>
+                  {sp.price != null && <span className="price-flag">₪{sp.price}</span>}
                 </div>
-                <div className="card-body">
-                  <span className="card-badge">{f.tag}</span>
-                  <h3>{f.name}</h3>
-                  <p>{f.desc}</p>
-                  <div className="card-buy-row">
-                    <p className="price">₪{f.price}</p>
-                    <AddToCart product={{ key: `flavor-${f.id}`, name: f.name, price: f.price, emoji: f.emoji, image: f.image }} />
-                  </div>
+                <div className="show-card-body">
+                  {sp.price != null ? (
+                    <AddToCart
+                      product={{
+                        key: `special-${sp.id}`,
+                        name: `מיוחד שלנו · ₪${sp.price}`,
+                        price: sp.price,
+                        emoji: '',
+                        image: sp.image,
+                      }}
+                    />
+                  ) : (
+                    <span className="show-card-instore">זמין בסניף</span>
+                  )}
                 </div>
               </article>
             ))}

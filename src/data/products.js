@@ -81,6 +81,23 @@ export const freezerDeals = [
   { id: 18, qty: 2, price: 12, single: 8, image: '/images/freezer-front-v2.jpg', products: [{ id: 1, image: '/images/mivtza/2x12/01.jpg' }, { id: 2, image: '/images/mivtza/2x12/02.jpg' }] },
 ];
 
+/* הכי נמכרים בעמוד הבית — הפרימיום הכבדים (מגנום, סניקרס, טוויקס, מילקה...).
+   כל פריט מפנה למוצר אמיתי בתוך מבצע מקפיא: אותו מפתח סל ואותו תמחור מבצע. */
+export const bestSellers = [
+  { dealId: 9, productId: 3, image: '/images/mivtza/3x27/03.jpg' },
+  { dealId: 9, productId: 6, image: '/images/mivtza/3x27/06.jpg' },
+  { dealId: 9, productId: 9, image: '/images/mivtza/3x27/09.jpg' },
+  { dealId: 9, productId: 10, image: '/images/mivtza/3x27/10.jpg' },
+  { dealId: 9, productId: 13, image: '/images/mivtza/3x27/13.jpg' },
+  { dealId: 9, productId: 16, image: '/images/mivtza/3x27/16.jpg' },
+  { dealId: 9, productId: 17, image: '/images/mivtza/3x27/17.jpg' },
+  { dealId: 9, productId: 24, image: '/images/mivtza/3x27/24.jpg' },
+  { dealId: 7, productId: 4, image: '/images/mivtza/3x24/04.jpg' },
+  { dealId: 7, productId: 5, image: '/images/mivtza/3x24/05.jpg' },
+  { dealId: 7, productId: 7, image: '/images/mivtza/3x24/07.jpg' },
+  { dealId: 7, productId: 9, image: '/images/mivtza/3x24/09.jpg' },
+];
+
 export const packages = [
   { id: 1, title: 'מארז המשפחה', desc: '12 שלגונים במגוון טעמים — לכל המשפחה', items: '12 יחידות', price: 10, emoji: '‍‍‍', image: '/images/package-family.png' },
   { id: 2, title: 'מארז יום הולדת', desc: '24 אייסים צבעוניים + הפתעות מתוקות', items: '24 יחידות', price: 10, emoji: '', image: '/images/package-birthday.png' },

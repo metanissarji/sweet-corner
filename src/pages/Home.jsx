@@ -6,6 +6,7 @@ import IntroOverlay from '../components/IntroOverlay.jsx';
 import FreezerCard from '../components/FreezerCard.jsx';
 import AddToCart from '../components/AddToCart.jsx';
 import { useProducts } from '../context/ProductsContext.jsx';
+import { bestSellers } from '../data/products.js';
 import './Home.css';
 
 export default function Home() {
@@ -117,15 +118,23 @@ function HomeFreezers() {
   );
 }
 
-/* ===== הכי נמכרים ===== */
+/* ===== הכי נמכרים — הפרימיום הכבדים ממבצעי המקפיא, בסדר אקראי =====
+   כל כרטיס הוא מוצר אמיתי מתוך מבצע: הוספה לסל נספרת יחד עם עמוד המקפיא
+   ומקבלת את תמחור המבצע אוטומטית. */
 function FlavorsPreview() {
-  const { flavors, favorites } = useProducts();
+  const { freezerDeals } = useProducts();
   const rowRef = useRef(null);
+  // ערבוב פעם אחת בכל טעינה — סדר אחר לכל ביקור
+  const [shuffled] = useState(() => [...bestSellers].sort(() => Math.random() - 0.5));
 
-  // מציגים את המועדפים קודם, ואז שאר הטעמים
-  const items = [...(favorites || []), ...(flavors || [])].filter(
-    (f, i, arr) => arr.findIndex((x) => x.name === f.name) === i
-  );
+  const items = shuffled
+    .map((b) => {
+      const deal = (freezerDeals || []).find((d) => d.id === b.dealId);
+      return deal ? { ...b, deal } : null;
+    })
+    .filter(Boolean);
+
+  if (items.length === 0) return null;
 
   function slide(dir) {
     const row = rowRef.current;
@@ -149,17 +158,27 @@ function FlavorsPreview() {
         </div>
 
         <div className="bestsellers-row" ref={rowRef}>
-          {items.map((f) => (
-            <article className="bs-card" key={f.id + f.name}>
+          {items.map(({ deal, productId, image }) => (
+            <article className="bs-card" key={`${deal.id}-${productId}`}>
               <div className="bs-card-img">
-                <ProductImage src={f.image} alt={f.name} emoji={f.emoji} />
+                <ProductImage src={image} alt={`גלידה ${productId} — מבצע ${deal.qty} ב־₪${deal.price}`} emoji="" />
               </div>
               <div className="bs-card-body">
-                <span className="card-badge">{f.tag}</span>
-                <h3>{f.name}</h3>
+                <span className="card-badge">מבצע {deal.qty} ב־₪{deal.price}</span>
                 <div className="card-buy-row">
-                  <p className="price">₪{f.price}</p>
-                  <AddToCart product={{ key: `bs-${f.id}`, name: f.name, price: f.price, emoji: f.emoji, image: f.image }} />
+                  <p className="price">₪{deal.single}</p>
+                  <AddToCart
+                    product={{
+                      key: `fz-${deal.id}-${productId}`,
+                      name: `גלידה ${productId} · מבצע ${deal.qty} ב־₪${deal.price}`,
+                      price: deal.single,
+                      emoji: '',
+                      image,
+                      dealId: deal.id,
+                      dealQty: deal.qty,
+                      dealPrice: deal.price,
+                    }}
+                  />
                 </div>
               </div>
             </article>
@@ -167,7 +186,7 @@ function FlavorsPreview() {
         </div>
 
         <div className="text-center home-more">
-          <Link to="/flavors" className="btn btn-pink">לכל הטעמים ←</Link>
+          <Link to="/deals" className="btn btn-pink">לכל המבצעים ←</Link>
         </div>
       </div>
     </section>
