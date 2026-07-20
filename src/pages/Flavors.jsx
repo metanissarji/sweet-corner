@@ -1,4 +1,5 @@
 import AddToCart from '../components/AddToCart.jsx';
+import { useLang } from '../context/LanguageContext.jsx';
 import { specialItems } from '../data/products.js';
 import './Showcase.css';
 
@@ -7,24 +8,26 @@ import './Showcase.css';
  * מוצר עם מחיר מקבל כפתור הוספה לסל; בלי מחיר — "זמין בסניף".
  */
 export default function Flavors() {
+  const { t } = useLang();
+
   return (
     <>
       <header className="page-header">
-        <h1>מיוחדים שלנו</h1>
-        <p>הטעמים המיוחדים שרק אצלנו תמצאו — בואו לטעום </p>
+        <h1>{t('specials.title')}</h1>
+        <p>{t('specials.sub')}</p>
       </header>
 
       <section className="page-section">
         <div className="container">
           {specialItems.some((sp) => sp.price == null) && (
-            <p className="show-note">המחירים באתר יעודכנו ממש בקרוב — בינתיים אפשר לראות הכל כאן, ולטעום בסניף!</p>
+            <p className="show-note">{t('common.priceNote')}</p>
           )}
           <div className="show-grid">
             {specialItems.map((sp) => (
               <article className="show-card" key={sp.id}>
                 <div className="show-card-photo">
-                  <img src={sp.image} alt="מיוחד של הפינה המתוקה" loading="lazy" />
-                  <span className="show-card-tag">מיוחד</span>
+                  <img src={sp.image} alt={t('specials.alt')} loading="lazy" />
+                  <span className="show-card-tag">{t('specials.tag')}</span>
                   {sp.price != null && <span className="price-flag">₪{sp.price}</span>}
                 </div>
                 <div className="show-card-body">
@@ -32,14 +35,14 @@ export default function Flavors() {
                     <AddToCart
                       product={{
                         key: `special-${sp.id}`,
-                        name: `מיוחד שלנו · ₪${sp.price}`,
+                        name: t('specials.itemName', { p: sp.price }),
                         price: sp.price,
                         emoji: '',
                         image: sp.image,
                       }}
                     />
                   ) : (
-                    <span className="show-card-instore">זמין בסניף</span>
+                    <span className="show-card-instore">{t('common.instore')}</span>
                   )}
                 </div>
               </article>

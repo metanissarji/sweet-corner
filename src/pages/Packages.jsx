@@ -2,14 +2,16 @@ import { Link } from 'react-router-dom';
 import ProductImage from '../components/ProductImage.jsx';
 import AddToCart from '../components/AddToCart.jsx';
 import { useProducts } from '../context/ProductsContext.jsx';
+import { useLang } from '../context/LanguageContext.jsx';
 
 export default function Packages() {
   const { packages } = useProducts();
+  const { t } = useLang();
   return (
     <>
       <header className="page-header">
-        <h1>מארזים </h1>
-        <p>לאירועים, למשפחה או סתם לפנק את המקפיא — יש לנו מארז בדיוק בשבילכם</p>
+        <h1>{t('packages.title')}</h1>
+        <p>{t('packages.sub')}</p>
       </header>
 
       <section className="page-section">

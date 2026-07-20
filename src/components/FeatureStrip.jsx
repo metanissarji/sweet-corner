@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLang } from '../context/LanguageContext.jsx';
 import './FeatureStrip.css';
 
 /* פס נתונים מונפש: המספרים נספרים מ-0 כשהפס נכנס למסך (בהשראת עמודי מוצר מודרניים).
    כל המספרים אמיתיים — מינימום הזמנה, משלוח חינם, סניפים, מבצעי מקפיא. */
 const stats = [
-  { value: 10, prefix: '₪', title: 'מינימום הזמנה', text: 'כל משלוח יוצא בבוקס עם שקית קרח ' },
-  { value: 250, prefix: '₪', title: 'משלוח חינם', text: 'בהזמנה מעל הסכום הזה' },
-  { value: 10, prefix: '', title: 'סניפים בגליל', text: 'נצרת, נוף הגליל, יפיע ועוד' },
-  { value: 18, prefix: '', title: 'מבצעי מקפיא', text: 'כמויות שוות במחיר מיוחד' },
+  { value: 10, prefix: '₪', titleKey: 'fs.st1title', textKey: 'fs.st1text' },
+  { value: 250, prefix: '₪', titleKey: 'fs.st2title', textKey: 'fs.st2text' },
+  { value: 10, prefix: '', titleKey: 'fs.st3title', textKey: 'fs.st3text' },
+  { value: 18, prefix: '', titleKey: 'fs.st4title', textKey: 'fs.st4text' },
 ];
 
 const COUNT_MS = 1400;
 
 export default function FeatureStrip() {
+  const { t } = useLang();
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   const [values, setValues] = useState(() => stats.map(() => 0));
@@ -50,21 +52,21 @@ export default function FeatureStrip() {
     <section className={`feature-strip ${visible ? 'stats-on' : ''}`} ref={ref}>
       <div className="container">
         <div className="stats-intro">
-          <h2>משלוח קפוא עד הבית </h2>
+          <h2>{t('fs.title')}</h2>
           <p>
-            כל הזמנה יוצאת אליכם <strong>בבוקס ממותג של הפינה המתוקה עם שקית קרח</strong>,
-            כדי שהכל יגיע קפוא ומושלם — ולכן הזמנה מתחילה מ־<strong>₪10</strong> בלבד.
+            {t('fs.textPre')} <strong>{t('fs.textStrong')}</strong>
+            {t('fs.textMid')}<strong>₪10</strong> {t('fs.textEnd')}
           </p>
         </div>
         <div className="stats-grid">
           {stats.map((s, i) => (
-            <div className="stat" key={s.title} style={{ transitionDelay: `${i * 120}ms` }}>
+            <div className="stat" key={s.titleKey} style={{ transitionDelay: `${i * 120}ms` }}>
               <div className="stat-value">
                 {s.prefix && <span className="stat-currency">{s.prefix}</span>}
                 {values[i]}
               </div>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
+              <h3>{t(s.titleKey)}</h3>
+              <p>{t(s.textKey)}</p>
             </div>
           ))}
         </div>

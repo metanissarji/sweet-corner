@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { PHONE, PHONE_LINK, INSTAGRAM, INSTAGRAM_HANDLE } from '../data/products.js';
+import { useLang } from '../context/LanguageContext.jsx';
 import './Footer.css';
 
 export default function Footer() {
+  const { t } = useLang();
+
   return (
     <footer className="footer">
       <div className="container footer-inner">
@@ -10,40 +13,40 @@ export default function Footer() {
           <h3 className="footer-logo">
             <span>הפינה</span> המתוקה
           </h3>
-          <p>טעם של קיץ בכל כפית </p>
-          <p>גלידות, אייסים, מארזים ופינוקים בטעמים שאהובים על כולם.</p>
+          <p>{t('footer.tagline')}</p>
+          <p>{t('footer.desc')}</p>
         </div>
 
         <div className="footer-col">
-          <h4>ניווט מהיר</h4>
+          <h4>{t('footer.nav')}</h4>
           <ul>
-            <li><Link to="/flavors">מיוחדים שלנו</Link></li>
-            <li><Link to="/deals">מבצעים</Link></li>
-            <li><Link to="/packages">מארזים</Link></li>
-            <li><Link to="/branches">סניפים</Link></li>
+            <li><Link to="/flavors">{t('nav.specials')}</Link></li>
+            <li><Link to="/deals">{t('nav.deals')}</Link></li>
+            <li><Link to="/packages">{t('nav.packages')}</Link></li>
+            <li><Link to="/branches">{t('nav.branches')}</Link></li>
           </ul>
         </div>
 
         <div className="footer-col">
-          <h4>שירות לקוחות</h4>
+          <h4>{t('footer.service')}</h4>
           <ul>
-            <li><Link to="/contact">צור קשר</Link></li>
-            <li><a href={PHONE_LINK}> {PHONE}</a></li>
-            <li><a href={INSTAGRAM} target="_blank" rel="noreferrer"> {INSTAGRAM_HANDLE}</a></li>
+            <li><Link to="/contact">{t('nav.contact')}</Link></li>
+            <li><a href={PHONE_LINK}>{PHONE}</a></li>
+            <li><a href={INSTAGRAM} target="_blank" rel="noreferrer">{INSTAGRAM_HANDLE}</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
-          <h4>שעות פעילות</h4>
+          <h4>{t('footer.hours')}</h4>
           <ul>
-            <li>כל ימות השבוע</li>
-            <li>10:00 בבוקר – 23:00 בלילה</li>
+            <li>{t('footer.days')}</li>
+            <li>{t('footer.hoursVal')}</li>
           </ul>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p> {new Date().getFullYear()} הפינה המתוקה — כל הזכויות שמורות </p>
+        <p>{new Date().getFullYear()} {t('footer.rights')}</p>
       </div>
     </footer>
   );

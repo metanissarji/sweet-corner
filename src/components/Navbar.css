@@ -55,6 +55,28 @@
   color: var(--primary);
 }
 
+/* ===== כפתור מעבר שפה — עברית ↔ ערבית ===== */
+.lang-toggle {
+  border: 2px solid var(--primary);
+  background: var(--surface);
+  color: var(--primary);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.12s ease;
+}
+
+.lang-toggle:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.lang-toggle:active {
+  transform: scale(0.94);
+}
+
 
 /* ===== מובייל: רשת כפתורים מסודרת — כולם גלויים, בולטים ונוחים לאצבע ===== */
 @media (max-width: 900px) {
@@ -102,8 +124,15 @@
     display: none;
   }
 
-  /* סניפים — הפריט השביעי משתרע על שורה מלאה, שלא יישאר בודד בפינה */
+  /* השורה התחתונה: סניפים על שני טורים + כפתור השפה בטור השלישי */
   .nav-link-wide {
-    grid-column: 1 / -1;
+    grid-column: span 2;
+  }
+
+  .lang-toggle {
+    min-height: 46px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.3rem;
   }
 }

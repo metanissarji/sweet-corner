@@ -6,6 +6,7 @@ import IntroOverlay from '../components/IntroOverlay.jsx';
 import FreezerCard from '../components/FreezerCard.jsx';
 import AddToCart from '../components/AddToCart.jsx';
 import { useProducts } from '../context/ProductsContext.jsx';
+import { useLang } from '../context/LanguageContext.jsx';
 import { bestSellers } from '../data/products.js';
 import './Home.css';
 
@@ -32,28 +33,34 @@ export default function Home() {
 
 /* ===== Hero — דוכן הקיץ: כותרת גדולה, הלוגו, ושורת אמון ===== */
 function SummerHero() {
+  const { t } = useLang();
   return (
     <section className="summer-hero">
       <div className="sun-glow" aria-hidden="true" />
+      {/* סוכריות מרחפות — נגיעת חיים עדינה ברקע, בלי עומס */}
+      <div className="hero-sprinkles" aria-hidden="true">
+        <i className="sp sp1" /><i className="sp sp2" /><i className="sp sp3" />
+        <i className="sp sp4" /><i className="sp sp5" /><i className="sp sp6" />
+      </div>
       <div className="container summer-hero-grid">
         <div className="summer-hero-text">
-          <p className="hero-kicker">גלידריה של הגליל · מאז ומתמיד</p>
+          <p className="hero-kicker">{t('hero.kicker')}</p>
           <h1 className="hero-title">
-            <span className="title-line-a">טעם של קיץ</span>
-            <span className="title-line-b">בכל כפית</span>
+            <span className="title-line-a">{t('hero.title1')}</span>
+            <span className="title-line-b">{t('hero.title2')}</span>
           </h1>
           <p className="hero-value">
-            גלידות איכות מהמותגים הכי אהובים —
-            <strong> במחירים של שכונה</strong>
+            {t('hero.value')}
+            <strong> {t('hero.valueStrong')}</strong>
           </p>
           <div className="hero-ctas">
-            <Link to="/deals" className="btn btn-pink hero-cta-main">לכל המבצעים</Link>
-            <Link to="/trends" className="btn btn-outline">מה חדש וטרנדי</Link>
+            <Link to="/deals" className="btn btn-pink hero-cta-main">{t('hero.ctaDeals')}</Link>
+            <Link to="/trends" className="btn btn-outline">{t('hero.ctaTrends')}</Link>
           </div>
-          <ul className="hero-trust" aria-label="למה אצלנו">
-            <li>מגיע קפוא — בוקס + שקית קרח</li>
-            <li>10 סניפים בגליל</li>
-            <li>מבצעי מקפיא כל השנה</li>
+          <ul className="hero-trust">
+            <li>{t('hero.trust1')}</li>
+            <li>{t('hero.trust2')}</li>
+            <li>{t('hero.trust3')}</li>
           </ul>
         </div>
         <div className="summer-hero-art">
@@ -61,10 +68,6 @@ function SummerHero() {
           <p className="hero-shop-name" aria-hidden="true">
             <span>הפינה</span> המתוקה
           </p>
-          <span className="sticker hero-sticker" aria-hidden="true">
-            <span className="sticker-top">מבצעים</span>
-            <span className="sticker-bottom">מ־₪10</span>
-          </span>
         </div>
       </div>
     </section>
@@ -74,6 +77,7 @@ function SummerHero() {
 /* ===== כל המבצעים (מקפיאים) — רצועת קרם חמה ===== */
 function HomeFreezers() {
   const { freezerDeals } = useProducts();
+  const { t } = useLang();
   const rowRef = useRef(null);
 
   if (!freezerDeals || freezerDeals.length === 0) return null;
@@ -90,10 +94,10 @@ function HomeFreezers() {
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>
             <h2 className="section-title" style={{ margin: 0 }}>
-              כל <span className="highlight">המבצעים</span>
+              {t('home.dealsPre')} <span className="highlight">{t('home.dealsHl')}</span>
             </h2>
             <p className="home-section-sub" style={{ marginTop: '0.2rem', marginBottom: 0 }}>
-              לוחצים על מקפיא ורואים אילו גלידות יש בפנים
+              {t('home.dealsSub')}
             </p>
           </div>
           <div className="bestsellers-arrows">
@@ -111,7 +115,7 @@ function HomeFreezers() {
         </div>
 
         <div className="text-center home-more">
-          <Link to="/deals" className="btn btn-pink">לכל המבצעים ←</Link>
+          <Link to="/deals" className="btn btn-pink">{t('home.moreDeals')}</Link>
         </div>
       </div>
     </section>
@@ -123,6 +127,7 @@ function HomeFreezers() {
    ומקבלת את תמחור המבצע אוטומטית. */
 function FlavorsPreview() {
   const { freezerDeals } = useProducts();
+  const { t } = useLang();
   const rowRef = useRef(null);
   // ערבוב פעם אחת בכל טעינה — סדר אחר לכל ביקור
   const [shuffled] = useState(() => [...bestSellers].sort(() => Math.random() - 0.5));
@@ -148,7 +153,7 @@ function FlavorsPreview() {
         <div className="bestsellers-head">
           <div style={{ textAlign: 'right' }}>
             <h2 className="section-title" style={{ margin: 0 }}>
-              הכי <span className="highlight">נמכרים</span>
+              {t('home.bestPre')} <span className="highlight">{t('home.bestHl')}</span>
             </h2>
           </div>
           <div className="bestsellers-arrows">
@@ -161,16 +166,16 @@ function FlavorsPreview() {
           {items.map(({ deal, productId, image }) => (
             <article className="bs-card" key={`${deal.id}-${productId}`}>
               <div className="bs-card-img">
-                <ProductImage src={image} alt={`גלידה ${productId} — מבצע ${deal.qty} ב־₪${deal.price}`} emoji="" />
+                <ProductImage src={image} alt={t('fz.itemAlt', { i: productId, q: deal.qty, p: deal.price })} emoji="" />
               </div>
               <div className="bs-card-body">
-                <span className="card-badge">מבצע {deal.qty} ב־₪{deal.price}</span>
+                <span className="card-badge">{t('badge.deal', { q: deal.qty, p: deal.price })}</span>
                 <div className="card-buy-row">
                   <p className="price">₪{deal.single}</p>
                   <AddToCart
                     product={{
                       key: `fz-${deal.id}-${productId}`,
-                      name: `גלידה ${productId} · מבצע ${deal.qty} ב־₪${deal.price}`,
+                      name: t('fz.itemName', { i: productId, q: deal.qty, p: deal.price }),
                       price: deal.single,
                       emoji: '',
                       image,
@@ -186,7 +191,7 @@ function FlavorsPreview() {
         </div>
 
         <div className="text-center home-more">
-          <Link to="/deals" className="btn btn-pink">לכל המבצעים ←</Link>
+          <Link to="/deals" className="btn btn-pink">{t('home.moreDeals')}</Link>
         </div>
       </div>
     </section>

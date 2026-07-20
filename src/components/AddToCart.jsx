@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useCart } from '../context/CartContext.jsx';
+import { useLang } from '../context/LanguageContext.jsx';
 import './AddToCart.css';
 
 /* אנימציית "טיסה לסל": האימוג'י של המוצר עף בקשת אל כפתור הסל */
@@ -75,17 +76,13 @@ export function showCartToast(text, duration = 1500) {
   t._timer = setTimeout(() => t.classList.remove('show'), duration);
 }
 
-/* חיווי "נוסף לסל" — חשוב במובייל, שם כפתור הסל רחוק מהאצבע */
-function showToast(product) {
-  showCartToast(`${product.name} נוסף לסל`);
-}
-
 /**
  * בקרת כמות למוצר: מינוס · מספר (מתחיל מ-0) · פלוס אחד.
  * product = { key, name, price, emoji }
  */
 export default function AddToCart({ product }) {
   const { items, add, remove } = useCart();
+  const { t } = useLang();
   const plusRef = useRef(null);
   const qty = items[product.key]?.qty || 0;
 
@@ -93,7 +90,8 @@ export default function AddToCart({ product }) {
     add(product);
     popPlusOne(plusRef.current);
     flyToCart(plusRef.current, product.emoji || '');
-    showToast(product);
+    // חיווי "נוסף לסל" — חשוב במובייל, שם כפתור הסל רחוק מהאצבע
+    showCartToast(t('common.addedToast', { name: product.name }));
   }
 
   return (

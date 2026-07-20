@@ -1,40 +1,41 @@
 import { NavLink } from 'react-router-dom';
+import { useLang } from '../context/LanguageContext.jsx';
 import './Navbar.css';
 
-const links = [
-  { to: '/', label: 'דף הבית' },
-  { to: '/flavors', label: 'מיוחדים שלנו' },
-  { to: '/deals', label: 'מבצעים' },
-  { to: '/trends', label: 'טרנדים' },
-  { to: '/family', label: 'גלידה משפחתית' },
-  { to: '/contact', label: 'צור קשר' },
+const LINKS = [
+  { to: '/', key: 'nav.home' },
+  { to: '/flavors', key: 'nav.specials' },
+  { to: '/deals', key: 'nav.deals' },
+  { to: '/trends', key: 'nav.trends' },
+  { to: '/family', key: 'nav.family' },
+  { to: '/contact', key: 'nav.contact' },
 ];
 
 export default function Navbar() {
+  const { t, toggleLang } = useLang();
+
   return (
     <header className="navbar">
       <div className="container navbar-inner">
-        <NavLink to="/" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-          דף הבית
+        {LINKS.map((l) => (
+          <NavLink
+            key={l.to}
+            to={l.to}
+            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+          >
+            {t(l.key)}
+          </NavLink>
+        ))}
+        <NavLink
+          to="/branches"
+          className={({ isActive }) => (isActive ? 'nav-link nav-link-wide active' : 'nav-link nav-link-wide')}
+        >
+          {t('nav.branches')}
         </NavLink>
-        <NavLink to="/flavors" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-          מיוחדים שלנו
-        </NavLink>
-        <NavLink to="/deals" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-          מבצעים
-        </NavLink>
-        <NavLink to="/trends" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-          טרנדים
-        </NavLink>
-        <NavLink to="/family" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-          גלידה משפחתית
-        </NavLink>
-        <NavLink to="/contact" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-          צור קשר
-        </NavLink>
-        <NavLink to="/branches" className={({ isActive }) => (isActive ? 'nav-link nav-link-wide active' : 'nav-link nav-link-wide')}>
-          סניפים
-        </NavLink>
+        {/* מעבר שפה עברית ↔ ערבית */}
+        <button type="button" className="lang-toggle" onClick={toggleLang}>
+          {t('lang.switch')}
+        </button>
       </div>
       {/* סוכך הדוכן — החתימה הוויזואלית, מופיע בכל עמוד */}
       <div className="awning" aria-hidden="true" />

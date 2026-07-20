@@ -1,11 +1,14 @@
-import { branches, PHONE, PHONE_LINK, INSTAGRAM, INSTAGRAM_HANDLE, HOURS } from '../data/products.js';
+import { branches, PHONE, PHONE_LINK, INSTAGRAM, INSTAGRAM_HANDLE } from '../data/products.js';
+import { useLang } from '../context/LanguageContext.jsx';
 
 export default function Branches() {
+  const { t } = useLang();
+
   return (
     <>
       <header className="page-header">
-        <h1>הסניפים שלנו </h1>
-        <p>עשרה סניפים בגליל — תמיד יש פינה מתוקה קרובה אליכם</p>
+        <h1>{t('branches.title')}</h1>
+        <p>{t('branches.sub')}</p>
       </header>
 
       <section className="page-section">
@@ -14,13 +17,13 @@ export default function Branches() {
             {branches.map((b) => (
               <article className="card branch-card" key={b.id} style={{ padding: '1.6rem' }}>
                 <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.35rem', color: 'var(--pink)' }}>
-                   {b.city}
+                  {t(`branch.${b.id}`)}
                 </h3>
                 <p style={{ marginTop: '0.5rem' }}>
-                   <a href={PHONE_LINK} style={{ fontWeight: 600 }}>{b.phone}</a>
+                  <a href={PHONE_LINK} style={{ fontWeight: 600 }}>{b.phone}</a>
                 </p>
                 <p style={{ marginTop: '0.3rem', color: 'var(--brown-light)', fontSize: '0.95rem' }}>
-                   {b.hours}
+                  {t('footer.days')} · {t('footer.hoursVal')}
                 </p>
               </article>
             ))}
@@ -30,10 +33,10 @@ export default function Branches() {
           <div className="branches-social">
             <a href={INSTAGRAM} target="_blank" rel="noreferrer" className="insta-btn">
               <span className="insta-icon" aria-hidden="true"></span>
-              עקבו אחרינו באינסטגרם {INSTAGRAM_HANDLE}
+              {t('branches.insta')} {INSTAGRAM_HANDLE}
             </a>
             <a href={PHONE_LINK} className="btn btn-outline phone-btn">
-               {PHONE}
+              {PHONE}
             </a>
           </div>
         </div>

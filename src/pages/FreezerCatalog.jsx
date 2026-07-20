@@ -4,6 +4,7 @@ import AddToCart from '../components/AddToCart.jsx';
 import { FREEZER_FRONT } from '../components/FreezerCard.jsx';
 import { useProducts } from '../context/ProductsContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
+import { useLang } from '../context/LanguageContext.jsx';
 import './FreezerDeals.css';
 
 /**
@@ -15,14 +16,15 @@ export default function FreezerCatalog() {
   const { id } = useParams();
   const { freezerDeals } = useProducts();
   const { items } = useCart();
+  const { t } = useLang();
   const deal = (freezerDeals || []).find((d) => String(d.id) === id);
 
   if (!deal) {
     return (
       <div className="page-header">
-        <h1>המקפיא לא נמצא </h1>
+        <h1>{t('fz.notFound')}</h1>
         <p style={{ marginTop: '1rem' }}>
-          <Link to="/deals" className="btn btn-pink">← חזרה למבצעים</Link>
+          <Link to="/deals" className="btn btn-pink">{t('fz.backDeals')}</Link>
         </p>
       </div>
     );
@@ -39,9 +41,9 @@ export default function FreezerCatalog() {
   return (
     <>
       <header className="page-header">
-        <Link to="/deals" className="freezer-back-top">← כל המקפיאים</Link>
-        <h1>מבצע {deal.qty} ב־₪{deal.price} </h1>
-        <p>בוחרים {deal.qty} מהגלידות שבמקפיא — ומשלמים ₪{deal.price} בלבד</p>
+        <Link to="/deals" className="freezer-back-top">{t('fz.backTop')}</Link>
+        <h1>{t('fz.title', { q: deal.qty, p: deal.price })}</h1>
+        <p>{t('fz.sub', { q: deal.qty, p: deal.price })}</p>
       </header>
 
       <section className="page-section">
@@ -52,7 +54,7 @@ export default function FreezerCatalog() {
             <div className="freezer-glass open-freezer-glass">
               <img
                 src={FREEZER_FRONT}
-                alt={`מבצע ${deal.qty} ב-${deal.price} שקלים`}
+                alt={t('fz.title', { q: deal.qty, p: deal.price })}
                 className="freezer-front-img"
               />
               <span className="freezer-shine" aria-hidden="true" />
@@ -60,17 +62,17 @@ export default function FreezerCatalog() {
             <div className="open-freezer-info freezer">
               <p className="freezer-deal">
                 <span className="freezer-qty">{deal.qty}</span>
-                <span className="freezer-be">ב־</span>
+                <span className="freezer-be">{t('freezer.be')}</span>
                 <span className="freezer-price">₪{deal.price}</span>
               </p>
-              <p className="freezer-units">{deal.qty} יחידות לבחירה</p>
+              <p className="freezer-units">{t('fz.unitsPick', { q: deal.qty })}</p>
               {deal.single ? (
                 <p className="freezer-single-note">
-                  כל יחידה בודדת <strong>₪{deal.single}</strong>.
+                  {t('fz.note1')} <strong>₪{deal.single}</strong>.
                   <br />
-                  {deal.qty} גלידות כלשהן מהמבצע (גם מטעמים שונים) = <strong>₪{deal.price}</strong> בלבד (במקום ₪{deal.qty * deal.single}).
+                  {t('fz.note2', { q: deal.qty })} <strong>₪{deal.price}</strong> {t('fz.note2b', { full: deal.qty * deal.single })}
                   <br />
-                  והמבצע חוזר בלי הגבלה — {deal.qty * 2} גלידות = <strong>₪{deal.price * 2}</strong>, {deal.qty * 3} = <strong>₪{deal.price * 3}</strong> וכן הלאה
+                  {t('fz.note3', { q2: deal.qty * 2 })} <strong>₪{deal.price * 2}</strong>, {deal.qty * 3} = <strong>₪{deal.price * 3}</strong> {t('fz.note3b')}
                 </p>
               ) : null}
             </div>
@@ -78,20 +80,20 @@ export default function FreezerCatalog() {
 
           {/* הגלידות שבמבצע */}
           <h2 className="section-title" style={{ marginTop: '3rem' }}>
-            הגלידות <span className="highlight">שבמבצע</span>
+            {t('fz.includedPre')} <span className="highlight">{t('fz.includedHl')}</span>
           </h2>
           {deal.single ? (
-            <p className="freezer-pick-hint">בחרו {deal.qty} גלידות כלשהן (גם מטעמים שונים) ותקבלו את המבצע — ₪{deal.price}</p>
+            <p className="freezer-pick-hint">{t('fz.pickHint', { q: deal.qty, p: deal.price })}</p>
           ) : null}
 
           {/* חיווי התקדמות למבצע — נצבר מכל הטעמים יחד */}
           {deal.single && inCart > 0 ? (
             <div className={`freezer-deal-banner ${dealReached && inCart % deal.qty === 0 ? 'freezer-deal-banner-done' : ''}`}>
               {dealReached && inCart % deal.qty === 0
-                ? <>המבצע הופעל ×{bundles}! {inCart} גלידות = ₪{bundles * deal.price} בלבד · אפשר להמשיך — כל {deal.qty} נוספות שוב ב-₪{deal.price}</>
+                ? t('fz.bannerDone', { n: bundles, c: inCart, t: bundles * deal.price, q: deal.qty, p: deal.price })
                 : dealReached
-                ? <>המבצע פעיל ×{bundles} — עוד <strong>{remainingToDeal}</strong> גלידות והמבצע יחול שוב</>
-                : <>בחרתם {inCart} — עוד <strong>{remainingToDeal}</strong> גלידות ותשלמו רק ₪{deal.price}</>}
+                ? t('fz.bannerActive', { n: bundles, r: remainingToDeal })
+                : t('fz.bannerProgress', { c: inCart, r: remainingToDeal, p: deal.price })}
             </div>
           ) : null}
 
@@ -102,16 +104,16 @@ export default function FreezerCatalog() {
                 return (
                   <article className={`card ${qty > 0 ? 'freezer-card-active' : ''}`} key={p.id}>
                     <div className="product-photo" style={{ aspectRatio: '1 / 1' }}>
-                      <ProductImage src={p.image} alt={`גלידה ${i + 1} — מבצע ${deal.qty} ב־₪${deal.price}`} emoji="" />
+                      <ProductImage src={p.image} alt={t('fz.itemAlt', { i: i + 1, q: deal.qty, p: deal.price })} emoji="" />
                     </div>
                     <div className="card-body freezer-product-body">
                       {deal.single ? (
-                        <p className="freezer-single-price">₪{deal.single} <span>ליחידה</span></p>
+                        <p className="freezer-single-price">₪{deal.single} <span>{t('fz.perUnit')}</span></p>
                       ) : null}
                       <AddToCart
                         product={{
                           key: `fz-${deal.id}-${p.id}`,
-                          name: `גלידה ${i + 1} · מבצע ${deal.qty} ב־₪${deal.price}`,
+                          name: t('fz.itemName', { i: i + 1, q: deal.qty, p: deal.price }),
                           price: deal.single || deal.price,
                           emoji: '',
                           image: p.image,
@@ -128,13 +130,13 @@ export default function FreezerCatalog() {
           ) : (
             <div className="freezer-empty">
               <span aria-hidden="true"></span>
-              <p>הגלידות של המקפיא הזה יתווספו ממש בקרוב!</p>
-              <p className="freezer-empty-hint">כל גלידה שתופיע כאן נכנסת במבצע {deal.qty} ב־₪{deal.price}</p>
+              <p>{t('fz.empty1')}</p>
+              <p className="freezer-empty-hint">{t('fz.empty2', { q: deal.qty, p: deal.price })}</p>
             </div>
           )}
 
           <div className="text-center" style={{ marginTop: '2.5rem' }}>
-            <Link to="/deals" className="btn btn-outline">← חזרה לכל המקפיאים</Link>
+            <Link to="/deals" className="btn btn-outline">{t('fz.backBottom')}</Link>
           </div>
         </div>
       </section>

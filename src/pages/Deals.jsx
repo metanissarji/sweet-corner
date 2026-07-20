@@ -1,5 +1,6 @@
 import FreezerCard from '../components/FreezerCard.jsx';
 import { useProducts } from '../context/ProductsContext.jsx';
+import { useLang } from '../context/LanguageContext.jsx';
 import './FreezerDeals.css';
 
 /**
@@ -8,12 +9,13 @@ import './FreezerDeals.css';
  */
 export default function Deals() {
   const { freezerDeals } = useProducts();
+  const { t } = useLang();
 
   return (
     <>
       <header className="page-header">
-        <h1>מבצעים חמים </h1>
-        <p>לוחצים על מקפיא כדי לפתוח אותו ולראות את כל הגלידות שבמבצע </p>
+        <h1>{t('deals.title')}</h1>
+        <p>{t('deals.sub')}</p>
       </header>
 
       <section className="page-section">

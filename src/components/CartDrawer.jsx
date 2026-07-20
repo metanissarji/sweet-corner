@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext.jsx';
 import { useOrders } from '../context/OrdersContext.jsx';
 import { ORDER_BRANCHES } from '../data/products.js';
+import { useLang } from '../context/LanguageContext.jsx';
 import { showCartToast } from './AddToCart.jsx';
 import './CartDrawer.css';
 
@@ -46,6 +47,7 @@ export default function CartDrawer() {
   const { list, count, total, fullTotal, dealSavings, add, remove, clear, drawerOpen, setDrawerOpen } = useCart();
   const { placeOrder } = useOrders();
   const navigate = useNavigate();
+  const { t } = useLang();
   const [ordered, setOrdered] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
   const [checkout, setCheckout] = useState(false);
@@ -74,10 +76,10 @@ export default function CartDrawer() {
     if (prevTotal.current < FREE_DELIVERY && total >= FREE_DELIVERY) {
       setFreeCelebrate(true);
       burstConfetti(confettiRef.current);
-      showCartToast(' הרווחתם משלוח חינם! ', 2200);
-      const t = setTimeout(() => setFreeCelebrate(false), 2600);
+      showCartToast(t('cart.freeToast'), 2200);
+      const timer = setTimeout(() => setFreeCelebrate(false), 2600);
       prevTotal.current = total;
-      return () => clearTimeout(t);
+      return () => clearTimeout(timer);
     }
     prevTotal.current = total;
   }, [total]);
@@ -144,7 +146,7 @@ export default function CartDrawer() {
       <button
         className={`cart-fab ${fabPop ? 'fab-pop' : ''} ${count > 0 ? 'has-items' : ''}`}
         onClick={() => setDrawerOpen(!drawerOpen)}
-        aria-label={`סל הקניות — ${count} פריטים`}
+        aria-label={t('cart.fabAria', { n: count })}
       >
         <img src="/images/cart-bag.png" alt="סל קניות" className="cart-bag-icon" />
         {count > 0 && <span className="fab-badge" key={count}>{count}</span>}
@@ -152,9 +154,9 @@ export default function CartDrawer() {
 
       {/* שורת סל תחתונה — מובייל בלבד (אזור האגודל) */}
       {count > 0 && !drawerOpen && (
-        <button className="cart-bar" onClick={() => setDrawerOpen(true)} aria-label={`פתיחת הסל — ${count} פריטים בסך ₪${grandTotal}`}>
+        <button className="cart-bar" onClick={() => setDrawerOpen(true)} aria-label={t('cart.barLabel')}>
           <span className="cart-bar-count"><img src="/images/cart-bag.png" alt="סל" className="cart-bag-icon-small" /> {count}</span>
-          <span className="cart-bar-label">לצפייה בסל ולתשלום</span>
+          <span className="cart-bar-label">{t('cart.barLabel')}</span>
           <strong className="cart-bar-total">₪{grandTotal}</strong>
         </button>
       )}
@@ -163,68 +165,68 @@ export default function CartDrawer() {
       {drawerOpen && <div className="cart-backdrop" onClick={closeDrawer} />}
 
       {/* המגירה */}
-      <aside className={`cart-drawer ${drawerOpen ? 'open' : ''}`} aria-label="סל הקניות">
+      <aside className={`cart-drawer ${drawerOpen ? 'open' : ''}`} aria-label={t('cart.title')}>
         <div className="confetti-layer" ref={confettiRef} aria-hidden="true" />
         {freeCelebrate && (
           <div className="free-delivery-badge" aria-hidden="true">
-             משלוח חינם! 
+            {t('cart.freeBadge')}
           </div>
         )}
 
         <header className="cart-header">
-          <h2>הסל שלי </h2>
-          <button className="cart-close" onClick={closeDrawer} aria-label="סגירת הסל">✕</button>
+          <h2>{t('cart.title')}</h2>
+          <button className="cart-close" onClick={closeDrawer} aria-label={t('cart.closeAria')}>✕</button>
         </header>
 
         {ordered ? (
           <div className="cart-success">
             <span className="success-icecream" aria-hidden="true"></span>
-            <h3>ההזמנה התקבלה!</h3>
-            <p>מתחילים להקפיא את החבילה שלכם </p>
-            <p className="success-number">מס׳ הזמנה: #{orderNumber}</p>
+            <h3>{t('cart.successTitle')}</h3>
+            <p>{t('cart.successSub')}</p>
+            <p className="success-number">{t('cart.orderNo', { n: orderNumber })}</p>
             <p style={{ fontSize: '0.85rem', color: 'var(--brown-light)', marginBottom: '0.5rem' }}>
-              ההזמנה נשלחה לחנות — תקבלו אישור בקרוב 
+              {t('cart.successNote')}
             </p>
-            <button className="btn btn-pink" onClick={closeDrawer}>סגירה</button>
+            <button className="btn btn-pink" onClick={closeDrawer}>{t('cart.close')}</button>
           </div>
         ) : checkout ? (
           <form className="checkout-form" onSubmit={handleOrder}>
-            <h3>פרטי משלוח ותשלום</h3>
-            <label className="checkout-branch-label">מאיזה סניף להזמין?</label>
+            <h3>{t('cart.checkoutTitle')}</h3>
+            <label className="checkout-branch-label">{t('cart.branchQ')}</label>
             <select name="branch" required defaultValue="" className="checkout-input checkout-branch-select">
-              <option value="" disabled>בחירת סניף...</option>
+              <option value="" disabled>{t('cart.branchPick')}</option>
               {ORDER_BRANCHES.map((b) => (
-                <option key={b.id} value={b.id}>{b.label}</option>
+                <option key={b.id} value={b.id}>{t(`orderBranch.${b.id}`)}</option>
               ))}
             </select>
-            <input name="firstName" type="text" placeholder="שם פרטי" required className="checkout-input" autoComplete="given-name" />
-            <input name="lastName" type="text" placeholder="שם משפחה" required className="checkout-input" autoComplete="family-name" />
-            <input name="phone" type="tel" placeholder="מספר טלפון" required className="checkout-input" autoComplete="tel" inputMode="tel" />
-            <input name="email" type="email" placeholder="אימייל (רשות)" className="checkout-input" autoComplete="email" inputMode="email" />
-            <input name="address" type="text" placeholder="כתובת מלאה למשלוח" required className="checkout-input" autoComplete="street-address" />
+            <input name="firstName" type="text" placeholder={t('cart.firstName')} required className="checkout-input" autoComplete="given-name" />
+            <input name="lastName" type="text" placeholder={t('cart.lastName')} required className="checkout-input" autoComplete="family-name" />
+            <input name="phone" type="tel" placeholder={t('cart.phone')} required className="checkout-input" autoComplete="tel" inputMode="tel" />
+            <input name="email" type="email" placeholder={t('cart.email')} className="checkout-input" autoComplete="email" inputMode="email" />
+            <input name="address" type="text" placeholder={t('cart.address')} required className="checkout-input" autoComplete="street-address" />
             <select name="payment" required defaultValue="" className="checkout-input">
-              <option value="" disabled>בחירת אמצעי תשלום...</option>
-              <option value="cash">מזומן לשליח</option>
-              <option value="visa">ויזה / אשראי</option>
-              <option value="apple-pay">Apple Pay</option>
+              <option value="" disabled>{t('cart.payPick')}</option>
+              <option value="cash">{t('cart.payCash')}</option>
+              <option value="visa">{t('cart.payVisa')}</option>
+              <option value="apple-pay">{t('cart.payApple')}</option>
             </select>
             <div className="checkout-actions">
-              <button type="button" className="btn btn-outline" onClick={() => setCheckout(false)}>חזרה לסל</button>
-              <button type="submit" className="btn btn-pink">אישור ותשלום ₪{grandTotal}</button>
+              <button type="button" className="btn btn-outline" onClick={() => setCheckout(false)}>{t('cart.back')}</button>
+              <button type="submit" className="btn btn-pink">{t('cart.confirm', { t: grandTotal })}</button>
             </div>
           </form>
         ) : list.length === 0 ? (
           <div className="cart-empty">
             <span className="empty-cone" aria-hidden="true"></span>
-            <p>הסל עדיין ריק...</p>
-            <p className="empty-hint">לחצו +1 על כל פינוק שבא לכם </p>
-            <p className="empty-fee-note">כל הזמנה יוצאת בבוקס עם שקית קרח  (₪{BOX_FEE})</p>
+            <p>{t('cart.empty')}</p>
+            <p className="empty-hint">{t('cart.emptyHint')}</p>
+            <p className="empty-fee-note">{t('cart.emptyFee', { f: BOX_FEE })}</p>
             <div className="cart-quick-nav">
               <button type="button" className="cart-quick-link" onClick={() => goTo('/deals')}>
-                מבצעים
+                {t('cart.quickDeals')}
               </button>
               <button type="button" className="cart-quick-link" onClick={() => goTo('/')}>
-                דף הבית
+                {t('cart.quickHome')}
               </button>
             </div>
           </div>
@@ -234,8 +236,8 @@ export default function CartDrawer() {
             <div className={`delivery-progress ${freeCelebrate ? 'celebrate' : ''}`}>
               <p>
                 {remaining > 0
-                  ? <>עוד <strong>₪{remaining}</strong> למשלוח חינם </>
-                  : <>יש לכם משלוח חינם! </>}
+                  ? <>{t('cart.freeLeft')} <strong>₪{remaining}</strong> {t('cart.freeLeft2')}</>
+                  : <>{t('cart.freeGot')}</>}
               </p>
               <div className="progress-track">
                 <div className="progress-fill" style={{ width: `${progress}%` }} />
@@ -253,12 +255,12 @@ export default function CartDrawer() {
                   )}
                   <div className="item-info">
                     <span className="item-name">{it.name}</span>
-                    <span className="item-price">₪{it.price} ליח׳</span>
+                    <span className="item-price">{t('cart.perUnit', { p: it.price })}</span>
                   </div>
                   <div className="item-controls">
-                    <button onClick={() => add(it)} aria-label={`עוד ${it.name}`}>+</button>
+                    <button onClick={() => add(it)} aria-label={`+ ${it.name}`}>+</button>
                     <span key={it.qty} className="item-qty">{it.qty}</span>
-                    <button onClick={() => remove(it.key)} aria-label={`פחות ${it.name}`}>−</button>
+                    <button onClick={() => remove(it.key)} aria-label={`− ${it.name}`}>−</button>
                   </div>
                   <span className="item-total">₪{it.qty * it.price}</span>
                 </li>
@@ -268,27 +270,27 @@ export default function CartDrawer() {
             <footer className="cart-footer">
               <div className="cart-summary">
                 <div className="summary-row">
-                  <span>המוצרים שלכם</span>
+                  <span>{t('cart.products')}</span>
                   <span>₪{fullTotal}</span>
                 </div>
                 {dealSavings > 0 && (
                   <div className="summary-row summary-deal">
-                    <span> הנחת מבצע</span>
+                    <span>{t('cart.dealDiscount')}</span>
                     <span>−₪{dealSavings}</span>
                   </div>
                 )}
                 <div className="summary-row summary-fee">
-                  <span>בוקס + שקית קרח </span>
+                  <span>{t('cart.boxFee')}</span>
                   <span>₪{BOX_FEE}</span>
                 </div>
                 <div className="summary-row summary-grand">
-                  <span>סה״כ לתשלום</span>
+                  <span>{t('cart.total')}</span>
                   <strong>₪{grandTotal}</strong>
                 </div>
               </div>
               {!meetsMinimum && (
                 <p className="min-order-notice">
-                  מינימום מוצרים להזמנה ₪{MIN_ORDER} — כדי שהמשלוח יצא בבוקס עם שקית קרח וישמור על הגלידה קפואה 
+                  {t('cart.minNotice', { m: MIN_ORDER })}
                 </p>
               )}
               <button
@@ -296,14 +298,14 @@ export default function CartDrawer() {
                 onClick={() => setCheckout(true)}
                 disabled={!meetsMinimum}
               >
-                לתשלום
+                {t('cart.pay')}
               </button>
               <div className="cart-quick-nav">
                 <button type="button" className="cart-quick-link" onClick={() => goTo('/deals')}>
-                  מבצעים
+                  {t('cart.quickDeals')}
                 </button>
                 <button type="button" className="cart-quick-link" onClick={() => goTo('/')}>
-                  דף הבית
+                  {t('cart.quickHome')}
                 </button>
               </div>
             </footer>

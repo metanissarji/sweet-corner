@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useLang } from '../context/LanguageContext.jsx';
 import './Lightbox.css';
 
 /**
@@ -10,6 +11,7 @@ import './Lightbox.css';
 const PHOTO_SELECTOR = '.product-photo img, .show-card-photo img, .bs-card-img img';
 
 export default function Lightbox() {
+  const { t } = useLang();
   const [photo, setPhoto] = useState(null); // { src, alt }
   const close = useCallback(() => setPhoto(null), []);
 
@@ -40,11 +42,11 @@ export default function Lightbox() {
 
   return (
     <div className="lightbox-backdrop" onClick={close} role="dialog" aria-modal="true" aria-label={photo.alt || 'תמונת מוצר מוגדלת'}>
-      <button className="lightbox-close" onClick={close} aria-label="סגירת התמונה">✕</button>
+      <button className="lightbox-close" onClick={close} aria-label={t('lightbox.close')}>✕</button>
       <div className="lightbox-card" onClick={(e) => e.stopPropagation()}>
         <img src={photo.src} alt={photo.alt} />
       </div>
-      <p className="lightbox-hint">לחיצה בכל מקום סוגרת</p>
+      <p className="lightbox-hint">{t('lightbox.hint')}</p>
     </div>
   );
 }

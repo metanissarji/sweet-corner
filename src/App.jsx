@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import { CartProvider } from './context/CartContext.jsx';
 import { ProductsProvider } from './context/ProductsContext.jsx';
 import { OrdersProvider } from './context/OrdersContext.jsx';
+import { LanguageProvider } from './context/LanguageContext.jsx';
 import CartDrawer from './components/CartDrawer.jsx';
 import Lightbox from './components/Lightbox.jsx';
 import Navbar from './components/Navbar.jsx';
@@ -45,6 +46,7 @@ export default function App() {
   }, [pathname]);
 
   return (
+    <LanguageProvider>
     <ProductsProvider>
       <OrdersProvider>
       <CartProvider>
@@ -75,5 +77,6 @@ export default function App() {
       </CartProvider>
       </OrdersProvider>
     </ProductsProvider>
+    </LanguageProvider>
   );
 }
